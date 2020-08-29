@@ -3,10 +3,9 @@ import {
   connected,
   connecting,
   disconnect,
-  disconnected,
-} from "../../module/socket/SocketSlice";
+} from "../reducers/SocketSlice";
 
-import { updateUserMessages } from "../../module/chat/ChatSlice";
+import { updateUserMessages } from "../reducers/UsersSlice";
 
 const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/test/";
 
@@ -19,13 +18,13 @@ const socketMiddleware = () => {
   };
 
   const onClose = (store) => () => {
-    store.dispatch(disconnected());
+    store.dispatch(disconnect());
   };
 
   const onMessage = (store) => (event) => {
     const payload = JSON.parse(event.data);
     console.log("receiving server message", payload);
-    store.dispatch(updateUserMessages(payload));
+    store.dispatch(updateUserMessages(payload.user_id, payload.message));
 
     switch (payload.type) {
       case "NEW_MESSAGE":
@@ -36,9 +35,7 @@ const socketMiddleware = () => {
     }
   };
   const sendMessage = async (socket, data) => {
-    await socket.send(
-      JSON.stringify({ command: "NEW_MESSAGE", data })
-    );
+    await socket.send(JSON.stringify({ command: "NEW_MESSAGE", data }));
   };
 
   // the middleware part of this function

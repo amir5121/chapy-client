@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Form, Input, Button } from "antd";
-import { selectUsers, sendMessage } from "./ChatSlice";
-import { connect } from "../socket/SocketSlice";
+import { selectUser, sendMessage } from "../../redux/reducers/UsersSlice";
+import { connect } from "../../redux/reducers/SocketSlice";
 
 const layout = {
   labelCol: {
@@ -20,7 +21,9 @@ const tailLayout = {
 };
 
 export default function Chat() {
-  const users = useSelector(selectUsers);
+  const { userId } = useParams();
+
+  const user = useSelector(state => selectUser(state, userId));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,13 +38,11 @@ export default function Chat() {
     console.log("Failed:", errorInfo);
   };
 
-  const messages = users[users.length - 1].messages;
-
   return (
     <>
-      {messages.map((it, index) => (
-        <p key={index}>{it}</p>
-      ))}
+      {user &&
+        user.messages &&
+        user.messages.map((it, index) => <p key={index}>{it}</p>)}
       <Form
         {...layout}
         name="basic"

@@ -13,14 +13,11 @@ export const socketSlice = createSlice({
     connected: (state) => {
       state.state = "CONNECTED";
     },
-    disconnected: (state) => {
+    disconnect: (state) => {
       state.state = "DISCONNECTED";
     },
     connect: (state) => {
       state.state = "CONNECTING";
-    },
-    disconnect: (state) => {
-      state.state = "DISCONNECTED";
     },
   },
 });
@@ -30,7 +27,6 @@ export const {
   connecting,
   connected,
   disconnect,
-  disconnected,
 } = socketSlice.actions;
 
 export default socketSlice.reducer;
