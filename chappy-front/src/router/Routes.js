@@ -4,6 +4,7 @@ import Chat from "../module/chat/Chat";
 import Home from "../module/home/Home";
 import PrivateRoute from "./PrivateRoute";
 import NormalLoginForm from "../module/login/Login";
+import Conversations from "../module/conversations/Conversations";
 
 const Routes = () => {
   return (
@@ -12,6 +13,9 @@ const Routes = () => {
         <Route path="/chat/:userId?">
           <Chat />
         </Route>
+        <PrivateRoute path="/conversations">
+          <Conversations />
+        </PrivateRoute>
         <Route path="/login">
           <NormalLoginForm />
         </Route>

@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Form, Input, Button } from "antd";
-import { selectUser, sendMessage } from "../../redux/reducers/UsersSlice";
-import { connect } from "../../redux/reducers/SocketSlice";
+import { selectUserById, sendMessage } from "../../redux/reducer/MessageSlice";
+import { connect } from "../../redux/reducer/SocketSlice";
 
 const layout = {
   labelCol: {
@@ -23,7 +23,7 @@ const tailLayout = {
 export default function Chat() {
   const { userId } = useParams();
 
-  const user = useSelector(state => selectUser(state, userId));
+  const user = useSelector(state => selectUserById(state, userId));
   const dispatch = useDispatch();
 
   useEffect(() => {

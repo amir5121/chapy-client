@@ -1,12 +1,16 @@
-import { createSlice, createSelector,createEntityAdapter } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createSelector,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 
-const usersAdapter = createEntityAdapter();
+const messagesAdapter = createEntityAdapter();
 
-const initialState = usersAdapter.getInitialState({
+const initialState = messagesAdapter.getInitialState({
   status: "idle",
   error: null,
 });
-export const chatSlice = createSlice({
+export const messageSlice = createSlice({
   name: "messages",
   initialState,
   reducers: {
@@ -33,14 +37,18 @@ export const chatSlice = createSlice({
     },
   },
 });
-//
-// export const { updateUserMessages, sendMessage } = chatSlice.actions;
-//
-// export const selectUsers = (state) => state.users;
-//
-// export const selectUser = createSelector(
-//   [selectUsers, (state, userId) => userId],
-//   (users, userId) => users.find((it) => it.userId === userId)
-// );
 
-export default chatSlice.reducer;
+export const { updateUserMessages, sendMessage } = messageSlice.actions;
+export const {
+  selectAll: selectAllUsers,
+  selectById: selectUserById,
+  selectIds: selectUserIds,
+  // Pass in a selector that returns the posts slice of state
+} = messagesAdapter.getSelectors((state) => state.users);
+
+export const selectUser = createSelector(
+  [selectAllUsers, (state, userId) => userId],
+  (users, userId) => users.find((it) => it.userId === userId)
+);
+
+export default messageSlice.reducer;

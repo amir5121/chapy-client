@@ -3,9 +3,9 @@ import {
   connected,
   connecting,
   disconnect,
-} from "../reducers/SocketSlice";
+} from "../reducer/SocketSlice";
 
-import { updateUserMessages } from "../reducers/UsersSlice";
+import { updateUserMessages } from "../reducer/MessageSlice";
 
 const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/test/";
 

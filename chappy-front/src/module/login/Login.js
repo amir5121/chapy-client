@@ -1,16 +1,32 @@
 import React from "react";
+
+import "./Login.css";
+
 import { Form, Input, Button, Checkbox, Row, Col, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {loginUser} from "../../redux/reducers/AuthSlice";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/reducer/AuthSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { isLoggedIn } from "../../Authenticate";
 
 const NormalLoginForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
     dispatch(loginUser(values))
+      .then(unwrapResult)
+      .then((originalPromiseResult) => {
+        console.log("originalPromiseResult", originalPromiseResult);
+        isLoggedIn() && history.push("/conversations");
+      })
+      .catch((serializedError) => {
+        console.log("serializedError", serializedError);
+      });
   };
+
+  isLoggedIn() && history.push("/conversations");
 
   return (
     <Row
@@ -30,17 +46,17 @@ const NormalLoginForm = () => {
             onFinish={onFinish}
           >
             <Form.Item
-              name="username"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Username!",
+                  message: "Please input your Email!",
                 },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item
