@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthToken, isLoggedIn, logout } from "./Authenticate";
 import { get } from "lodash";
-import { baseUrl } from "./LocalSetting";
+import { baseUrl } from "../LocalSetting";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = baseUrl;

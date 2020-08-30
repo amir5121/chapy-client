@@ -1,4 +1,4 @@
-import chapios from "../../Chapios";
+import chapios from "../../utils/Chapios";
 
 import {
   createAsyncThunk,

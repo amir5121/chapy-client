@@ -10,21 +10,11 @@ const Routes = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/chat/:userId?">
-          <Chat />
-        </Route>
-        <PrivateRoute path="/conversations">
-          <Conversations />
-        </PrivateRoute>
-        <Route path="/login">
-          <NormalLoginForm />
-        </Route>
-        <PrivateRoute path="/profile">
-          <Home />
-        </PrivateRoute>
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/login" component={NormalLoginForm} />
+        <PrivateRoute path="/chat/:userId" component={Chat} />
+        <PrivateRoute path="/chat" component={Conversations} />
+        <PrivateRoute path="/profile" component={Home} />
+        <Route path="/" component={Home} />
       </Switch>
     </Router>
   );

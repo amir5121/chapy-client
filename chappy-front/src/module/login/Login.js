@@ -8,7 +8,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/reducer/AuthSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { isLoggedIn } from "../../Authenticate";
+import { isLoggedIn } from "../../utils/Authenticate";
 
 const NormalLoginForm = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const NormalLoginForm = () => {
       .then(unwrapResult)
       .then((originalPromiseResult) => {
         console.log("originalPromiseResult", originalPromiseResult);
-        isLoggedIn() && history.push("/conversations");
+        isLoggedIn() && history.push("/chats");
       })
       .catch((serializedError) => {
         console.log("serializedError", serializedError);

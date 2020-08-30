@@ -1,0 +1,3 @@
+export const CONNECTING = "CONNECTING";
+export const DISCONNECTED = "DISCONNECTED";
+export const CONNECTED = "CONNECTED";

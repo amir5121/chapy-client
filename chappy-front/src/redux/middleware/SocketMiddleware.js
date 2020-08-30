@@ -3,21 +3,30 @@ import {
   connected,
   connecting,
   disconnect,
+  disconnected,
 } from "../reducer/SocketSlice";
 
 import { updateUserMessages } from "../reducer/MessageSlice";
+import { getAuthToken } from "../../utils/Authenticate";
 
-const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/test/";
+const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/";
 
 const socketMiddleware = () => {
   let socket = null;
   console.log(connect);
   const onOpen = (store) => (event) => {
     console.log("websocket open", event.target.url);
-    store.dispatch(connected(event.target.url));
+    sendMessage(socket, {}, true, "AUTHENTICATE")
+      .then(() => {
+        store.dispatch(connected(event.target.url));
+      })
+      .catch(() => {
+        store.dispatch(disconnect());
+      });
   };
 
   const onClose = (store) => () => {
+    socket = null;
     store.dispatch(disconnect());
   };
 
@@ -34,8 +43,19 @@ const socketMiddleware = () => {
         break;
     }
   };
-  const sendMessage = async (socket, data) => {
-    await socket.send(JSON.stringify({ command: "NEW_MESSAGE", data }));
+  const sendMessage = async (
+    socket,
+    data,
+    authenticate = false,
+    command = "NEW_MESSAGE"
+  ) => {
+    await socket.send(
+      JSON.stringify({
+        ...(authenticate && { authorization: `Token ${getAuthToken()}` }),
+        command,
+        data,
+      })
+    );
   };
 
   // the middleware part of this function
@@ -43,7 +63,7 @@ const socketMiddleware = () => {
     switch (action.type) {
       case "socket/connect":
         if (socket !== null) {
-          socket.close();
+          break;
         }
 
         // connect to the remote host
@@ -62,8 +82,9 @@ const socketMiddleware = () => {
         }
         socket = null;
         console.log("websocket closed");
+        store.dispatch(disconnected());
         break;
-      case "chat/sendMessage":
+      case "messages/sendMessage":
         console.log("sending a message", action.payload);
         sendMessage(socket, action.payload).then().catch();
         break;

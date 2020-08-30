@@ -1,23 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { CONNECTED, CONNECTING, DISCONNECTED } from "../../utils/Constatns";
 
 export const socketSlice = createSlice({
   name: "socket",
   initialState: {
     socket: null,
-    state: "DISCONNECTED",
+    state: DISCONNECTED,
   },
   reducers: {
     connecting: (state) => {
-      state.state = "CONNECTING";
+      state.state = CONNECTING;
     },
     connected: (state) => {
-      state.state = "CONNECTED";
+      state.state = CONNECTED;
     },
     disconnect: (state) => {
-      state.state = "DISCONNECTED";
+      state.state = DISCONNECTED;
+    },
+    disconnected: (state) => {
+      state.state = DISCONNECTED;
     },
     connect: (state) => {
-      state.state = "CONNECTING";
+      state.state = CONNECTING;
     },
   },
 });
@@ -27,6 +31,9 @@ export const {
   connecting,
   connected,
   disconnect,
+  disconnected,
 } = socketSlice.actions;
+
+export const socketStatus = (state) => state.socket && state.socket.state;
 
 export default socketSlice.reducer;

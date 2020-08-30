@@ -51,7 +51,6 @@ export default function Conversations() {
               </List.Item>
             )}
           />
-          ,
         </Card>
       </Col>
     </Row>

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import chapios from "../../Chapios";
-import { isLoggedIn, saveAuthToken } from "../../Authenticate";
+import chapios from "../../utils/Chapios";
+import { isLoggedIn, saveAuthToken } from "../../utils/Authenticate";
 
 export const loginUser = createAsyncThunk(
   "auth/login",
@@ -46,9 +46,5 @@ export const authSlice = createSlice({
     },
   },
 });
-
-export const { updateUserMessages, sendMessage } = authSlice.actions;
-
-export const selectUsers = (state) => state.chat.users;
 
 export default authSlice.reducer;
