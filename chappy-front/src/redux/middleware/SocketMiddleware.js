@@ -7,7 +7,7 @@ import {
 } from "../reducer/SocketSlice";
 
 import { updateUserMessages } from "../reducer/MessageSlice";
-import { getAuthToken } from "../../utils/Authenticate";
+import { getAuthToken, isLoggedIn } from "../../utils/Authenticate";
 
 const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/";
 
@@ -51,7 +51,8 @@ const socketMiddleware = () => {
   ) => {
     await socket.send(
       JSON.stringify({
-        ...(authenticate && { authorization: `Token ${getAuthToken()}` }),
+        ...(authenticate &&
+          isLoggedIn() && { authorization: `Token ${getAuthToken()}` }),
         command,
         data,
       })

@@ -36,7 +36,7 @@ export default function Chat() {
   }, [dispatch]);
 
   const onFinish = (values) => {
-    dispatch(sendMessage({ message: values.message }));
+    dispatch(sendMessage({ message: values.message, username: userId }));
   };
 
   const onFinishFailed = (errorInfo) => {
