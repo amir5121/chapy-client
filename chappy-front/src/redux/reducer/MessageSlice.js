@@ -1,7 +1,12 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
+import chapios from "../../utils/Chapios";
 
 const messagesAdapter = createEntityAdapter({
-  selectId: (instance) => instance.userId,
+  selectId: (instance) => instance.conversationIdentifier,
 });
 
 const initialState = messagesAdapter.getInitialState({
@@ -9,32 +14,55 @@ const initialState = messagesAdapter.getInitialState({
   error: null,
 });
 
+export const initialConversationMessage = createAsyncThunk(
+  "message/initial",
+  async (conversationIdentifier) => {
+    let res = await chapios.get(`/api/chat/message/${conversationIdentifier}`);
+    return {
+      conversationIdentifier,
+      data: res.data.data,
+    };
+  },
+  {
+    condition: (conversationIdentifier, { getState, extra }) => {
+      if (
+        selectConversationIdentifiers(getState()).includes(
+          conversationIdentifier
+        )
+      ) {
+        console.log("ASDASDASDASDASDASD Cannenellll");
+        return false;
+      }
+    },
+  }
+);
+
 export const messageSlice = createSlice({
   name: "messages",
   initialState,
   reducers: {
     updateUserMessages: {
       reducer(state, action) {
-        const userId = action.payload.userId;
+        const conversationIdentifier = action.payload.conversationIdentifier;
         const message = action.payload.message;
-        const userMessages = messagesAdapter
+        const conversationMessages = messagesAdapter
           .getSelectors()
-          .selectById(state, userId);
-        userMessages
+          .selectById(state, conversationIdentifier);
+        conversationMessages
           ? messagesAdapter.updateOne(state, {
-              id: userId,
+              id: conversationIdentifier,
               changes: {
-                messages: userMessages.messages.concat(message)
+                messages: conversationMessages.messages.concat(message),
               },
             })
           : messagesAdapter.addOne(state, {
-              userId,
+              conversationIdentifier,
               messages: [message],
             });
       },
-      prepare(userId, message) {
+      prepare(conversationIdentifier, message) {
         return {
-          payload: { userId, message },
+          payload: { conversationIdentifier, message },
         };
       },
     },
@@ -42,19 +70,28 @@ export const messageSlice = createSlice({
       // handled by middleware
     },
   },
+  extraReducers: {
+    [initialConversationMessage.fulfilled]: (state, action) => {
+      console.log("initialConversationMessage.fulfilled", action.payload.data);
+      messagesAdapter.upsertOne(state, {
+        conversationIdentifier: action.payload.conversationIdentifier,
+        messages: action.payload.data.results,
+      });
+    },
+    [initialConversationMessage.pending]: (state, action) => {
+      console.log("initialConversationMessage.pending", action.payload);
+    },
+    [initialConversationMessage.rejected]: (state, action) => {
+      console.log("initialConversationMessage.rejected", action.payload);
+    },
+  },
 });
 
 export const { updateUserMessages, sendMessage } = messageSlice.actions;
 export const {
-  selectAll: selectAllMessages,
-  selectById: selectMessageById,
-  selectIds: selectMessageIds,
-  // Pass in a selector that returns the posts slice of state
+  selectAll: selectAllConversationMessages,
+  selectById: selectMessagesByConversationIdentifier,
+  selectIds: selectConversationIdentifiers,
 } = messagesAdapter.getSelectors((state) => state.messages);
-
-// export const selectUser = createSelector(
-//   [selectAllMessages, (state, userId) => userId],
-//   (users, userId) => users.find((it) => it.userId === userId)
-// );
 
 export default messageSlice.reducer;

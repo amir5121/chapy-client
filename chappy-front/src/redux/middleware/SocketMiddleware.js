@@ -33,7 +33,7 @@ const socketMiddleware = () => {
   const onMessage = (store) => (event) => {
     const payload = JSON.parse(event.data);
     console.log("receiving server message", payload);
-    store.dispatch(updateUserMessages(payload.user_id, payload.message));
+    store.dispatch(updateUserMessages(payload.message.conversation_identifier, payload.message.message));
 
     switch (payload.type) {
       case "NEW_MESSAGE":
@@ -87,7 +87,7 @@ const socketMiddleware = () => {
         break;
       case "messages/sendMessage":
         console.log("sending a message", action.payload);
-        sendMessage(socket, action.payload).then().catch();
+        sendMessage(socket, action.payload);
         break;
       default:
         console.log("the next action:", action);

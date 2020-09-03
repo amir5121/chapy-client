@@ -5,8 +5,13 @@ import Home from "../module/home/Home";
 import PrivateRoute from "./PrivateRoute";
 import NormalLoginForm from "../module/login/Login";
 import Conversations from "../module/conversations/Conversations";
+import { getMe } from "../redux/reducer/AuthSlice";
+import { useDispatch } from "react-redux";
 
 const Routes = () => {
+  const dispatch = useDispatch();
+  dispatch(getMe());
+
   return (
     <Router>
       <Switch>

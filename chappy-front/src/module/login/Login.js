@@ -19,7 +19,7 @@ const NormalLoginForm = () => {
       .then(unwrapResult)
       .then((originalPromiseResult) => {
         console.log("originalPromiseResult", originalPromiseResult);
-        isLoggedIn() && history.push("/chats");
+        isLoggedIn() && history.push("/chat");
       })
       .catch((serializedError) => {
         console.log("serializedError", serializedError);

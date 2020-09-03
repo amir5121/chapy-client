@@ -3,12 +3,14 @@ import chapios from "../../utils/Chapios";
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
+import { authSelector } from "./AuthSlice";
 
 const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
-  selectId: (instance) => instance.id,
+  selectId: (instance) => instance.identifier,
 });
 
 const initialState = conversationAdapter.getInitialState({
@@ -16,10 +18,12 @@ const initialState = conversationAdapter.getInitialState({
   error: null,
 });
 
-export const listConversations = createAsyncThunk(
+export const getConversations = createAsyncThunk(
   "conversations/list",
-  async () => {
-    const res = await chapios.get("api/conversations/");
+  async (username) => {
+    const res = await chapios.get(
+      `api/chat/conversations/${username ? username + "/" : ""}`
+    );
     return res.data;
   }
 );
@@ -29,15 +33,17 @@ export const conversationsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [listConversations.fulfilled]: (state, action) => {
-      console.log("listConversations.fulfilled", action.payload);
-      conversationAdapter.upsertMany(state, action.payload.data);
+    [getConversations.fulfilled]: (state, action) => {
+      console.log("getConversations.fulfilled", action);
+      action.meta.arg
+        ? conversationAdapter.upsertOne(state, action.payload.data)
+        : conversationAdapter.upsertMany(state, action.payload.data.results);
     },
-    [listConversations.pending]: (state, action) => {
-      console.log("listConversations.fulfilled", action.payload);
+    [getConversations.pending]: (state, action) => {
+      console.log("getConversations.fulfilled", action.payload);
     },
-    [listConversations.rejected]: (state, action) => {
-      console.log("listConversations.fulfilled", action.payload);
+    [getConversations.rejected]: (state, action) => {
+      console.log("getConversations.fulfilled", action.payload);
     },
   },
 });
@@ -49,5 +55,20 @@ export const {
   selectIds: selectConversationIds,
   // Pass in a selector that returns the posts slice of state
 } = conversationAdapter.getSelectors((state) => state.conversations);
+
+export const selectConversationIdentifier = (username) =>
+  createSelector([selectAllConversations], (conversations) => {
+    console.log(
+      "ggggggggggggggggggg",
+      conversations,
+      conversations.filter((it) => it.user.username === username)
+    );
+    let selectedConversation = conversations.filter(
+      (it) => it.user.username === username
+    );
+    return selectedConversation.length > 0
+      ? selectedConversation[0].identifier
+      : null;
+  });
 
 export default conversationsSlice.reducer;
