@@ -32,15 +32,9 @@ export default function Conversations() {
                   style={{ width: "100%" }}
                   to={`/chat/${item.user.username}`}
                 >
-                  <Row align="middle" className="chat-row">
-                    <Avatar
-                      size="large"
-                      src={
-                        item.user.avatar ||
-                        `https://api.adorable.io/avatars/285/${item.user.username}`
-                      }
-                    />
-                    <div className="chat-content">
+                  <Row align="middle" className="chat-action-row">
+                    <Avatar size="large" src={item.user.avatar} />
+                    <div className="conversation-content">
                       <p className="title">
                         <span>{item.user.full_name}</span>
                         <span>{item.modified}</span>

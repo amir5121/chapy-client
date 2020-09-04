@@ -58,11 +58,6 @@ export const {
 
 export const selectConversationIdentifier = (username) =>
   createSelector([selectAllConversations], (conversations) => {
-    console.log(
-      "ggggggggggggggggggg",
-      conversations,
-      conversations.filter((it) => it.user.username === username)
-    );
     let selectedConversation = conversations.filter(
       (it) => it.user.username === username
     );

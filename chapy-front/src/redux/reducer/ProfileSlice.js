@@ -7,7 +7,7 @@ import chapios from "../../utils/Chapios";
 import { isLoggedIn } from "../../utils/Authenticate";
 
 const profileAdapter = createEntityAdapter({
-  selectId: (instance) => instance.conversationIdentifier,
+  selectId: (instance) => instance.email,
 });
 
 const initialState = profileAdapter.getInitialState({
@@ -23,9 +23,9 @@ export const getProfile = createAsyncThunk(
   },
   {
     condition: (_, { getState, extra }) => {
-      const { auth } = getState();
-      console.log(auth.me_status);
-      if (!isLoggedIn() || ["fulfilled", "loading"].includes(auth.me_status)) {
+      const { profiles } = getState();
+      console.log(profiles.status);
+      if (!isLoggedIn() || ["fulfilled", "loading"].includes(profiles.status)) {
         return false;
       }
     },
@@ -38,11 +38,8 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getProfile.fulfilled]: (state, action) => {
-      console.log("getProfile.fulfilled", action.payload.data);
-      profileAdapter.upsertOne(state, {
-        conversationIdentifier: action.payload.conversationIdentifier,
-        messages: action.payload.data.results,
-      });
+      console.log("getProfile.fulfilled", action.payload.data, state);
+      profileAdapter.upsertOne(state, action.payload.data);
     },
     [getProfile.pending]: (state, action) => {
       console.log("getProfile.pending", action.payload);
@@ -53,11 +50,10 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { updateUserMessages, sendMessage } = profileSlice.actions;
 export const {
   selectAll: selectAllProfiles,
   selectById: selectProfileById,
   selectIds: selectProfileIds,
-} = profileAdapter.getSelectors((state) => state.messages);
+} = profileAdapter.getSelectors((state) => state && state.profiles);
 
 export default profileSlice.reducer;

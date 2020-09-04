@@ -4,10 +4,10 @@ import {
   connecting,
   disconnect,
   disconnected,
-} from "../reducer/SocketSlice";
+} from "./reducer/SocketSlice";
 
-import { updateUserMessages } from "../reducer/MessageSlice";
-import { getAuthToken, isLoggedIn } from "../../utils/Authenticate";
+import { updateUserMessages } from "./reducer/MessageSlice";
+import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
 
 const ENDPOINT = "ws://127.0.0.1:8000/ws/chat/";
 
