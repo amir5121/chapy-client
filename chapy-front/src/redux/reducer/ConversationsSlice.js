@@ -6,7 +6,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { authSelector } from "./AuthSlice";
+import {FULFILLED, IDLE, PENDING, REJECTED} from "../../utils/Constatns";
 
 const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
@@ -14,12 +14,12 @@ const conversationAdapter = createEntityAdapter({
 });
 
 const initialState = conversationAdapter.getInitialState({
-  status: "idle",
+  status: IDLE,
   error: null,
 });
 
 export const getConversations = createAsyncThunk(
-  "conversations/list",
+  "conversationsList/list",
   async (username) => {
     const res = await chapios.get(
       `api/chat/conversations/${username ? username + "/" : ""}`
@@ -34,16 +34,16 @@ export const conversationsSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getConversations.fulfilled]: (state, action) => {
-      console.log("getConversations.fulfilled", action);
+      state.status = FULFILLED
       action.meta.arg
         ? conversationAdapter.upsertOne(state, action.payload.data)
         : conversationAdapter.upsertMany(state, action.payload.data.results);
     },
     [getConversations.pending]: (state, action) => {
-      console.log("getConversations.fulfilled", action.payload);
+      state.status = PENDING
     },
     [getConversations.rejected]: (state, action) => {
-      console.log("getConversations.fulfilled", action.payload);
+      state.status = REJECTED
     },
   },
 });

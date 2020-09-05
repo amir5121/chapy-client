@@ -5,27 +5,28 @@ import {
 } from "@reduxjs/toolkit";
 import chapios from "../../utils/Chapios";
 import { isLoggedIn } from "../../utils/Authenticate";
+import {FULFILLED, IDLE, PENDING, REJECTED} from "../../utils/Constatns";
 
 const profileAdapter = createEntityAdapter({
   selectId: (instance) => instance.email,
 });
 
 const initialState = profileAdapter.getInitialState({
-  status: "idle",
+  status: IDLE,
   error: null,
 });
 
 export const getProfile = createAsyncThunk(
   "user/profile",
   async (username) => {
-    let res = await chapios.get(`api/users/profile/${username}`);
+    let res = await chapios.get(`/api/users/profile/${username}`);
     return res.data;
   },
   {
     condition: (_, { getState, extra }) => {
       const { profiles } = getState();
       console.log(profiles.status);
-      if (!isLoggedIn() || ["fulfilled", "loading"].includes(profiles.status)) {
+      if (!isLoggedIn() || [FULFILLED, PENDING].includes(profiles.status)) {
         return false;
       }
     },
@@ -38,14 +39,14 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getProfile.fulfilled]: (state, action) => {
-      console.log("getProfile.fulfilled", action.payload.data, state);
+      state.status = FULFILLED
       profileAdapter.upsertOne(state, action.payload.data);
     },
     [getProfile.pending]: (state, action) => {
-      console.log("getProfile.pending", action.payload);
+      state.status = PENDING
     },
     [getProfile.rejected]: (state, action) => {
-      console.log("getProfile.rejected", action.payload);
+      state.status = REJECTED
     },
   },
 });

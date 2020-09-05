@@ -5,14 +5,14 @@ import {
   initialConversationMessage,
   selectMessagesByConversationIdentifier,
   sendMessage,
-} from "../../redux/reducer/MessageSlice";
-import { connect, socketStatus } from "../../redux/reducer/SocketSlice";
+} from "../redux/reducer/MessageSlice";
+import { connect, socketStatus } from "../redux/reducer/SocketSlice";
 import {
   getConversations,
   selectConversationIdentifier,
-} from "../../redux/reducer/ConversationsSlice";
-import Messages from "../../component/messages/Messages";
-import {getProfile, selectProfileById} from "../../redux/reducer/ProfileSlice";
+} from "../redux/reducer/ConversationsSlice";
+import Messages from "../components/messages/Messages";
+import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
 
 export default function Chat() {
   const { username } = useParams();
@@ -28,7 +28,9 @@ export default function Chat() {
 
   const socketState = useSelector(socketStatus);
 
-  const userProfile = useSelector(state => selectProfileById(state, username));
+  const userProfile = useSelector((state) =>
+    selectProfileById(state, username)
+  );
 
   useEffect(() => {
     dispatch(connect());
@@ -56,6 +58,7 @@ export default function Chat() {
         conversationMessages && conversationMessages.messages
       }
       sendMessage={onFinish}
+      onFinishFailed={onFinishFailed}
       userProfile={userProfile}
     />
   );

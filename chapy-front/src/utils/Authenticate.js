@@ -11,6 +11,7 @@ export const isLoggedIn = () => {
 export const logout = (location) => {
   console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
   cookie.remove("auth_token", { path: "/" });
+  location && window && (window.location = location)
 };
 
 export const saveAuthToken = (data) => {

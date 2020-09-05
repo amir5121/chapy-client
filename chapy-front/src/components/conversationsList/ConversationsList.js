@@ -1,22 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import "./Conversations.less";
-
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getConversations,
-  selectAllConversations,
-} from "../../redux/reducer/ConversationsSlice";
+import "./ConversationsList.less";
 import { Avatar, Card, Col, List, Row } from "antd";
 import { Link } from "react-router-dom";
 
-export default function Conversations() {
-  const conversations = useSelector(selectAllConversations);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getConversations());
-  }, [dispatch]);
+const ConversationsList = (props) => {
+  const { conversations } = props;
 
   return (
     <Row type="flex" justify="center" style={{ minHeight: "100vh" }}>
@@ -52,4 +41,6 @@ export default function Conversations() {
       </Col>
     </Row>
   );
-}
+};
+
+export default ConversationsList;

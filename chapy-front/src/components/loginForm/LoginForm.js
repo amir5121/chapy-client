@@ -1,45 +1,25 @@
 import React from "react";
 
-import "./Login.css";
+import "./LoginForm.less";
 
-import { Form, Input, Button, Checkbox, Row, Col, Card } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/reducer/AuthSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { isLoggedIn } from "../../utils/Authenticate";
+import { Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
-const NormalLoginForm = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const onFinish = (values) => {
-    dispatch(loginUser(values))
-      .then(unwrapResult)
-      .then((originalPromiseResult) => {
-        console.log("originalPromiseResult", originalPromiseResult);
-        isLoggedIn() && history.push("/chat");
-      })
-      .catch((serializedError) => {
-        console.log("serializedError", serializedError);
-      });
-  };
-
-  isLoggedIn() && history.push("/conversations");
+const LoginForm = (props) => {
+  const { onFinish } = props;
 
   return (
     <Row
       type="flex"
       justify="center"
       align="middle"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "80vh" }}
     >
       <Col span={8}>
         <Card>
           <Form
             name="normal_login"
-            className="login-form"
             initialValues={{
               remember: true,
             }}
@@ -92,10 +72,12 @@ const NormalLoginForm = () => {
               >
                 Log in
               </Button>
-              Or
-              <Link className="login-form-forgot" to={"forgot-pass"}>
-                register now!
-              </Link>
+              <Space>
+                Or
+                <Link className="login-form-forgot" to={"register"}>
+                  register now!
+                </Link>
+              </Space>
             </Form.Item>
           </Form>
         </Card>
@@ -104,4 +86,4 @@ const NormalLoginForm = () => {
   );
 };
 
-export default NormalLoginForm;
+export default LoginForm;

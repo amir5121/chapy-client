@@ -72,17 +72,14 @@ export const messageSlice = createSlice({
   },
   extraReducers: {
     [initialConversationMessage.fulfilled]: (state, action) => {
-      console.log("initialConversationMessage.fulfilled", action.payload.data);
       messagesAdapter.upsertOne(state, {
         conversationIdentifier: action.payload.conversationIdentifier,
         messages: action.payload.data.results,
       });
     },
     [initialConversationMessage.pending]: (state, action) => {
-      console.log("initialConversationMessage.pending", action.payload);
     },
     [initialConversationMessage.rejected]: (state, action) => {
-      console.log("initialConversationMessage.rejected", action.payload);
     },
   },
 });

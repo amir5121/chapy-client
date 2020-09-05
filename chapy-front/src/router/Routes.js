@@ -1,46 +1,48 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Chat from "../module/chat/Chat";
-import Home from "../module/home/Home";
+import Chat from "../modules/Chat";
+import Home from "../modules/Home";
 import PrivateRoute from "./PrivateRoute";
-import NormalLoginForm from "../module/login/Login";
-import Conversations from "../module/conversations/Conversations";
-import { getMe } from "../redux/reducer/AuthSlice";
+import Login from "../modules/Login";
+import Conversations from "../modules/Conversations";
+import { getMe } from "../redux/reducer/MeSlice";
 import { useDispatch } from "react-redux";
-import { ConfigProvider, Layout, Menu } from "antd";
-import ChapyHeader from "../component/header/ChapyHeader";
-import ChapyFooter from "../component/footer/ChapyFooter";
+import { ConfigProvider, Layout } from "antd";
+import ChapyHeader from "../components/header/ChapyHeader";
+import ChapyFooter from "../components/footer/ChapyFooter";
+import Register from "../modules/Register";
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 const Routes = () => {
   const dispatch = useDispatch();
+
   dispatch(getMe());
 
   return (
-    <ConfigProvider direction="rtl">
-      <Layout>
-        <ChapyHeader />
-        <Content style={{ padding: "0 50px" }}>
-          <Layout
-            className="site-layout-background"
-            style={{ padding: "24px 0" }}
-          >
-            <Content style={{ padding: "0 24px", minHeight: 280 }}>
-              <Router>
+    <ConfigProvider direction="ltr">
+      <Router>
+        <Layout>
+          <ChapyHeader />
+          <Content style={{ padding: "0 2vw" }}>
+            <Layout
+              style={{ padding: "5vh 0" }}
+            >
+              <Content style={{ padding: "0 2vw", minHeight: "50vh" }}>
                 <Switch>
-                  <Route path="/login" component={NormalLoginForm} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
                   <PrivateRoute path="/profile" component={Home} />
                   <Route path="/" component={Home} />
                 </Switch>
-              </Router>
-            </Content>
-          </Layout>
-        </Content>
-        <ChapyFooter />
-      </Layout>
+              </Content>
+            </Layout>
+          </Content>
+          <ChapyFooter />
+        </Layout>
+      </Router>
     </ConfigProvider>
   );
 };

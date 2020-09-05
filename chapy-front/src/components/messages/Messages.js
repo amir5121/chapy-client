@@ -9,8 +9,14 @@ import Message from "../message/Message";
 
 const { TextArea } = Input;
 
-const Messages = (props) => {
-  const { socketState, conversationMessages, sendMessage, userProfile } = props;
+export default function Messages(props) {
+  const {
+    socketState,
+    conversationMessages,
+    sendMessage,
+    userProfile,
+    onFinishFailed,
+  } = props;
   const history = useHistory();
   const [messageForm] = Form.useForm();
   const [hasMessage, setHasMessage] = useState(null);
@@ -70,6 +76,7 @@ const Messages = (props) => {
                 layout={"inline"}
                 name="basic"
                 onFinish={sendMessage}
+                onFinishFailed={onFinishFailed}
                 form={messageForm}
                 style={{ display: "flex" }}
                 // onFinishFailed={onFinishFailed}
@@ -108,6 +115,4 @@ const Messages = (props) => {
       )}
     </Card>
   );
-};
-
-export default Messages;
+}
