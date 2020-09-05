@@ -37,6 +37,7 @@ const LoginForm = (props) => {
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Email"
+                autoComplete="username"
               />
             </Form.Item>
             <Form.Item
@@ -48,10 +49,12 @@ const LoginForm = (props) => {
                 },
               ]}
             >
-              <Input
+              <Input.Password
+                allowClear
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"
+                autoComplete="current-password"
               />
             </Form.Item>
             <Form.Item>

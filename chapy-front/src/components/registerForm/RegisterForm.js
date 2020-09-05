@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./RegisterForm.less";
 
@@ -8,6 +8,14 @@ import { Link } from "react-router-dom";
 
 const RegisterForm = (props) => {
   const { onFinish } = props;
+  const [reTypeIsValid, setReTypeIsValid] = useState(null);
+
+  function validateAndFinish(values) {
+    console.log(values);
+    const passwordIsValid = values.password === values.password_retype;
+    setReTypeIsValid(passwordIsValid);
+    passwordIsValid && onFinish(values);
+  }
 
   return (
     <Row
@@ -18,13 +26,7 @@ const RegisterForm = (props) => {
     >
       <Col span={8}>
         <Card>
-          <Form
-            name="normal_login"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-          >
+          <Form name="register" onFinish={validateAndFinish}>
             <Form.Item
               name="email"
               rules={[
@@ -37,6 +39,7 @@ const RegisterForm = (props) => {
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Email"
+                autoComplete="username"
               />
             </Form.Item>
             <Form.Item
@@ -48,13 +51,22 @@ const RegisterForm = (props) => {
                 },
               ]}
             >
-              <Input
+              <Input.Password
+                allowClear
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"
+                autoComplete="new-password"
               />
             </Form.Item>
             <Form.Item
+              validateStatus={reTypeIsValid ? "success" : "error"}
+              hasFeedback={reTypeIsValid !== null}
+              help={
+                reTypeIsValid === null || reTypeIsValid
+                  ? null
+                  : "Should be combination of numbers & alphabets"
+              }
               name="password_retype"
               rules={[
                 {
@@ -63,10 +75,12 @@ const RegisterForm = (props) => {
                 },
               ]}
             >
-              <Input
+              <Input.Password
+                allowClear
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password_retype"
                 placeholder="Password retype"
+                autoComplete="new-password"
               />
             </Form.Item>
 

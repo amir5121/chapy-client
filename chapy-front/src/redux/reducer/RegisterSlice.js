@@ -36,7 +36,6 @@ export const registerSlice = createSlice({
     },
     [registerUser.fulfilled]: (state, action) => {
       state.status = FULFILLED;
-      saveAuthToken(action.payload);
     },
     [registerUser.rejected]: (state, action) => {
       state.status = REJECTED;

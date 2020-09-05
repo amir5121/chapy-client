@@ -4,6 +4,7 @@ import authReducer from "./reducer/RegisterSlice";
 import messageReducer from "./reducer/MessageSlice";
 import socketReducer from "./reducer/SocketSlice";
 import profileReducer from "./reducer/ProfileSlice";
+import configReducer from "./reducer/ConfigSlice";
 import socketMiddleware from "./SocketMiddleware";
 
 //https://dev.to/aduranil/how-to-use-websockets-with-redux-a-step-by-step-guide-to-writing-understanding-connecting-socket-middleware-to-your-project-km3
@@ -14,6 +15,7 @@ const reducer = {
   messages: messageReducer,
   socket: socketReducer,
   profiles: profileReducer,
+  config: configReducer,
 };
 
 const store = configureStore({ reducer, middleware });

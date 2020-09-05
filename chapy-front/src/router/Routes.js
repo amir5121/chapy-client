@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Chat from "../modules/Chat";
 import Home from "../modules/Home";
@@ -11,23 +11,34 @@ import { ConfigProvider, Layout } from "antd";
 import ChapyHeader from "../components/header/ChapyHeader";
 import ChapyFooter from "../components/footer/ChapyFooter";
 import Register from "../modules/Register";
-
+import { viewportUpdated } from "../redux/reducer/ConfigSlice";
+import { throttle } from "lodash";
 const { Content } = Layout;
 
 const Routes = () => {
   const dispatch = useDispatch();
 
-  dispatch(getMe());
+  const throttledSetViewPortWidth = throttle(
+    () => window && dispatch(viewportUpdated(window.innerWidth)),
+    2000
+  );
+  useEffect(() => {
+    dispatch(getMe());
+    if (window) {
+      window.addEventListener("resize", throttledSetViewPortWidth);
+      dispatch(viewportUpdated(window.innerWidth));
+    }
 
+    return () =>
+      window && window.removeEventListener("resize", throttledSetViewPortWidth);
+  }, [dispatch, throttledSetViewPortWidth]);
   return (
     <ConfigProvider direction="ltr">
       <Router>
         <Layout>
           <ChapyHeader />
           <Content style={{ padding: "0 2vw" }}>
-            <Layout
-              style={{ padding: "5vh 0" }}
-            >
+            <Layout style={{ padding: "5vh 0" }}>
               <Content style={{ padding: "0 2vw", minHeight: "50vh" }}>
                 <Switch>
                   <Route path="/login" component={Login} />
