@@ -1,13 +1,15 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { registerUser } from "../redux/reducer/RegisterSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { isLoggedIn } from "../utils/Authenticate";
 import RegisterForm from "../components/registerForm/RegisterForm";
+import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 
 export default function Register() {
   const dispatch = useDispatch();
+  const isMobile = useSelector(isMobileSelector);
   const history = useHistory();
 
   const onFinish = (values) => {
@@ -24,5 +26,5 @@ export default function Register() {
 
   isLoggedIn() && history.push("/chat/");
 
-  return <RegisterForm onFinish={onFinish} />;
+  return <RegisterForm onFinish={onFinish} isMobile={isMobile} />;
 }

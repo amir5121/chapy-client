@@ -16,5 +16,6 @@ export const configSlice = createSlice({
   },
 });
 export const { viewportUpdated } = configSlice.actions;
+export const isMobileSelector = (state) => state.config.isMobile;
 
 export default configSlice.reducer;

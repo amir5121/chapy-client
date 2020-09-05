@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout } from "antd";
+
 const { Footer } = Layout;
 
 export default function ChapyFooter() {

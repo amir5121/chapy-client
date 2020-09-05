@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import chapios from "../../utils/Chapios";
-import { saveAuthToken } from "../../utils/Authenticate";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 export const registerUser = createAsyncThunk(
