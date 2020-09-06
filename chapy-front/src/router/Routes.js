@@ -8,11 +8,12 @@ import Conversations from "../modules/Conversations";
 import { getMe } from "../redux/reducer/MeSlice";
 import { useDispatch } from "react-redux";
 import { ConfigProvider, Layout } from "antd";
-import ChapyHeader from "../components/header/ChapyHeader";
 import ChapyFooter from "../components/footer/ChapyFooter";
 import Register from "../modules/Register";
 import { viewportUpdated } from "../redux/reducer/ConfigSlice";
 import { throttle } from "lodash";
+import Header from "../modules/Header";
+
 const { Content } = Layout;
 
 const Routes = () => {
@@ -20,7 +21,7 @@ const Routes = () => {
 
   const throttledSetViewPortWidth = throttle(
     () => window && dispatch(viewportUpdated(window.innerWidth)),
-    2000
+    1000
   );
   useEffect(() => {
     dispatch(getMe());
@@ -36,7 +37,7 @@ const Routes = () => {
     <ConfigProvider direction="ltr">
       <Router>
         <Layout>
-          <ChapyHeader />
+          <Header />
           <Content style={{ padding: "0 2vw" }}>
             <Layout style={{ padding: "5vh 0" }}>
               <Content style={{ padding: "0 2vw", minHeight: "50vh" }}>

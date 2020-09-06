@@ -13,10 +13,12 @@ import {
 } from "../redux/reducer/ConversationsSlice";
 import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
+import {isMobileSelector} from "../redux/reducer/ConfigSlice";
 
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
+  const isMobile = useSelector(isMobileSelector);
 
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
@@ -60,6 +62,7 @@ export default function Chat() {
       sendMessage={onFinish}
       onFinishFailed={onFinishFailed}
       userProfile={userProfile}
+      isMobile={isMobile}
     />
   );
 }

@@ -16,6 +16,7 @@ export default function Messages(props) {
     sendMessage,
     userProfile,
     onFinishFailed,
+    isMobile,
   } = props;
   const history = useHistory();
   const [messageForm] = Form.useForm();
@@ -71,7 +72,7 @@ export default function Messages(props) {
             <div ref={scrollRefCallback} />
           </InfiniteScrollReverse>
           <Row justify="center">
-            <Col span={14}>
+            <Col span={isMobile ? 24 : 14}>
               <Form
                 layout={"inline"}
                 name="basic"

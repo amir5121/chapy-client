@@ -34,6 +34,7 @@ export const loginSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, action) => {
       state.status = FULFILLED;
+      console.log("@#!@#!@#")
       saveAuthToken(action.payload);
     },
     [loginUser.rejected]: (state, action) => {
@@ -43,5 +44,5 @@ export const loginSlice = createSlice({
   },
 });
 
-export const authSelector = (state) => state.auth;
+// export const authSelector = (state) => state.auth;
 export default loginSlice.reducer;

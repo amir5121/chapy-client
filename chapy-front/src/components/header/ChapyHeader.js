@@ -23,7 +23,8 @@ const { Header } = Layout;
 const { Title } = Typography;
 const { Search } = Input;
 
-export default function ChapyHeader() {
+export default function ChapyHeader(props) {
+  const { isMobile } = props;
   const history = useHistory();
   const menu = (
     <Menu>
@@ -60,14 +61,16 @@ export default function ChapyHeader() {
         <Col span={9}>
           <Title level={3}>Chapy</Title>
         </Col>
-        <Col span={6}>
-          <Search
-            placeholder="input search text"
-            onSearch={(value) => console.log(value)}
-            style={{ width: "100%" }}
-          />
-        </Col>
-        <Col span={9} className="header-icons">
+        {!isMobile && (
+          <Col span={6}>
+            <Search
+              placeholder="input search text"
+              onSearch={(value) => console.log(value)}
+              style={{ width: "100%" }}
+            />
+          </Col>
+        )}
+        <Col span={isMobile ? 15 : 9} className="header-icons">
           <HomeOutlined />
           <RedEnvelopeOutlined />
           <SmileOutlined />
