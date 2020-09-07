@@ -29,22 +29,10 @@ export default function ChapyHeader(props) {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          to="http://www.alipay.com/"
-        >
-          1st menu item
-        </Link>
+        <Link to="/profile/">Profile</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          to="http://www.taobao.com/"
-        >
-          2nd menu item
-        </Link>
+        <Link to="http://www.taobao.com/">2nd menu item</Link>
       </Menu.Item>
       <Menu.Item danger={isLoggedIn()}>
         <Button
@@ -72,8 +60,9 @@ export default function ChapyHeader(props) {
         )}
         <Col span={isMobile ? 15 : 9} className="header-icons">
           <HomeOutlined />
+          <Link to={"/chat/"}>
           <RedEnvelopeOutlined />
-          <SmileOutlined />
+          </Link>
           <Dropdown overlay={menu}>
             <SettingFilled />
           </Dropdown>

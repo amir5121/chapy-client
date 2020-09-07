@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { throttle } from "lodash";
+import { useDispatch } from "react-redux";
+import { ConfigProvider, Layout } from "antd";
 import Chat from "../modules/Chat";
 import Home from "../modules/Home";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../modules/Login";
 import Conversations from "../modules/Conversations";
-import { getMe } from "../redux/reducer/MeSlice";
-import { useDispatch } from "react-redux";
-import { ConfigProvider, Layout } from "antd";
 import ChapyFooter from "../components/footer/ChapyFooter";
 import Register from "../modules/Register";
-import { viewportUpdated } from "../redux/reducer/ConfigSlice";
-import { throttle } from "lodash";
 import Header from "../modules/Header";
+import Profile from "../modules/Profile";
+import { viewportUpdated } from "../redux/reducer/ConfigSlice";
+import { getMe } from "../redux/reducer/MeSlice";
 
 const { Content } = Layout;
 
@@ -46,7 +47,7 @@ const Routes = () => {
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
-                  <PrivateRoute path="/profile" component={Home} />
+                  <PrivateRoute path="/profile" component={Profile} />
                   <Route path="/" component={Home} />
                 </Switch>
               </Content>

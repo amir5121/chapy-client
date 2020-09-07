@@ -34,7 +34,7 @@ export const meSlice = createSlice({
       state.me_status = PENDING;
     },
     [getMe.fulfilled]: (state, action) => {
-      state.me = action.payload;
+      state.data = action.payload;
       state.me_status = FULFILLED;
     },
     [getMe.rejected]: (state, action) => {
@@ -45,5 +45,5 @@ export const meSlice = createSlice({
 });
 
 export const meSelector = (state) => state.me;
-export const selectMe = createSelector([meSelector], (auth) => auth.data);
+export const selectMe = createSelector([meSelector], (me) => me.data);
 export default meSlice.reducer;

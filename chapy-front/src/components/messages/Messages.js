@@ -64,9 +64,7 @@ export default function Messages(props) {
               conversationMessages.map((it, index) => (
                 <Message
                   key={index}
-                  text={it.text}
-                  created={it.created}
-                  mine={it.is_mine}
+                  {...it}
                 />
               ))}
             <div ref={scrollRefCallback} />
