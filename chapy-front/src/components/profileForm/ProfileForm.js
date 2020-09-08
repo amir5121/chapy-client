@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import "./ProfileForm.less";
 
 import { Button, Card, Col, Form, Input, Row, InputNumber } from "antd";
 
+const { Meta } = Card;
+
 const layout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 14 },
+  labelCol: { span: 12 },
+  wrapperCol: { span: 12 },
 };
 
 const validateMessages = {
@@ -26,23 +28,15 @@ const validateMessages = {
 
 const ProfileForm = (props) => {
   const { onFinish, isMobile, me } = props;
-  const [reTypeIsValid, setReTypeIsValid] = useState(null);
   const [form] = Form.useForm();
 
-  function validateAndFinish(values) {
-    console.log(values);
-    const passwordIsValid = values.password === values.password_retype;
-    setReTypeIsValid(passwordIsValid);
-    passwordIsValid && onFinish(values);
-  }
-
-  console.log(me)
+  console.log(me);
 
   useEffect(() => {
     form.setFieldsValue({
-      ...me
-    })
-  }, [form, me])
+      ...me,
+    });
+  }, [form, me]);
 
   return (
     <Row
@@ -51,19 +45,16 @@ const ProfileForm = (props) => {
       align="middle"
       style={{ minHeight: "80vh" }}
     >
-      <Col span={isMobile ? 24 : 12}>
-        <Card>
-          Current balance: {me.balance}
+      <Col justify="center" span={isMobile ? 24 : 12}>
+        <Card cover={<img alt="example" src={me.avatar} />} title={me.email}>
           <Form
             {...layout}
             form={form}
             name="nest-messages"
             onFinish={onFinish}
             validateMessages={validateMessages}
-            initialValues={{
-              full_name: me.full_name
-            }}
           >
+            <Meta title={`Balance: ${me.balance}`} />
             <Form.Item
               name={"first_name"}
               label="First Name"
@@ -79,20 +70,13 @@ const ProfileForm = (props) => {
               <Input />
             </Form.Item>
             <Form.Item
-              name={"email"}
-              label="Email"
-              rules={[{ type: "email" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
               name={"auto_accept_blow"}
-              label="Automatically accept messages below"
+              label="Accept messages below"
               rules={[{ type: "number", min: 0, max: 1000000 }]}
             >
               <InputNumber />
             </Form.Item>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>

@@ -35,7 +35,7 @@ const Routes = () => {
       window && window.removeEventListener("resize", throttledSetViewPortWidth);
   }, [dispatch, throttledSetViewPortWidth]);
   return (
-    <ConfigProvider direction="ltr">
+    <ConfigProvider direction="rtl">
       <Router>
         <Layout>
           <Header />
