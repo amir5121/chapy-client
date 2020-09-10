@@ -34,7 +34,7 @@ export const loginSlice = createSlice({
     },
     [loginUser.fulfilled]: (state, action) => {
       state.status = FULFILLED;
-      console.log("@#!@#!@#")
+      console.log("@#!@#!@#");
       saveAuthToken(action.payload);
     },
     [loginUser.rejected]: (state, action) => {

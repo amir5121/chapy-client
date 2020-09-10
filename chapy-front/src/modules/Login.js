@@ -6,6 +6,7 @@ import { loginUser } from "../redux/reducer/LoginSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { isLoggedIn } from "../utils/Authenticate";
 import { isMobileSelector } from "../redux/reducer/ConfigSlice";
+import {getMe} from "../redux/reducer/MeSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function Login() {
       .then((originalPromiseResult) => {
         console.log("originalPromiseResult", originalPromiseResult);
         isLoggedIn() && history.push("/chat/");
+        dispatch(getMe());
       })
       .catch((serializedError) => {
         console.log("serializedError", serializedError);

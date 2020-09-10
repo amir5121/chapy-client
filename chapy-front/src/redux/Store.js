@@ -3,6 +3,7 @@ import conversationsReducer from "./reducer/ConversationsSlice";
 import registerReducer from "./reducer/RegisterSlice";
 import loginReducer from "./reducer/LoginSlice";
 import meReducer from "./reducer/MeSlice";
+import transactionReducer from "./reducer/TransactionSlice";
 import messageReducer from "./reducer/MessageSlice";
 import socketReducer from "./reducer/SocketSlice";
 import profileReducer from "./reducer/ProfileSlice";
@@ -19,6 +20,7 @@ const reducer = {
   messages: messageReducer,
   socket: socketReducer,
   profiles: profileReducer,
+  transaction: transactionReducer,
   config: configReducer,
 };
 

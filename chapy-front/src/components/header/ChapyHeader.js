@@ -1,20 +1,19 @@
 import React from "react";
 import "./ChapyHeader.less";
 import {
-  Menu,
+  Button,
   Col,
+  Dropdown,
   Input,
   Layout,
+  Menu,
   Row,
   Typography,
-  Dropdown,
-  Button,
 } from "antd";
 import {
   HomeOutlined,
   RedEnvelopeOutlined,
   SettingFilled,
-  SmileOutlined,
 } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import { isLoggedIn, logout } from "../../utils/Authenticate";
@@ -61,7 +60,7 @@ export default function ChapyHeader(props) {
         <Col span={isMobile ? 15 : 9} className="header-icons">
           <HomeOutlined />
           <Link to={"/chat/"}>
-          <RedEnvelopeOutlined />
+            <RedEnvelopeOutlined />
           </Link>
           <Dropdown overlay={menu}>
             <SettingFilled />

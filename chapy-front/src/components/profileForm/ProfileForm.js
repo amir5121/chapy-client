@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import "./ProfileForm.less";
 
-import { Button, Card, Col, Form, Input, Row, InputNumber } from "antd";
-
-const { Meta } = Card;
+import { Button, Card, Col, Form, Input, InputNumber, Row } from "antd";
+import Image from "antd/lib/image";
+import Text from "antd/lib/typography/Text";
+import Space from "antd/es/space";
 
 const layout = {
   labelCol: { span: 12 },
@@ -30,8 +31,6 @@ const ProfileForm = (props) => {
   const { onFinish, isMobile, me } = props;
   const [form] = Form.useForm();
 
-  console.log(me);
-
   useEffect(() => {
     form.setFieldsValue({
       ...me,
@@ -46,7 +45,26 @@ const ProfileForm = (props) => {
       style={{ minHeight: "80vh" }}
     >
       <Col justify="center" span={isMobile ? 24 : 12}>
-        <Card cover={<img alt="example" src={me.avatar} />} title={me.email}>
+        <Card>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              paddingBottom: "1rem",
+            }}
+          >
+            <Image
+              width="100%"
+              style={{ padding: "0 1rem 1rem 1rem" }}
+              src={me.avatar}
+            />
+            <Space>
+              <Text>{me.email}</Text>
+              <Text strong>Balance: {me.balance}</Text>
+            </Space>
+          </div>
+
           <Form
             {...layout}
             form={form}
@@ -54,7 +72,6 @@ const ProfileForm = (props) => {
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
-            <Meta title={`Balance: ${me.balance}`} />
             <Form.Item
               name={"first_name"}
               label="First Name"
