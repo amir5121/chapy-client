@@ -5,7 +5,6 @@ import "./SideMenu.less";
 import { Button, Menu } from "antd";
 
 import {
-  ContainerOutlined,
   DesktopOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -18,26 +17,23 @@ const SideMenu = (props) => {
 
   return (
     <div>
-      <Button
-        type="primary"
-        onClick={() => setCollapsed(!collapsed)}
-        style={{ marginBottom: 16 }}
-      >
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-      </Button>
       <Menu
         defaultSelectedKeys={["profile"]}
         mode="inline"
         onSelect={(e) => menuSelect(e.key)}
         inlineCollapsed={collapsed}
       >
-        <Menu.Item key="profile" icon={<PieChartOutlined />}>
+        <Menu.Item key="profile" icon={<DesktopOutlined />}>
           Profile
         </Menu.Item>
-        <Menu.Item key="transactions" icon={<DesktopOutlined />}>
+        <Menu.Item key="transactions" icon={<PieChartOutlined />}>
           Transactions
         </Menu.Item>
       </Menu>
+
+      <Button onClick={() => setCollapsed(!collapsed)}>
+        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+      </Button>
     </div>
   );
 };

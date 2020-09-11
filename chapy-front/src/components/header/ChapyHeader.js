@@ -28,10 +28,10 @@ export default function ChapyHeader(props) {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to="/profile/">Profile</Link>
+        <Link to="/profile/profile/">Profile</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="http://www.taobao.com/">2nd menu item</Link>
+        <Link to="/profile/transactions/">Transactions</Link>
       </Menu.Item>
       <Menu.Item danger={isLoggedIn()}>
         <Button
@@ -45,19 +45,17 @@ export default function ChapyHeader(props) {
   return (
     <Header>
       <Row align="middle" style={{ height: "100%" }}>
-        <Col span={9}>
+        <Col xs={9} sm={9}>
           <Title level={3}>Chapy</Title>
         </Col>
-        {!isMobile && (
-          <Col span={6}>
-            <Search
-              placeholder="input search text"
-              onSearch={(value) => console.log(value)}
-              style={{ width: "100%" }}
-            />
-          </Col>
-        )}
-        <Col span={isMobile ? 15 : 9} className="header-icons">
+        <Col sm={6} className={"hidden-sm"}>
+          <Search
+            placeholder="input search text"
+            onSearch={(value) => console.log(value)}
+            style={{ width: "100%" }}
+          />
+        </Col>
+        <Col xs={15} sm={9} className="header-icons">
           <HomeOutlined />
           <Link to={"/chat/"}>
             <RedEnvelopeOutlined />

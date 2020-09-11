@@ -47,7 +47,7 @@ const Routes = () => {
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
-                  <PrivateRoute path="/profile" component={Profile} />
+                  <PrivateRoute path="/profile/:selectedTab?" component={Profile} />
                   <Route path="/" component={Home} />
                 </Switch>
               </Content>

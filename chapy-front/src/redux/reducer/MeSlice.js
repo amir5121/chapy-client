@@ -1,7 +1,11 @@
-import {createAsyncThunk, createSelector, createSlice,} from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
 import chapios from "../../utils/Chapios";
-import {isLoggedIn} from "../../utils/Authenticate";
-import {FULFILLED, IDLE, PENDING, REJECTED} from "../../utils/Constatns";
+import { isLoggedIn } from "../../utils/Authenticate";
+import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 export const getMe = createAsyncThunk(
   "me/get",
@@ -20,12 +24,11 @@ export const getMe = createAsyncThunk(
   }
 );
 
-
 export const updateMe = createAsyncThunk(
   "me/update",
   async (profileData) => {
     let res = await chapios.post("/api/users/me/", {
-      ...profileData
+      ...profileData,
     });
     return res.data;
   },

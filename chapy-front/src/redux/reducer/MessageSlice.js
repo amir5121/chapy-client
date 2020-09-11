@@ -3,7 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { find, chain, merge } from "lodash";
+import { chain } from "lodash";
 import chapios from "../../utils/Chapios";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 

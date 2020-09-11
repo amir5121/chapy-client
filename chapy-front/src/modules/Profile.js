@@ -11,13 +11,16 @@ import {
   listTransactions,
   selectAllTransactions,
 } from "../redux/reducer/TransactionSlice";
+import { useHistory, useParams } from "react-router-dom";
 
 export default function Profile() {
+  const { selectedTab } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const isMobile = useSelector(isMobileSelector);
   const me = useSelector(selectMe);
   const transactions = useSelector(selectAllTransactions);
-  const [selectedItem, setSelectedItem] = useState("profile");
+  const [selectedItem, setSelectedItem] = useState(selectedTab || "profile");
 
   const onFinish = (values) => {
     dispatch(updateMe(values));
@@ -25,7 +28,8 @@ export default function Profile() {
 
   useEffect(() => {
     selectedItem === "transactions" && dispatch(listTransactions());
-  }, [dispatch, transactions, selectedItem]);
+    history.push(`/profile/${selectedItem}/`);
+  }, [dispatch, transactions, selectedItem, history]);
 
   return (
     <Row>

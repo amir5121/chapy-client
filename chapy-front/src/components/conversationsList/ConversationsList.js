@@ -5,11 +5,11 @@ import { Avatar, Card, Col, List, Row } from "antd";
 import { Link } from "react-router-dom";
 
 const ConversationsList = (props) => {
-  const { conversations, isMobile } = props;
+  const { conversations } = props;
 
   return (
     <Row type="flex" justify="center" style={{ minHeight: "100vh" }}>
-      <Col span={isMobile ? 24 : 20}>
+      <Col md={24} lg={20}>
         <Card>
           <List
             itemLayout="horizontal"
