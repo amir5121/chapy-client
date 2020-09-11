@@ -7,6 +7,7 @@ import { CheckCircleFilled } from "@ant-design/icons";
 const Message = (props) => {
   const {
     text,
+    id,
     created,
     is_mine,
     cost,
@@ -39,6 +40,7 @@ const Message = (props) => {
           <span>{toPersian(created)}</span>
           {!need_payment && cost && <span>&nbsp;${cost}</span>}
         </p>
+        <p>{id}</p>
       </div>
     </Row>
   );

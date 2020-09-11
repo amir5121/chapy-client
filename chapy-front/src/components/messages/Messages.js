@@ -16,6 +16,7 @@ export default function Messages(props) {
     sendMessage,
     userProfile,
     onFinishFailed,
+    acceptCharge,
     isMobile,
   } = props;
   const history = useHistory();
@@ -33,6 +34,7 @@ export default function Messages(props) {
     },
     [conversationMessages]
   );
+
   return (
     <Card>
       <PageHeader
@@ -57,16 +59,16 @@ export default function Messages(props) {
             className="chat-messages"
             hasMore={conversationMessages.length < 100}
             isLoading={false}
-            loadMore={() => console.log(";paaaa")}
+            loadMore={() => console.log("Load more dickhead")}
             loadArea={10}
           >
-            {conversationMessages &&
-              conversationMessages.map((it, index) => (
-                <Message
-                  key={index}
-                  {...it}
-                />
-              ))}
+            {conversationMessages.map((it, index) => (
+              <Message
+                key={index}
+                {...it}
+                acceptCharge={() => acceptCharge(it.id)}
+              />
+            ))}
             <div ref={scrollRefCallback} />
           </InfiniteScrollReverse>
           <Row justify="center">

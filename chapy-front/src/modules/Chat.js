@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
+  acceptMessageCharge,
   initialConversationMessage,
   selectMessagesByConversationIdentifier,
   sendMessage,
@@ -13,7 +14,7 @@ import {
 } from "../redux/reducer/ConversationsSlice";
 import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
-import {isMobileSelector} from "../redux/reducer/ConfigSlice";
+import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 
 export default function Chat() {
   const { username } = useParams();
@@ -53,6 +54,10 @@ export default function Chat() {
     console.log("Failed:", errorInfo);
   };
 
+  function acceptCharge(messageId) {
+    dispatch(acceptMessageCharge({ messageId, conversationIdentifier }));
+  }
+
   return (
     <Messages
       socketState={socketState}
@@ -62,6 +67,7 @@ export default function Chat() {
       sendMessage={onFinish}
       onFinishFailed={onFinishFailed}
       userProfile={userProfile}
+      acceptCharge={acceptCharge}
       isMobile={isMobile}
     />
   );
