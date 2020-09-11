@@ -32,7 +32,6 @@ export const initialConversationMessage = createAsyncThunk(
       if (
         selectConversationIdentifiers(state).includes(conversationIdentifier)
       ) {
-        console.log("ASDASDASDASDASDASD Cannenellll");
         return false;
       }
     },
@@ -62,36 +61,69 @@ export const acceptMessageCharge = createAsyncThunk(
   }
 );
 
+export const sendMessageHttp = createAsyncThunk(
+  "message/send",
+  async (data) => {
+    console.log("@@@@@@@@@@@@@", data);
+    const { conversationIdentifier } = data;
+    data.conversation = conversationIdentifier;
+    let res = await chapios.post(
+      `/api/chat/message/${conversationIdentifier}/`,
+      data
+    );
+    return {
+      conversationIdentifier,
+      data: res.data.data,
+    };
+  },
+  {
+    // condition: (conversationIdentifier, { getState, extra }) => {
+    //   if (
+    //     selectConversationIdentifiers(getState()).includes(
+    //       conversationIdentifier
+    //     )
+    //   ) {
+    //     console.log("ASDASDASDASDASDASD Cannenellll");
+    //     return false;
+    //   }
+    // },
+  }
+);
+
+function insertMessage(state, action) {
+  console.log("ooooooooooooooooooo", action);
+  const conversationIdentifier = action.payload.conversation;
+  const message = action.payload.message;
+  const conversationMessages = messagesAdapter
+    .getSelectors()
+    .selectById(state, conversationIdentifier);
+  conversationMessages
+    ? messagesAdapter.updateOne(state, {
+        id: conversationIdentifier,
+        changes: {
+          messages: conversationMessages.messages.concat(message),
+        },
+      })
+    : messagesAdapter.addOne(state, {
+        conversationIdentifier,
+        messages: [message],
+      });
+}
 export const messageSlice = createSlice({
   name: "messages",
   initialState,
   reducers: {
     updateUserMessages: {
       reducer(state, action) {
-        const conversationIdentifier = action.payload.conversationIdentifier;
-        const message = action.payload.message;
-        const conversationMessages = messagesAdapter
-          .getSelectors()
-          .selectById(state, conversationIdentifier);
-        conversationMessages
-          ? messagesAdapter.updateOne(state, {
-              id: conversationIdentifier,
-              changes: {
-                messages: conversationMessages.messages.concat(message),
-              },
-            })
-          : messagesAdapter.addOne(state, {
-              conversationIdentifier,
-              messages: [message],
-            });
+        insertMessage(state, action);
       },
       prepare(conversationIdentifier, message) {
         return {
-          payload: { conversationIdentifier, message },
+          payload: { conversation: conversationIdentifier, message },
         };
       },
     },
-    sendMessage: (state, action) => {
+    sendMessageSock: (state, action) => {
       // handled by middleware
     },
   },
@@ -109,6 +141,9 @@ export const messageSlice = createSlice({
     },
     [initialConversationMessage.rejected]: (state, action) => {
       state.state = REJECTED;
+    },
+    [sendMessageHttp.fulfilled]: (state, action) => {
+      insertMessage(state, action);
     },
     [acceptMessageCharge.fulfilled]: (state, action) => {
       state.acceptChargeStatus = IDLE;
@@ -137,10 +172,12 @@ export const messageSlice = createSlice({
     [acceptMessageCharge.rejected]: (state, action) => {
       state.acceptChargeStatus = REJECTED;
     },
+    [sendMessageHttp.pending]: (state, action) => {},
+    [sendMessageHttp.rejected]: (state, action) => {},
   },
 });
 
-export const { updateUserMessages, sendMessage } = messageSlice.actions;
+export const { updateUserMessages, sendMessageSock } = messageSlice.actions;
 export const {
   selectAll: selectAllConversationMessages,
   selectById: selectMessagesByConversationIdentifier,

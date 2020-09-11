@@ -85,7 +85,7 @@ const socketMiddleware = () => {
         console.log("websocket closed");
         store.dispatch(disconnected());
         break;
-      case "messages/sendMessage":
+      case "messages/sendMessageSock":
         console.log("sending a message", action.payload);
         sendMessage(socket, action.payload);
         break;

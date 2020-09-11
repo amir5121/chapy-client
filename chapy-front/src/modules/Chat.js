@@ -5,7 +5,8 @@ import {
   acceptMessageCharge,
   initialConversationMessage,
   selectMessagesByConversationIdentifier,
-  sendMessage,
+  sendMessageHttp,
+  sendMessageSock,
 } from "../redux/reducer/MessageSlice";
 import { connect, socketStatus } from "../redux/reducer/SocketSlice";
 import {
@@ -15,6 +16,7 @@ import {
 import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
 import { isMobileSelector } from "../redux/reducer/ConfigSlice";
+import { sendMessageViaSocket } from "../LocalSetting";
 
 export default function Chat() {
   const { username } = useParams();
@@ -47,7 +49,13 @@ export default function Chat() {
   }, [dispatch, username]);
 
   const onFinish = (values) => {
-    dispatch(sendMessage({ message: values.message, user_id: username }));
+    if (sendMessageViaSocket) {
+      dispatch(sendMessageSock({ message: values.message, user_id: username }));
+    } else {
+      dispatch(
+        sendMessageHttp({ text: values.message, conversationIdentifier })
+      );
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
