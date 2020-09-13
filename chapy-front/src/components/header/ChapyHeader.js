@@ -14,6 +14,7 @@ import {
   HomeOutlined,
   RedEnvelopeOutlined,
   SettingFilled,
+  PoweroffOutlined,
 } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import { isLoggedIn, logout } from "../../utils/Authenticate";
@@ -46,7 +47,9 @@ export default function ChapyHeader(props) {
     <Header>
       <Row align="middle" style={{ height: "100%" }}>
         <Col xs={9} sm={9}>
-          <Title level={3}>Chapy</Title>
+          <Link to={"/"}>
+            <Title level={3}>Chapy</Title>
+          </Link>
         </Col>
         <Col sm={6} className={"hidden-sm"}>
           <Search
@@ -56,13 +59,21 @@ export default function ChapyHeader(props) {
           />
         </Col>
         <Col xs={15} sm={9} className="header-icons">
-          <HomeOutlined />
+          <Link to={"/"}>
+            <HomeOutlined />
+          </Link>
           <Link to={"/chat/"}>
             <RedEnvelopeOutlined />
           </Link>
-          <Dropdown overlay={menu}>
-            <SettingFilled />
-          </Dropdown>
+          {isLoggedIn() ? (
+            <Dropdown overlay={menu}>
+              <SettingFilled />
+            </Dropdown>
+          ) : (
+            <Link to={"/login/"}>
+              <PoweroffOutlined />
+            </Link>
+          )}
         </Col>
       </Row>
     </Header>

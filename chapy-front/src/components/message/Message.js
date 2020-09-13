@@ -7,7 +7,6 @@ import { CheckCircleFilled } from "@ant-design/icons";
 const Message = (props) => {
   const {
     text,
-    id,
     created,
     is_mine,
     cost,

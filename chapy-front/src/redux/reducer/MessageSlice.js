@@ -91,7 +91,6 @@ export const sendMessageHttp = createAsyncThunk(
 );
 
 function insertMessage(state, action) {
-  console.log("ooooooooooooooooooo", action);
   const conversationIdentifier = action.payload.conversation;
   const message = action.payload.message;
   const conversationMessages = messagesAdapter

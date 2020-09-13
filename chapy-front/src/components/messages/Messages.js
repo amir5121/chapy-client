@@ -38,7 +38,7 @@ export default function Messages(props) {
   return (
     <Card>
       <PageHeader
-        style={{ paddingTop: 0 }}
+        className="message-header"
         onBack={() => history.push("/chat")}
         title={userProfile && userProfile.full_name}
         subTitle={userProfile && userProfile.email}
@@ -53,7 +53,7 @@ export default function Messages(props) {
           ),
         ]}
       />
-      {conversationMessages && (
+      {conversationMessages ? (
         <div className="chat-container">
           <InfiniteScrollReverse
             className="chat-messages"
@@ -113,6 +113,8 @@ export default function Messages(props) {
             </Col>
           </Row>
         </div>
+      ) : (
+        <p>Start a conversation?</p>
       )}
     </Card>
   );

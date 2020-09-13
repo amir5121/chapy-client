@@ -1,19 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./SideMenu.less";
 
-import { Button, Menu } from "antd";
+import { Menu } from "antd";
 
-import {
-  DesktopOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-} from "@ant-design/icons";
+import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 
 const SideMenu = (props) => {
   const { isMobile, menuSelect } = props;
-  const [collapsed, setCollapsed] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div>
@@ -21,7 +16,7 @@ const SideMenu = (props) => {
         defaultSelectedKeys={["profile"]}
         mode="inline"
         onSelect={(e) => menuSelect(e.key)}
-        inlineCollapsed={collapsed}
+        // inlineCollapsed={collapsed}
       >
         <Menu.Item key="profile" icon={<DesktopOutlined />}>
           Profile
@@ -31,9 +26,9 @@ const SideMenu = (props) => {
         </Menu.Item>
       </Menu>
 
-      <Button onClick={() => setCollapsed(!collapsed)}>
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-      </Button>
+      {/*<Button onClick={() => setCollapsed(!collapsed)}>*/}
+      {/*  {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}*/}
+      {/*</Button>*/}
     </div>
   );
 };

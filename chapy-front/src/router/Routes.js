@@ -35,19 +35,22 @@ const Routes = () => {
       window && window.removeEventListener("resize", throttledSetViewPortWidth);
   }, [dispatch, throttledSetViewPortWidth]);
   return (
-    <ConfigProvider direction="rtl">
+    <ConfigProvider direction="ltr">
       <Router>
         <Layout>
           <Header />
-          <Content style={{ padding: "0 2vw" }}>
-            <Layout style={{ padding: "5vh 0" }}>
-              <Content style={{ padding: "0 2vw", minHeight: "50vh" }}>
+          <Content>
+            <Layout>
+              <Content style={{ minHeight: "50vh" }}>
                 <Switch>
                   <Route path="/login" component={Login} />
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
-                  <PrivateRoute path="/profile/:selectedTab?" component={Profile} />
+                  <PrivateRoute
+                    path="/profile/:selectedTab?"
+                    component={Profile}
+                  />
                   <Route path="/" component={Home} />
                 </Switch>
               </Content>
