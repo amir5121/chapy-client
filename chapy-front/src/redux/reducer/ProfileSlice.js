@@ -25,7 +25,6 @@ export const getProfile = createAsyncThunk(
   {
     condition: (_, { getState, extra }) => {
       const { profiles } = getState();
-      console.log(profiles.status);
       if (!isLoggedIn() || [FULFILLED, PENDING].includes(profiles.status)) {
         return false;
       }

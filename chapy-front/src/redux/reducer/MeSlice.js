@@ -16,7 +16,6 @@ export const getMe = createAsyncThunk(
   {
     condition: (_, { getState, extra }) => {
       const { auth } = getState();
-      console.log(auth.status);
       if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
         return false;
       }

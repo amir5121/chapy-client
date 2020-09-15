@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import {
   acceptMessageCharge,
   initialConversationMessage,
+  initialConversationSelector,
   selectMessagesByConversationIdentifier,
   sendMessageHttp,
   sendMessageSock,
@@ -17,6 +18,7 @@ import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
 import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 import { sendMessageViaSocket } from "../LocalSetting";
+import { PENDING } from "../utils/Constatns";
 
 export default function Chat() {
   const { username } = useParams();
@@ -32,11 +34,19 @@ export default function Chat() {
   );
 
   const socketState = useSelector(socketStatus);
+  const initialConversationState = useSelector(initialConversationSelector);
 
   const userProfile = useSelector((state) =>
     selectProfileById(state, username)
   );
-
+  function loadMore() {
+    console.log(
+      "LOAAAAAAAAAAAAAAAMOOOOOOREEEEEEEEEEEE",
+      conversationIdentifier
+    );
+    conversationIdentifier &&
+      dispatch(initialConversationMessage(conversationIdentifier));
+  }
   useEffect(() => {
     dispatch(connect());
     conversationIdentifier
@@ -71,12 +81,16 @@ export default function Chat() {
       socketState={socketState}
       conversationMessages={
         conversationMessages && conversationMessages.messages
+          ? conversationMessages.messages
+          : []
       }
       sendMessage={onFinish}
       onFinishFailed={onFinishFailed}
       userProfile={userProfile}
       acceptCharge={acceptCharge}
+      isLoading={initialConversationState === PENDING}
       isMobile={isMobile}
+      loadMore={loadMore}
     />
   );
 }

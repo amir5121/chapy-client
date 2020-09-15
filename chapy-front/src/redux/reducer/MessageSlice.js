@@ -6,6 +6,7 @@ import {
 import { chain } from "lodash";
 import chapios from "../../utils/Chapios";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import { unionBy } from "lodash/array";
 
 const messagesAdapter = createEntityAdapter({
   selectId: (instance) => instance.conversationIdentifier,
@@ -128,18 +129,26 @@ export const messageSlice = createSlice({
   },
   extraReducers: {
     [initialConversationMessage.fulfilled]: (state, action) => {
-      state.state = IDLE;
-
+      state.status = IDLE;
+      const conversationIdentifier = action.payload.conversationIdentifier;
+      console.log("pp2pp2p2p2p", state.ids);
+      const messages = state.ids.includes(conversationIdentifier)
+        ? unionBy(
+            state.entities[conversationIdentifier],
+            action.payload.data.results,
+            "id"
+          )
+        : action.payload.data.results;
       messagesAdapter.upsertOne(state, {
-        conversationIdentifier: action.payload.conversationIdentifier,
-        messages: action.payload.data.results,
+        conversationIdentifier,
+        messages,
       });
     },
     [initialConversationMessage.pending]: (state, action) => {
-      state.state = PENDING;
+      state.status = PENDING;
     },
     [initialConversationMessage.rejected]: (state, action) => {
-      state.state = REJECTED;
+      state.status = REJECTED;
     },
     [sendMessageHttp.fulfilled]: (state, action) => {
       insertMessage(state, action);
@@ -182,5 +191,5 @@ export const {
   selectById: selectMessagesByConversationIdentifier,
   selectIds: selectConversationIdentifiers,
 } = messagesAdapter.getSelectors((state) => state.messages);
-
+export const initialConversationSelector = (state) => state.messages.status;
 export default messageSlice.reducer;

@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useState, useCallback } from "react";
+import InfiniteScrollReverse from "react-infinite-scroll-reverse";
+
 import "./Messages.less";
 import { Button, Card, Col, Form, Input, PageHeader, Row, Space } from "antd";
 import { useHistory } from "react-router-dom";
 import { CONNECTED } from "../../utils/Constatns";
 import { RedEnvelopeOutlined, SmileOutlined } from "@ant-design/icons";
-import InfiniteScrollReverse from "react-infinite-scroll-reverse";
 import Message from "../message/Message";
 
 const { TextArea } = Input;
@@ -17,6 +18,8 @@ export default function Messages(props) {
     userProfile,
     onFinishFailed,
     acceptCharge,
+    isLoading,
+    loadMore,
     isMobile,
   } = props;
   const history = useHistory();
@@ -36,7 +39,7 @@ export default function Messages(props) {
   );
 
   return (
-    <Card>
+    <Card loading={isLoading}>
       <PageHeader
         className="message-header"
         onBack={() => history.push("/chat")}
@@ -57,14 +60,14 @@ export default function Messages(props) {
         <div className="chat-container">
           <InfiniteScrollReverse
             className="chat-messages"
-            hasMore={conversationMessages.length < 100}
-            isLoading={false}
-            loadMore={() => console.log("Load more dickhead")}
+            hasMore={conversationMessages.length < 1000}
+            loadMore={loadMore}
+            isLoading={isLoading}
             loadArea={10}
           >
-            {conversationMessages.map((it, index) => (
+            {conversationMessages.map((it) => (
               <Message
-                key={index}
+                key={it.id}
                 {...it}
                 acceptCharge={() => acceptCharge(it.id)}
               />
