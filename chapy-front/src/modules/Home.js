@@ -6,7 +6,7 @@ import {
   initialConfig,
   isMobileSelector,
 } from "../redux/reducer/ConfigSlice";
-import HomeUsersList from "../components/homeUsersList/HomeUsersList";
+import SuggestedUsers from "../components/suggestedUsers/SuggestedUsers";
 
 export default function Home() {
   const isMobile = useSelector(isMobileSelector);
@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <Banner isMobile={isMobile} />
       {configs && (
-        <HomeUsersList isMobile={isMobile} users={configs.top_users} />
+        <SuggestedUsers isMobile={isMobile} users={configs.top_users} />
       )}
     </>
   );

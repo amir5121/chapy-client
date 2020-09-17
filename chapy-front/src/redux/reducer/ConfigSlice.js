@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import chapios from "../../utils/Chapios";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import chapios from "../../utils/Chapios";
 
 export const initialConfig = createAsyncThunk(
   "configuration/initial",
-  async () => {
-    let res = await chapios.get(`/api/configuration/initial/`);
-    return res.data.data;
-  },
+  chapios.get(`/api/configuration/initial/`),
   {
     condition: (conversationIdentifier, { getState, extra }) => {
       const { config } = getState();
-      if ([FULFILLED, PENDING].includes(config.configurationStatus)) {
+      if (
+        [FULFILLED, PENDING].includes(
+          config.configurationStatus || config.configurations
+        )
+      ) {
         return false;
       }
     },
@@ -36,7 +37,7 @@ export const configSlice = createSlice({
   extraReducers: {
     [initialConfig.fulfilled]: (state, action) => {
       state.configurationStatus = FULFILLED;
-      state.configurations = action.payload;
+      state.configurations = action.payload.data;
     },
     [initialConfig.pending]: (state, action) => {
       state.configurationStatus = PENDING;

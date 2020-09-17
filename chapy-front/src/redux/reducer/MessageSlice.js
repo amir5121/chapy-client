@@ -6,7 +6,6 @@ import {
 import { chain } from "lodash";
 import chapios from "../../utils/Chapios";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
-import { unionBy } from "lodash/array";
 
 const messagesAdapter = createEntityAdapter({
   selectId: (instance) => instance.conversationIdentifier,
@@ -20,9 +19,9 @@ const initialState = messagesAdapter.getInitialState({
 
 export const initialConversationMessage = createAsyncThunk(
   "message/initial",
-  async (conversationIdentifier, state) => {
+  async (conversationIdentifier, thunkAPI) => {
     const messages = selectMessagesByConversationIdentifier(
-      state.getState(),
+      thunkAPI.getState(),
       conversationIdentifier
     );
     console.log("ASDASDASD", messages);
@@ -31,10 +30,11 @@ export const initialConversationMessage = createAsyncThunk(
       messages && messages.next
         ? messages.next
         : `/api/chat/message/${conversationIdentifier}`
-    );
+    )(null, thunkAPI);
+
     return {
       conversationIdentifier,
-      data: res.data.data,
+      data: res.data,
     };
   },
   {
@@ -51,15 +51,14 @@ export const initialConversationMessage = createAsyncThunk(
 );
 export const acceptMessageCharge = createAsyncThunk(
   "message/accept",
-  async (data) => {
+  async (data, thunkAPI) => {
     const { conversationIdentifier, messageId } = data;
-    let res = await chapios.patch(
-      `/api/chat/message/${conversationIdentifier}/${messageId}/`,
-      { state: "charged" }
-    );
+    const res = await chapios.patch(
+      `/api/chat/message/${conversationIdentifier}/${messageId}/`
+    )({ state: "charged" }, thunkAPI);
     return {
       conversationIdentifier,
-      data: res.data.data,
+      data: res.data,
     };
   },
   {
@@ -75,13 +74,12 @@ export const acceptMessageCharge = createAsyncThunk(
 
 export const sendMessageHttp = createAsyncThunk(
   "message/send",
-  async (data) => {
-    console.log("@@@@@@@@@@@@@", data);
+  (data, thunkAPI) => {
     const { conversationIdentifier } = data;
     data.conversation = conversationIdentifier;
-    let res = await chapios.post(
-      `/api/chat/message/${conversationIdentifier}/`,
-      data
+    let res = chapios.post(`/api/chat/message/${conversationIdentifier}/`)(
+      data,
+      thunkAPI
     );
     return {
       conversationIdentifier,

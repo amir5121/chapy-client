@@ -4,13 +4,7 @@ import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (authData) => {
-    let res = await chapios.post("/api/auth/users/", {
-      email: authData.email,
-      password: authData.password,
-    });
-    return res.data;
-  },
+  chapios.post("/api/auth/users/"),
   {
     condition: (authData, { getState, extra }) => {
       const { auth } = getState();
@@ -25,7 +19,6 @@ export const registerSlice = createSlice({
   name: "register",
   initialState: {
     status: IDLE,
-    error: null,
   },
   reducers: {},
 
@@ -38,9 +31,8 @@ export const registerSlice = createSlice({
     },
     [registerUser.rejected]: (state, action) => {
       state.status = REJECTED;
-      state.error = action.error.message;
     },
   },
 });
-
+export const selectRegisterState = (state) => state.register.state;
 export default registerSlice.reducer;

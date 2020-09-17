@@ -11,6 +11,7 @@ import {
 } from "../redux/reducer/MessageSlice";
 import { connect, socketStatus } from "../redux/reducer/SocketSlice";
 import {
+  createConversation,
   getConversations,
   selectConversationIdentifier,
 } from "../redux/reducer/ConversationsSlice";
@@ -22,6 +23,7 @@ import { PENDING } from "../utils/Constatns";
 import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
 import { Card } from "antd";
+import StartConversation from "../components/startConversation/StartConversation";
 
 export default function Chat() {
   const { username } = useParams();
@@ -43,11 +45,13 @@ export default function Chat() {
     selectProfileById(state, username)
   );
   function loadMore() {
-    console.log(
-      "LOAAAAAAAAAAAAAAAMOOOOOOREEEEEEEEEEEE",
-      conversationIdentifier,
-      !isLoading
-    );
+    conversationIdentifier &&
+      !isLoading &&
+      console.log(
+        "LOAAAAAAAAAAAAAAAMOOOOOOREEEEEEEEEEEE",
+        conversationIdentifier,
+        !isLoading
+      );
     conversationIdentifier &&
       !isLoading &&
       dispatch(initialConversationMessage(conversationIdentifier));
@@ -80,25 +84,37 @@ export default function Chat() {
   function acceptCharge(messageId) {
     dispatch(acceptMessageCharge({ messageId, conversationIdentifier }));
   }
-  console.log("!@#!@#!@#!@#", conversationMessages);
+
+  function startConversation() {
+    dispatch(createConversation({ user: username })).then((result) => {
+      dispatch(getConversations(username));
+    });
+  }
+
   return (
     <Card loading={!Boolean(conversationMessages) && isLoading}>
-      <ChatHeader socketState={socketState} userProfile={userProfile} />
       {conversationMessages ? (
-        <Messages
-          conversationMessages={conversationMessages}
-          acceptCharge={acceptCharge}
-          isMobile={isMobile}
-          loadMore={loadMore}
-        />
+        <>
+          <ChatHeader socketState={socketState} userProfile={userProfile} />
+          <Messages
+            conversationMessages={conversationMessages}
+            acceptCharge={acceptCharge}
+            isMobile={isMobile}
+            loadMore={loadMore}
+          />
+          <ChatBox
+            sendMessage={onFinish}
+            onFinishFailed={onFinishFailed}
+            isMobile={isMobile}
+          />
+        </>
       ) : (
-        <p> start a conversation?</p>
+        <StartConversation
+          isMobile={isMobile}
+          userProfile={userProfile}
+          startConversation={startConversation}
+        />
       )}
-      <ChatBox
-        sendMessage={onFinish}
-        onFinishFailed={onFinishFailed}
-        isMobile={isMobile}
-      />
     </Card>
   );
 }

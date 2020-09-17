@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomeUsersList.less";
+import "./SuggestedUsers.less";
 import Card from "antd/es/card";
 import Row from "antd/es/grid/row";
 import Col from "antd/es/grid/col";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Fade from "react-reveal/Fade";
 
 const { Meta } = Card;
-export default function HomeUsersList(props) {
+export default function SuggestedUsers(props) {
   const { isMobile, users } = props;
   return (
     <div className="home-people">

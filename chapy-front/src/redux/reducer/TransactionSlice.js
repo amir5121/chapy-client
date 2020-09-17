@@ -17,13 +17,7 @@ const initialState = transactionAdapter.getInitialState({
 
 export const listTransactions = createAsyncThunk(
   "transaction/list",
-  async (conversationIdentifier) => {
-    let res = await chapios.get(`/api/accounting/transaction/`);
-    return {
-      conversationIdentifier,
-      data: res.data.data,
-    };
-  },
+  chapios.get(`/api/accounting/transaction/`),
   {
     condition: (_, { getState, extra }) => {
       const { transaction } = getState();
@@ -41,7 +35,7 @@ export const transactionSlice = createSlice({
   extraReducers: {
     [listTransactions.fulfilled]: (state, action) => {
       state.status = FULFILLED;
-      transactionAdapter.upsertMany(state, action.payload.data.results);
+      transactionAdapter.upsertMany(state, action.payload.data.data.results);
     },
     [listTransactions.pending]: (state, action) => {
       state.status = PENDING;

@@ -16,9 +16,7 @@ export default function Messages(props) {
           chatScrollView.current.scrollHeight - prevHeight);
   });
   const messages =
-    conversationMessages && conversationMessages.messages
-      ? conversationMessages.messages
-      : [];
+    conversationMessages?.messages || []
   //
   // const scrollRefCallback = useCallback(
   //   (chatBottomRef) => {

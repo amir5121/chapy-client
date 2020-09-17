@@ -30,4 +30,23 @@ axios.interceptors.response.use(
 );
 
 console.log("@###################");
-export default axios;
+
+export default class chapios {
+  static post = (url) => (obj, thunkApi) =>
+    axios
+      .post(url, obj)
+      .then((response) => response.data)
+      .catch((error) => thunkApi.rejectWithValue(error));
+
+  static get = (url) => (obj, thunkApi) =>
+    axios
+      .get(url, obj)
+      .then((response) => response.data)
+      .catch((error) => thunkApi.rejectWithValue(error));
+
+  static patch = (url) => (obj, thunkApi) =>
+    axios
+      .patch(url, obj)
+      .then((response) => response.data)
+      .catch((error) => thunkApi.rejectWithValue(error));
+}

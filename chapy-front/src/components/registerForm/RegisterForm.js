@@ -7,16 +7,16 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const RegisterForm = (props) => {
-  const { onFinish, isMobile } = props;
+  const { onFinish, isMobile, errors, isLoading} = props;
   const [reTypeIsValid, setReTypeIsValid] = useState(null);
+  const [form] = Form.useForm();
 
   function validateAndFinish(values) {
-    console.log(values);
     const passwordIsValid = values.password === values.password_retype;
     setReTypeIsValid(passwordIsValid);
     passwordIsValid && onFinish(values);
   }
-
+  errors && form.setFields({ errors });
   return (
     <Row
       type="flex"
@@ -26,7 +26,7 @@ const RegisterForm = (props) => {
     >
       <Col span={isMobile ? 24 : 8}>
         <Card>
-          <Form name="register" onFinish={validateAndFinish}>
+          <Form name="register" onFinish={validateAndFinish} form={form}>
             <Form.Item
               name="email"
               rules={[
@@ -89,12 +89,13 @@ const RegisterForm = (props) => {
                 type="primary"
                 htmlType="submit"
                 className="register-form-button"
+                loading={isLoading}
               >
                 Register
               </Button>
               <Space>
                 Already have an account
-                <Link className="register-form-forgot" to={"login"}>
+                <Link className="register-form-forgot" to={"/login/"}>
                   Login now!
                 </Link>
               </Space>

@@ -6,7 +6,8 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import {FULFILLED, IDLE, PENDING, REJECTED} from "../../utils/Constatns";
+import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import { isLoggedIn } from "../../utils/Authenticate";
 
 const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
@@ -18,13 +19,25 @@ const initialState = conversationAdapter.getInitialState({
   error: null,
 });
 
+export const createConversation = createAsyncThunk(
+  "conversations/create",
+  chapios.post(`/api/chat/conversations/`)
+);
+
 export const getConversations = createAsyncThunk(
-  "conversationsList/list",
-  async (username) => {
-    const res = await chapios.get(
+  "conversations/list",
+  (username, thunkAPI) => {
+    return chapios.get(
       `api/chat/conversations/${username ? username + "/" : ""}`
-    );
-    return res.data;
+    )(null, thunkAPI);
+  },
+  {
+    condition: (_, { getState, extra }) => {
+      const { auth } = getState();
+      if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
+        return false;
+      }
+    },
   }
 );
 
@@ -34,16 +47,27 @@ export const conversationsSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getConversations.fulfilled]: (state, action) => {
-      state.status = FULFILLED
+      console.log("#!@#!@#------------", action.payload.data);
+      state.status = FULFILLED;
       action.meta.arg
         ? conversationAdapter.upsertOne(state, action.payload.data)
         : conversationAdapter.upsertMany(state, action.payload.data.results);
     },
     [getConversations.pending]: (state, action) => {
-      state.status = PENDING
+      state.status = PENDING;
     },
     [getConversations.rejected]: (state, action) => {
-      state.status = REJECTED
+      state.status = REJECTED;
+    },
+    [createConversation.fulfilled]: (state, action) => {
+      console.log("fulfilled #!@#!@#------------", action.payload);
+      // conversationAdapter.upsertOne(state, action.payload.data)
+    },
+    [createConversation.pending]: (state, action) => {
+      console.log("pending #!@#!@#------------", action.payload);
+    },
+    [createConversation.rejected]: (state, action) => {
+      console.log("rejected #!@#!@#------------", action.payload);
     },
   },
 });

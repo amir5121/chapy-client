@@ -5,13 +5,7 @@ import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (authData) => {
-    let res = await chapios.post("/api/auth/token/login/", {
-      email: authData.email,
-      password: authData.password,
-    });
-    return res.data;
-  },
+  chapios.post("/api/auth/token/login/"),
   {
     condition: (authData, { getState, extra }) => {
       const { auth } = getState();

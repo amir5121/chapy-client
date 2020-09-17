@@ -7,30 +7,18 @@ import chapios from "../../utils/Chapios";
 import { isLoggedIn } from "../../utils/Authenticate";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
-export const getMe = createAsyncThunk(
-  "me/get",
-  async () => {
-    let res = await chapios.get("/api/users/me/");
-    return res.data;
+export const getMe = createAsyncThunk("me/get", chapios.get("/api/users/me/"), {
+  condition: (_, { getState, extra }) => {
+    const { auth } = getState();
+    if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
+      return false;
+    }
   },
-  {
-    condition: (_, { getState, extra }) => {
-      const { auth } = getState();
-      if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
-        return false;
-      }
-    },
-  }
-);
+});
 
 export const updateMe = createAsyncThunk(
   "me/update",
-  async (profileData) => {
-    let res = await chapios.post("/api/users/me/", {
-      ...profileData,
-    });
-    return res.data;
-  },
+  chapios.post("/api/users/me/"),
   {
     condition: (_, { getState, extra }) => {
       const { auth } = getState();

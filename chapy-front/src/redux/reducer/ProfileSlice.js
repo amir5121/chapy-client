@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import chapios from "../../utils/Chapios";
 import { isLoggedIn } from "../../utils/Authenticate";
-import {FULFILLED, IDLE, PENDING, REJECTED} from "../../utils/Constatns";
+import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 const profileAdapter = createEntityAdapter({
   selectId: (instance) => instance.email,
@@ -18,9 +18,8 @@ const initialState = profileAdapter.getInitialState({
 
 export const getProfile = createAsyncThunk(
   "user/profile",
-  async (username) => {
-    let res = await chapios.get(`/api/users/profile/${username}`);
-    return res.data;
+  (username, thunkAPI) => {
+    return chapios.get(`/api/users/profile/${username}`)(null, thunkAPI);
   },
   {
     condition: (_, { getState, extra }) => {
@@ -38,14 +37,14 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getProfile.fulfilled]: (state, action) => {
-      state.status = FULFILLED
+      state.status = FULFILLED;
       profileAdapter.upsertOne(state, action.payload.data);
     },
     [getProfile.pending]: (state, action) => {
-      state.status = PENDING
+      state.status = PENDING;
     },
     [getProfile.rejected]: (state, action) => {
-      state.status = REJECTED
+      state.status = REJECTED;
     },
   },
 });
@@ -54,6 +53,6 @@ export const {
   selectAll: selectAllProfiles,
   selectById: selectProfileById,
   selectIds: selectProfileIds,
-} = profileAdapter.getSelectors((state) => state && state.profiles);
+} = profileAdapter.getSelectors((state) => state?.profiles);
 
 export default profileSlice.reducer;

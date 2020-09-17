@@ -13,8 +13,8 @@ export default function ChatHeader(props) {
     <PageHeader
       className="message-header"
       onBack={() => history.push("/chat/")}
-      title={userProfile && userProfile.full_name}
-      subTitle={userProfile && userProfile.email}
+      title={userProfile?.full_name}
+      subTitle={userProfile?.email}
       avatar={
         userProfile && {
           src: userProfile.avatar,
