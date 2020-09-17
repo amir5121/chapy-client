@@ -20,8 +20,18 @@ const initialState = messagesAdapter.getInitialState({
 
 export const initialConversationMessage = createAsyncThunk(
   "message/initial",
-  async (conversationIdentifier) => {
-    let res = await chapios.get(`/api/chat/message/${conversationIdentifier}`);
+  async (conversationIdentifier, state) => {
+    const messages = selectMessagesByConversationIdentifier(
+      state.getState(),
+      conversationIdentifier
+    );
+    console.log("ASDASDASD", messages);
+
+    const res = await chapios.get(
+      messages && messages.next
+        ? messages.next
+        : `/api/chat/message/${conversationIdentifier}`
+    );
     return {
       conversationIdentifier,
       data: res.data.data,
@@ -30,11 +40,12 @@ export const initialConversationMessage = createAsyncThunk(
   {
     condition: (conversationIdentifier, { getState, extra }) => {
       const state = getState();
-      if (
-        selectConversationIdentifiers(state).includes(conversationIdentifier)
-      ) {
-        return false;
-      }
+
+      const messages = selectMessagesByConversationIdentifier(
+        state,
+        conversationIdentifier
+      );
+      return !Boolean(messages) || Boolean(messages.next);
     },
   }
 );
@@ -133,15 +144,16 @@ export const messageSlice = createSlice({
       const conversationIdentifier = action.payload.conversationIdentifier;
       console.log("pp2pp2p2p2p", state.ids);
       const messages = state.ids.includes(conversationIdentifier)
-        ? unionBy(
-            state.entities[conversationIdentifier],
-            action.payload.data.results,
-            "id"
+        ? action.payload.data.results.concat(
+            state.entities[conversationIdentifier].messages
           )
         : action.payload.data.results;
       messagesAdapter.upsertOne(state, {
         conversationIdentifier,
         messages,
+        count: action.payload.data.count,
+        next: action.payload.data.next,
+        previous: action.payload.data.previous,
       });
     },
     [initialConversationMessage.pending]: (state, action) => {

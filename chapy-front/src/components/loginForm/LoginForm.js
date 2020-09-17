@@ -77,7 +77,7 @@ const LoginForm = (props) => {
               </Button>
               <Space>
                 Or
-                <Link className="login-form-forgot" to={"register"}>
+                <Link className="login-form-forgot" to={"/register/"}>
                   register now!
                 </Link>
               </Space>

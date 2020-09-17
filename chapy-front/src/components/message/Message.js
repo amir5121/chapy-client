@@ -13,6 +13,7 @@ const Message = (props) => {
     need_payment,
     acceptCharge,
     identifier,
+    id,
   } = props;
   return (
     <Row className="chat-row" justify={is_mine ? "start" : "end"}>
@@ -39,6 +40,7 @@ const Message = (props) => {
           <span>{toPersian(created)}</span>
           {!need_payment && cost && <span>&nbsp;${cost}</span>}
         </p>
+        <p>{id}</p>
       </div>
     </Row>
   );

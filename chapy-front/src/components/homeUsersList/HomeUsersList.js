@@ -13,8 +13,8 @@ export default function HomeUsersList(props) {
     <div className="home-people">
       <Fade bottom>
         <Row>
-          {users.map((el) => (
-            <Col xs={24} sm={12} md={8} lg={6}>
+          {users.map((el, index) => (
+            <Col xs={24} sm={12} md={8} lg={6} key={index}>
               <Link to={`/chat/${el.email}`}>
                 <Card
                   hoverable
