@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "chapy",
+      "cwd": "/srv/chapy-front",
+      "script": "server.js",
+      "env": {
+        "NODE_ENV": "production",
+        "MAIN_SERVER": true
+      },
+      "env_production": {
+        "NODE_ENV": "production",
+        "MAIN_SERVER": true
+      }
+    }
+  ]
+}

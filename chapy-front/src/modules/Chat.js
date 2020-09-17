@@ -92,7 +92,7 @@ export default function Chat() {
   }
 
   return (
-    <Card loading={!Boolean(conversationMessages) && isLoading}>
+    <Card loading={isLoading}>
       {conversationMessages ? (
         <>
           <ChatHeader socketState={socketState} userProfile={userProfile} />
