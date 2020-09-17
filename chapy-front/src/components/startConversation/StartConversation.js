@@ -3,33 +3,33 @@ import { CheckOutlined } from "@ant-design/icons";
 
 import "./StartConversation.less";
 import { Button, Image } from "antd";
+import Col from "antd/es/grid/col";
 
 export default function StartConversation(props) {
   const { startConversation, isMobile, userProfile } = props;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Image width={"50vw"} src={userProfile && userProfile.avatar} />
-      <Button
-        size="large"
-        style={{ background: "limegreen", color: "white", marginTop: "1rem" }}
-        onClick={startConversation}
-        icon={
-          <CheckOutlined
-            style={{
-              color: "white",
-            }}
-          />
-        }
-      >
-        Start a conversation?
-      </Button>
+    <div className="start-conversation-center">
+      <Col xs={24} sm={12} md={8} lg={6} className="start-conversation-center">
+        <Image width={"100%"} src={userProfile && userProfile.avatar} />
+        <h2 style={{ marginTop: "1rem" }}>
+          {userProfile && userProfile.full_name}
+        </h2>
+        <Button
+          size="large"
+          style={{ background: "limegreen", color: "white" }}
+          onClick={startConversation}
+          icon={
+            <CheckOutlined
+              style={{
+                color: "white",
+              }}
+            />
+          }
+        >
+          Start a conversation?
+        </Button>
+      </Col>
     </div>
   );
 }
