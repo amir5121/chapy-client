@@ -8,8 +8,9 @@ import {
 
 import { updateUserMessages } from "./reducer/MessageSlice";
 import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
+import {socketBaseUrl} from "../LocalSetting";
 
-const ENDPOINT = "ws://127.0.0.1:38487/ws/chat/";
+const ENDPOINT = `${socketBaseUrl}/ws/chat/`;
 
 const socketMiddleware = () => {
   let socket = null;
