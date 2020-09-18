@@ -7,7 +7,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const LoginForm = (props) => {
-  const { onFinish, isMobile } = props;
+  const { onFinish } = props;
 
   return (
     <Row
@@ -16,7 +16,7 @@ const LoginForm = (props) => {
       align="middle"
       style={{ minHeight: "80vh" }}
     >
-      <Col span={isMobile ? 24 : 8}>
+      <Col xs={24} sm={12} md={8} lg={6}>
         <Card>
           <Form
             name="normal_login"

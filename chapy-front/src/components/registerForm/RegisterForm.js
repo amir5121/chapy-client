@@ -7,7 +7,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const RegisterForm = (props) => {
-  const { onFinish, isMobile, errors, isLoading} = props;
+  const { onFinish, errors, isLoading} = props;
   const [reTypeIsValid, setReTypeIsValid] = useState(null);
   const [form] = Form.useForm();
 
@@ -24,7 +24,7 @@ const RegisterForm = (props) => {
       align="middle"
       style={{ minHeight: "80vh" }}
     >
-      <Col span={isMobile ? 24 : 8}>
+      <Col xs={24} sm={12} md={8} lg={6}>
         <Card>
           <Form name="register" onFinish={validateAndFinish} form={form}>
             <Form.Item
