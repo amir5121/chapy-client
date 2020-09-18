@@ -9,7 +9,7 @@ services:
     command: sh -c "yarn && yarn build"
     restart: "no"
     volumes:
-      - ${CHAPY_FRONT_PATH}:/srv/chapy-front
+      - source:/srv/chapy-front
 
   pm2:
     image: keymetrics/pm2:latest-alpine
@@ -18,9 +18,17 @@ services:
     env_file:
       - .env
     volumes:
-      - ${CHAPY_FRONT_PATH}:/srv/chapy-front
+      - source:/srv/chapy-front
       - ./pm2.json:/pm2.json
     environment:
       - NODE_ENV=production
     ports:
       - "${FRONT_PORT}:8080"
+volumes:
+  source:
+    name: source
+    driver: local
+    driver_opts:
+      type: non
+      device: ${CHAPY_FRONT_PATH}
+      o: bind
