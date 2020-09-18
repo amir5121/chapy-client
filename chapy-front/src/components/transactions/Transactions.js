@@ -8,7 +8,7 @@ import Table from "antd/es/table";
 import { DownCircleTwoTone, UpCircleTwoTone } from "@ant-design/icons";
 
 const Transactions = (props) => {
-  const { isMobile, transactions } = props;
+  const { transactions } = props;
   let sortedInfo = null;
   let filteredInfo = null;
   sortedInfo = sortedInfo || {};

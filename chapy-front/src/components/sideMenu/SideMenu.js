@@ -7,7 +7,7 @@ import { Menu } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 
 const SideMenu = (props) => {
-  const { isMobile, menuSelect } = props;
+  const { menuSelect } = props;
   // const [collapsed, setCollapsed] = useState(false);
 
   return (

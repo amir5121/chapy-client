@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
 import "./ProfileForm.less";
 
-import { Button, Card, Col, Form, Input, InputNumber, Row } from "antd";
+import {Button, Card, Col, Form, Input, InputNumber, Row} from "antd";
 import Image from "antd/lib/image";
 import Text from "antd/lib/typography/Text";
 import Space from "antd/es/space";
@@ -28,7 +28,7 @@ const validateMessages = {
 };
 
 const ProfileForm = (props) => {
-  const { onFinish, isMobile, me } = props;
+  const { onFinish, me } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const ProfileForm = (props) => {
       type="flex"
       justify="center"
       align="middle"
-      style={{ minHeight: "80vh" }}
+      className='profile-form-root'
     >
-      <Col justify="center" span={isMobile ? 24 : 12}>
+      <Col justify="center" xs={24} sm={24} md={24} lg={12}>
         <Card>
           <div
             style={{

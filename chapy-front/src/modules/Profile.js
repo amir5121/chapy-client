@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 import ProfileForm from "../components/profileForm/ProfileForm";
 import { selectMe, updateMe } from "../redux/reducer/MeSlice";
 import SideMenu from "../components/sideMenu/SideMenu";
@@ -17,7 +16,6 @@ export default function Profile() {
   const { selectedTab } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const isMobile = useSelector(isMobileSelector);
   const me = useSelector(selectMe);
   const transactions = useSelector(selectAllTransactions);
   const [selectedItem, setSelectedItem] = useState(selectedTab || "profile");
@@ -33,19 +31,15 @@ export default function Profile() {
 
   return (
     <Row>
-      <Col span={4}>
-        <SideMenu isMobile={isMobile} menuSelect={setSelectedItem} />
+      <Col xs={8} sm={12} md={8} lg={6}>
+        <SideMenu menuSelect={setSelectedItem} />
       </Col>
-      <Col span={20}>
+      <Col xs={16} sm={12} md={16} lg={18}>
         {selectedItem === "profile" && (
-          <ProfileForm onFinish={onFinish} isMobile={isMobile} me={me} />
+          <ProfileForm onFinish={onFinish} me={me} />
         )}
         {selectedItem === "transactions" && (
-          <Transactions
-            transactions={transactions}
-            me={me}
-            isMobile={isMobile}
-          />
+          <Transactions transactions={transactions} me={me} />
         )}
       </Col>
     </Row>

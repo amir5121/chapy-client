@@ -35,7 +35,8 @@ export const transactionSlice = createSlice({
   extraReducers: {
     [listTransactions.fulfilled]: (state, action) => {
       state.status = FULFILLED;
-      transactionAdapter.upsertMany(state, action.payload.data.data.results);
+      action.payload.data.data &&
+        transactionAdapter.upsertMany(state, action.payload.data.data.results);
     },
     [listTransactions.pending]: (state, action) => {
       state.status = PENDING;
