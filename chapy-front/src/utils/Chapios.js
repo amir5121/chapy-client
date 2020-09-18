@@ -4,7 +4,7 @@ import { get } from "lodash";
 import { baseUrl } from "../LocalSetting";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = baseUrl;
+axios.defaults.baseURL = `http://${baseUrl}`;
 axios.interceptors.request.use(
   (config) => {
     isLoggedIn() &&
