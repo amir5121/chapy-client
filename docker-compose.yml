@@ -1,15 +1,15 @@
 version: "3.8"
 
 services:
-  # app_build:
-  #   build: .
-  #   image: bmbzr_front
-  #   user: node
-  #   env_file: .env
-  #   command: sh -c "yarn && yarn build"
-  #   restart: "no"
-  #   volumes:
-  #     - ${CHAPY_FRONT_PATH}:/srv/chapy-front
+  app_build:
+    build: .
+    image: bmbzr_front
+    user: node
+    env_file: .env
+    command: sh -c "yarn && yarn build"
+    restart: "no"
+    volumes:
+      - ${CHAPY_FRONT_PATH}:/srv/chapy-front
 
   pm2:
     image: keymetrics/pm2:latest-alpine
