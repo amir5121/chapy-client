@@ -13,6 +13,7 @@ services:
 
   pm2:
     image: keymetrics/pm2:latest-alpine
+    restart: always
     command: "pm2-runtime start pm2.json"
     user: node
     env_file:
