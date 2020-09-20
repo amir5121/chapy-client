@@ -38,5 +38,5 @@ export const loginSlice = createSlice({
   },
 });
 
-// export const authSelector = (state) => state.auth;
+export const authStateSelector = (state) => state.auth.status;
 export default loginSlice.reducer;

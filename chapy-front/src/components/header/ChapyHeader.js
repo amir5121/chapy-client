@@ -12,20 +12,24 @@ import {
 } from "antd";
 import {
   HomeOutlined,
+  PoweroffOutlined,
   RedEnvelopeOutlined,
   SettingFilled,
-  PoweroffOutlined,
 } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
-import { isLoggedIn, logout } from "../../utils/Authenticate";
+import { logout } from "../../utils/Authenticate";
+import { useSelector } from "react-redux";
+import { authStateSelector } from "../../redux/reducer/LoginSlice";
+import { FULFILLED } from "../../utils/Constatns";
 
 const { Header } = Layout;
 const { Title } = Typography;
 const { Search } = Input;
 
 export default function ChapyHeader(props) {
-  const { isMobile } = props;
   const history = useHistory();
+  const isLoggedIn = useSelector(authStateSelector) === FULFILLED;
+
   const menu = (
     <Menu>
       <Menu.Item>
@@ -34,11 +38,11 @@ export default function ChapyHeader(props) {
       <Menu.Item>
         <Link to="/profile/transactions/">Transactions</Link>
       </Menu.Item>
-      <Menu.Item danger={isLoggedIn()}>
+      <Menu.Item danger={isLoggedIn}>
         <Button
-          onClick={() => (isLoggedIn() ? logout("/") : history.push("/login"))}
+          onClick={() => (isLoggedIn ? logout("/") : history.push("/login"))}
         >
-          {isLoggedIn() ? "LogOut!" : "RegisterForm! Or Register"}
+          {isLoggedIn ? "LogOut!" : "RegisterForm! Or Register"}
         </Button>
       </Menu.Item>
     </Menu>
@@ -65,7 +69,7 @@ export default function ChapyHeader(props) {
           <Link to={"/chat/"}>
             <RedEnvelopeOutlined />
           </Link>
-          {isLoggedIn() ? (
+          {isLoggedIn ? (
             <Dropdown overlay={menu}>
               <SettingFilled />
             </Dropdown>
