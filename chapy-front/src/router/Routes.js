@@ -48,7 +48,7 @@ const Routes = () => {
           navigator.serviceWorker
         );
         navigator.serviceWorker
-          .register("/serviceWorker.js")
+          .register("/navigatorPush.service.js")
           .then(function (reg) {
             reg.pushManager
               .subscribe({
@@ -91,7 +91,6 @@ const Routes = () => {
       window && window.removeEventListener("resize", throttledSetViewPortWidth);
   }, [dispatch, throttledSetViewPortWidth]);
 
-  const reload = () => window.location.reload();
 
   return (
     <ConfigProvider direction="rtl">
@@ -102,7 +101,6 @@ const Routes = () => {
             <Layout>
               <Content style={{ minHeight: "50vh" }}>
                 <Switch>
-                  <Route path="/serviceWorker.js" onEnter={reload} />
                   <Route path="/login" component={Login} />
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
