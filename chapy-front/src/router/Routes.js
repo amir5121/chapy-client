@@ -33,7 +33,7 @@ const Routes = () => {
   );
   useEffect(() => {
     dispatch(getMe());
-    console.log("!@#################-----------------");
+    console.log("!@#################-----------------", window);
     if (window) {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
