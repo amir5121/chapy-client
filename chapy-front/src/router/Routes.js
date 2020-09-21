@@ -33,11 +33,11 @@ const Routes = () => {
   );
   useEffect(() => {
     dispatch(getMe());
-    console.log("!@#################-----------------", window);
     if (window) {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
       // In your ready listener
+      console.log("!@#################-----------------", navigator);
       if ("serviceWorker" in navigator) {
         // The service worker has to store in the root of the app
         // http://stackoverflow.com/questions/29874068/navigator-serviceworker-is-never-ready
