@@ -7,6 +7,10 @@ app.get("/ping", function (req, res) {
   return res.send("pong");
 });
 
+app.get("/service-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
+});
+
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
