@@ -33,7 +33,7 @@ const Routes = () => {
   );
   useEffect(() => {
     dispatch(getMe());
-    console.log("!@#################-----------------")
+    console.log("!@#################-----------------");
     if (window) {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
@@ -42,9 +42,13 @@ const Routes = () => {
         // The service worker has to store in the root of the app
         // http://stackoverflow.com/questions/29874068/navigator-serviceworker-is-never-ready
         const browser = loadVersionBrowser(navigator.userAgent);
-        console.log("!@######################", browser, navigator.serviceWorker);
+        console.log(
+          "!@######################",
+          browser,
+          navigator.serviceWorker
+        );
         navigator.serviceWorker
-          .register("navigatorPush.service.js?version=1.0.0")
+          .register("/serviceWorker.js")
           .then(function (reg) {
             reg.pushManager
               .subscribe({
@@ -81,71 +85,14 @@ const Routes = () => {
             console.log(":^(", err);
           });
       }
-      console.log("@98797987987987987987987987987#")
-      window.addEventListener("install", function (event) {
-        console.log("ASDASDASD skiiiiiiiiiip waiting", event);
-        window.skipWaiting();
-      });
-
-      window.addEventListener("push", function (event) {
-        console.log("ASDASDASD puuuuuuuuuuuuuuuuuuuuuuuuuushhhh");
-
-        let title = "";
-        let message = event.data.text();
-        let message_tag = "";
-        try {
-          // Push is a JSON
-          let response_json = event.data.json();
-          title = response_json.title;
-          message = response_json.message;
-          message_tag = response_json.tag;
-        } catch (err) {
-          // Push is a simple text
-        }
-        window.registration.showNotification(
-          getTitle(title),
-          getNotificationOptions(message, message_tag)
-        );
-        // // Optional: Comunicating with our js application. Send a signal
-        // self.clients
-        //   .matchAll({ includeUncontrolled: true, type: "window" })
-        //   .then(function (clients) {
-        //     clients.forEach(function (client) {
-        //       client.postMessage({
-        //         data: message_tag,
-        //         data_title: title,
-        //         data_body: message,
-        //       });
-        //     });
-        //   });
-      });
-
-      // // Optional: Added to that the browser opens when you click on the notification push web.
-      // self.addEventListener("notificationclick", function (event) {
-      //   // Android doesn't close the notification when you click it
-      //   // See http://crbug.com/463146
-      //   event.notification.close();
-      //   // Check if there's already a tab open with this URL.
-      //   // If yes: focus on the tab.
-      //   // If no: open a tab with the URL.
-      //   event.waitUntil(
-      //     clients
-      //       .matchAll({ type: "window", includeUncontrolled: true })
-      //       .then(function (windowClients) {
-      //         for (var i = 0; i < windowClients.length; i++) {
-      //           var client = windowClients[i];
-      //           if ("focus" in client) {
-      //             return client.focus();
-      //           }
-      //         }
-      //       })
-      //   );
-      // });
     }
 
     return () =>
       window && window.removeEventListener("resize", throttledSetViewPortWidth);
   }, [dispatch, throttledSetViewPortWidth]);
+
+  const reload = () => window.location.reload();
+
   return (
     <ConfigProvider direction="rtl">
       <Router>
@@ -155,6 +102,7 @@ const Routes = () => {
             <Layout>
               <Content style={{ minHeight: "50vh" }}>
                 <Switch>
+                  <Route path="/serviceWorker.js" onEnter={reload} />
                   <Route path="/login" component={Login} />
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
