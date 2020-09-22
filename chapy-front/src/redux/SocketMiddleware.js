@@ -8,20 +8,22 @@ import {
 
 import { updateUserMessages } from "./reducer/MessageSlice";
 import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
-import {baseUrl, socketBaseUrl} from "../LocalSetting";
+import { baseUrl, socketBaseUrl } from "../LocalSetting";
 
 const ENDPOINT = `ws://${baseUrl}/ws/chat/`;
 
 const socketMiddleware = () => {
   let socket = null;
-  let pingIntervalId = null
+  let pingIntervalId = null;
+  let retries = 0;
   console.log(connect);
   const onOpen = (store) => (event) => {
+    retries = 0
     console.log("websocket open", event.target.url);
     sendMessage(socket, {}, true, "AUTHENTICATE")
       .then(() => {
         store.dispatch(connected(event.target.url));
-        pingIntervalId = setInterval(ping, 15000)
+        pingIntervalId = setInterval(ping, 15000);
       })
       .catch(() => {
         store.dispatch(disconnect());
@@ -30,8 +32,12 @@ const socketMiddleware = () => {
 
   const onClose = (store) => () => {
     socket = null;
+
     clearInterval(pingIntervalId);
     store.dispatch(disconnect());
+    if (retries < 10) setTimeout(() => store.dispatch(connect()), retries * 1000);
+    retries += 1
+    console.log('----------------------', retries)
   };
 
   const onMessage = (store) => (event) => {
@@ -40,10 +46,15 @@ const socketMiddleware = () => {
 
     switch (payload.type) {
       case "NEW_MESSAGE":
-        store.dispatch(updateUserMessages(payload.message.conversation_identifier, payload.message.message));
+        store.dispatch(
+          updateUserMessages(
+            payload.message.conversation_identifier,
+            payload.message.message
+          )
+        );
         break;
       case "PONG":
-        console.log("@!#!@#!@#!@# POOOONNNGGGG")
+        console.log("@!#!@#!@#!@# POOOONNNGGGG");
         break;
       default:
         break;

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 
 import "./ChatBox.less";
-import { Button, Col, Form, Input, Row, Space } from "antd";
-import { RedEnvelopeOutlined, SmileOutlined } from "@ant-design/icons";
+import { Col, Form, Input, Row, Space } from "antd";
+import {
+  RedEnvelopeOutlined,
+  SendOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 
 const { TextArea } = Input;
 
@@ -38,9 +42,15 @@ export default function ChatBox(props) {
 
           <Form.Item>
             {hasMessage ? (
-              <Button type="primary" htmlType="submit">
-                Send
-              </Button>
+              <SendOutlined
+                onClick={() => {
+                  messageForm.submit();
+                  setTimeout(() => {
+                    messageForm.resetFields();
+                    setHasMessage(false);
+                  }, 100);
+                }}
+              />
             ) : (
               <Space className="message-action">
                 <RedEnvelopeOutlined />
