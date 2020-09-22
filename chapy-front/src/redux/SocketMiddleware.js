@@ -21,7 +21,7 @@ const socketMiddleware = () => {
     sendMessage(socket, {}, true, "AUTHENTICATE")
       .then(() => {
         store.dispatch(connected(event.target.url));
-        pingIntervalId = setInterval(ping, 30000)
+        pingIntervalId = setInterval(ping, 1000)
       })
       .catch(() => {
         store.dispatch(disconnect());
