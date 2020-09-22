@@ -14,12 +14,14 @@ const ENDPOINT = `ws://${baseUrl}/ws/chat/`;
 
 const socketMiddleware = () => {
   let socket = null;
+  let pingIntervalId = null
   console.log(connect);
   const onOpen = (store) => (event) => {
     console.log("websocket open", event.target.url);
     sendMessage(socket, {}, true, "AUTHENTICATE")
       .then(() => {
         store.dispatch(connected(event.target.url));
+        pingIntervalId = setInterval(ping, 30000)
       })
       .catch(() => {
         store.dispatch(disconnect());
@@ -28,17 +30,20 @@ const socketMiddleware = () => {
 
   const onClose = (store) => () => {
     socket = null;
+    clearInterval(pingIntervalId);
     store.dispatch(disconnect());
   };
 
   const onMessage = (store) => (event) => {
     const payload = JSON.parse(event.data);
-    console.log("receiving server message", payload);
-    store.dispatch(updateUserMessages(payload.message.conversation_identifier, payload.message.message));
+    // console.log("receiving server message", payload);
 
     switch (payload.type) {
       case "NEW_MESSAGE":
-        // store.dispatch(updateUserMessages(payload));
+        store.dispatch(updateUserMessages(payload.message.conversation_identifier, payload.message.message));
+        break;
+      case "PONG":
+        console.log("@!#!@#!@#!@# POOOONNNGGGG")
         break;
       default:
         break;
@@ -58,6 +63,9 @@ const socketMiddleware = () => {
         data,
       })
     );
+  };
+  const ping = () => {
+    sendMessage(socket, {}, false, "PING");
   };
 
   // the middleware part of this function

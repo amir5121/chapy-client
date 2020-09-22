@@ -26,7 +26,7 @@ const { Header } = Layout;
 const { Title } = Typography;
 const { Search } = Input;
 
-export default function ChapyHeader(props) {
+export default function ChapyHeader() {
   const history = useHistory();
   const isLoggedIn = useSelector(authStateSelector) === FULFILLED;
 

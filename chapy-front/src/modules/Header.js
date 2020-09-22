@@ -1,10 +1,9 @@
 import React from "react";
-import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 import ChapyHeader from "../components/header/ChapyHeader";
-import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
-  const isMobile = useSelector(isMobileSelector);
-
-  return <ChapyHeader isMobile={isMobile} />;
+  const location = useLocation();
+  const visible = !location.pathname.match(/\/chat\/.+/g);
+  return visible && <ChapyHeader />;
 }

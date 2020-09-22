@@ -30,7 +30,8 @@ export const configSlice = createSlice({
     viewportUpdated: (state) => {
       if (window) {
         state.viewportWidth = window.innerWidth;
-        state.isMobile = window.innerWidth < 425;
+        state.isMobile = window.innerWidth < 576;
+        // state.isMobile = window.innerWidth < 425;
       }
     },
   },

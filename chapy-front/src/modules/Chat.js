@@ -64,6 +64,7 @@ export default function Chat() {
   }, [dispatch, conversationIdentifier, username]);
 
   useEffect(() => {
+    console.log("!@#!@#!@#!@#!@#####")
     dispatch(getProfile(username));
   }, [dispatch, username]);
 
