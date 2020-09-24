@@ -14,13 +14,6 @@ import Header from "../modules/Header";
 import Profile from "../modules/Profile";
 import { viewportUpdated } from "../redux/reducer/ConfigSlice";
 import { getMe } from "../redux/reducer/MeSlice";
-import {
-  getNotificationOptions,
-  getTitle,
-  loadVersionBrowser,
-  urlBase64ToUint8Array,
-} from "../utils/NotificationHelpers";
-import { applicationServerKey } from "../LocalSetting";
 
 const { Content } = Layout;
 
