@@ -18,7 +18,6 @@ const socketMiddleware = () => {
   let retries = 0;
   console.log(connect);
   const onOpen = (store) => (event) => {
-    retries = 0;
     console.log("websocket open", event.target.url);
     sendMessage(socket, {}, true, "AUTHENTICATE")
       .then(() => {
