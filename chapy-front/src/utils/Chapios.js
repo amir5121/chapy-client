@@ -1,10 +1,10 @@
 import axios from "axios";
 import { getAuthToken, isLoggedIn, logout } from "./Authenticate";
 import { get } from "lodash";
-import { baseUrl } from "../LocalSetting";
+import { baseUrl, isProduction } from "../LocalSetting";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = `http://${baseUrl}`;
+axios.defaults.baseURL = `${isProduction ? "https" : "http"}://${baseUrl}`;
 axios.interceptors.request.use(
   (config) => {
     isLoggedIn() &&

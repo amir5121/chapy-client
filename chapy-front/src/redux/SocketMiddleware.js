@@ -8,9 +8,9 @@ import {
 
 import { updateUserMessages } from "./reducer/MessageSlice";
 import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
-import { baseUrl, socketBaseUrl } from "../LocalSetting";
+import { baseUrl, isProduction } from "../LocalSetting";
 
-const ENDPOINT = `ws://${baseUrl}/ws/chat/`;
+const ENDPOINT = `${isProduction ? "wss" : "ws"}://${baseUrl}/ws/chat/`;
 
 const socketMiddleware = () => {
   let socket = null;
@@ -18,7 +18,7 @@ const socketMiddleware = () => {
   let retries = 0;
   console.log(connect);
   const onOpen = (store) => (event) => {
-    retries = 0
+    retries = 0;
     console.log("websocket open", event.target.url);
     sendMessage(socket, {}, true, "AUTHENTICATE")
       .then(() => {
@@ -35,9 +35,10 @@ const socketMiddleware = () => {
 
     clearInterval(pingIntervalId);
     store.dispatch(disconnect());
-    if (retries < 10) setTimeout(() => store.dispatch(connect()), retries * 1000);
-    retries += 1
-    console.log('----------------------', retries)
+    if (retries < 10)
+      setTimeout(() => store.dispatch(connect()), retries * 1000);
+    retries += 1;
+    console.log("----------------------", retries);
   };
 
   const onMessage = (store) => (event) => {
