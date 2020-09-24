@@ -9,7 +9,7 @@ export const loginUser = createAsyncThunk(
   {
     condition: (authData, { getState, extra }) => {
       const { auth } = getState();
-      if ([FULFILLED, PENDING].includes(auth.login_status)) {
+      if ([FULFILLED, PENDING].includes(auth.status)) {
         return false;
       }
     },

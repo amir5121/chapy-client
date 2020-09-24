@@ -18,6 +18,7 @@ if (typeof window !== "undefined") {
     window.skipWaiting();
   });
   window.addEventListener("push", function (event) {
+    console.log("!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#")
     let title = "";
     let message = event.data.text();
     let message_tag = "";

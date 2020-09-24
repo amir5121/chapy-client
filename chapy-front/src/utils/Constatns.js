@@ -7,3 +7,6 @@ export const FULFILLED = "fulfilled";
 export const PENDING = "loading";
 export const REJECTED = "rejected";
 export const IDLE = "idle";
+
+export const DENIED = "denied";
+export const GRANTED = "granted";

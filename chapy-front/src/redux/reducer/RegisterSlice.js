@@ -7,8 +7,8 @@ export const registerUser = createAsyncThunk(
   chapios.post("/api/auth/users/"),
   {
     condition: (authData, { getState, extra }) => {
-      const { auth } = getState();
-      if ([FULFILLED, PENDING].includes(auth.register_status)) {
+      const { register } = getState();
+      if ([FULFILLED, PENDING].includes(register.status)) {
         return false;
       }
     },

@@ -9,8 +9,8 @@ import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 export const getMe = createAsyncThunk("me/get", chapios.get("/api/users/me/"), {
   condition: (_, { getState, extra }) => {
-    const { auth } = getState();
-    if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
+    const { me } = getState();
+    if (!isLoggedIn() || [FULFILLED, PENDING].includes(me.status)) {
       return false;
     }
   },
@@ -21,8 +21,8 @@ export const updateMe = createAsyncThunk(
   chapios.post("/api/users/me/"),
   {
     condition: (_, { getState, extra }) => {
-      const { auth } = getState();
-      if ([FULFILLED, PENDING].includes(auth.me_update_status)) {
+      const { me } = getState();
+      if ([FULFILLED, PENDING].includes(me.me_update_status)) {
         return false;
       }
     },

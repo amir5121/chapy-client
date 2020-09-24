@@ -33,8 +33,8 @@ export const getConversations = createAsyncThunk(
   },
   {
     condition: (_, { getState, extra }) => {
-      const { auth } = getState();
-      if (!isLoggedIn() || [FULFILLED, PENDING].includes(auth.me_status)) {
+      const { conversations } = getState();
+      if (!isLoggedIn() || [FULFILLED, PENDING].includes(conversations.status)) {
         return false;
       }
     },

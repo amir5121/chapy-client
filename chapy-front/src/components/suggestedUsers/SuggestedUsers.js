@@ -8,7 +8,7 @@ import Fade from "react-reveal/Fade";
 
 const { Meta } = Card;
 export default function SuggestedUsers(props) {
-  const { isMobile, users } = props;
+  const { users } = props;
   return (
     <div className="home-people">
       <Fade bottom>

@@ -6,39 +6,32 @@ import {
   selectAllConversations,
 } from "../redux/reducer/ConversationsSlice";
 import ConversationsList from "../components/conversationsList/ConversationsList";
-import {
-  getConfigs,
-  initialConfig,
-  isMobileSelector,
-} from "../redux/reducer/ConfigSlice";
+import { getConfigs, initialConfig } from "../redux/reducer/ConfigSlice";
 import SuggestedUsers from "../components/suggestedUsers/SuggestedUsers";
+import { registerForNotification } from "../utils/NotificationHelpers";
+import {registerBrowser} from "../redux/reducer/NotificationSlice";
 
 export default function Conversations() {
   const conversations = useSelector(selectAllConversations);
   const dispatch = useDispatch();
-  const isMobile = useSelector(isMobileSelector);
 
   const configs = useSelector(getConfigs);
 
   useEffect(() => {
     dispatch(initialConfig());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(getConversations());
+    registerForNotification(dispatch, registerBrowser);
   }, [dispatch]);
 
   return conversations.length > 0 ? (
-    <ConversationsList conversations={conversations} isMobile={isMobile} />
+    <ConversationsList conversations={conversations} />
   ) : (
     <div style={{ textAlign: "center" }}>
       <h2 style={{ paddingTop: "1rem" }}>
         No conversations yet! start a new one
       </h2>
       <p>Here is some suggestion</p>
-      {configs && (
-        <SuggestedUsers isMobile={isMobile} users={configs.top_users} />
-      )}
+      {configs && <SuggestedUsers users={configs.top_users} />}
     </div>
   );
 }

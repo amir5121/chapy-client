@@ -14,8 +14,10 @@ export default function Login() {
     dispatch(loginUser(values)).then((result) => {
       console.log("@!#!@#!23oooo", { result });
       result.type === loginUser.rejected().type &&
-        message.error("Wrong Username or password", 10);
-      result.type === loginUser.fulfilled().type && history.push("/chat/");
+        message.error("Wrong Username or password", 8);
+      if (result.type === loginUser.fulfilled().type) {
+        history.push("/chat/");
+      }
     });
     // .then(unwrapResult)
     // .then((originalPromiseResult) => {

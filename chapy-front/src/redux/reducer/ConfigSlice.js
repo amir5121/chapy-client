@@ -23,7 +23,7 @@ export const configSlice = createSlice({
   initialState: {
     configurationStatus: IDLE,
     configurations: null,
-    isMobile: null,
+    isMobile: true,
     viewportWidth: null,
   },
   reducers: {
@@ -31,7 +31,6 @@ export const configSlice = createSlice({
       if (window) {
         state.viewportWidth = window.innerWidth;
         state.isMobile = window.innerWidth < 576;
-        // state.isMobile = window.innerWidth < 425;
       }
     },
   },

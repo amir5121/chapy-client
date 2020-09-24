@@ -29,7 +29,6 @@ axios.interceptors.response.use(
   }
 );
 
-console.log("@###################");
 
 export default class chapios {
   static post = (url) => (obj, thunkApi) =>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   acceptMessageCharge,
   initialConversationMessage,
@@ -24,13 +24,11 @@ import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
 import { Card } from "antd";
 import StartConversation from "../components/startConversation/StartConversation";
-import { isLoggedIn } from "../utils/Authenticate";
 
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
   const isMobile = useSelector(isMobileSelector);
-  const history = useHistory();
 
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
@@ -59,12 +57,10 @@ export default function Chat() {
       dispatch(initialConversationMessage(conversationIdentifier));
   }
   useEffect(() => {
-    if (isLoggedIn()) {
-      dispatch(connect());
-      conversationIdentifier
-        ? dispatch(initialConversationMessage(conversationIdentifier))
-        : dispatch(getConversations(username));
-    }
+    dispatch(connect());
+    conversationIdentifier
+      ? dispatch(initialConversationMessage(conversationIdentifier))
+      : dispatch(getConversations(username));
   }, [dispatch, conversationIdentifier, username]);
 
   useEffect(() => {
@@ -91,11 +87,9 @@ export default function Chat() {
   }
 
   function startConversation() {
-    isLoggedIn()
-      ? dispatch(createConversation({ user: username })).then(() => {
-          dispatch(getConversations(username));
-        })
-      : history.push("/login/");
+    dispatch(createConversation({ user: username })).then(() => {
+      dispatch(getConversations(username));
+    });
   }
 
   return (

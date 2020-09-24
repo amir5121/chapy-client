@@ -34,6 +34,6 @@ export const {
   disconnected,
 } = socketSlice.actions;
 
-export const socketStatus = (state) => state.socket && state.socket.state;
+export const socketStatus = (state) => state.socket?.state;
 
 export default socketSlice.reducer;

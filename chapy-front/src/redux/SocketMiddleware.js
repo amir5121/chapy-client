@@ -110,7 +110,7 @@ const socketMiddleware = () => {
         sendMessage(socket, action.payload);
         break;
       default:
-        console.log("the next action:", action);
+        // console.log("the next action:", action);
         return next(action);
     }
   };

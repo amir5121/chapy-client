@@ -36,61 +36,11 @@ const Routes = () => {
     if (window) {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
-      // In your ready listener
-      console.log("!@#################-----------------", navigator);
-      if ("serviceWorker" in navigator) {
-        // The service worker has to store in the root of the app
-        // http://stackoverflow.com/questions/29874068/navigator-serviceworker-is-never-ready
-        const browser = loadVersionBrowser(navigator.userAgent);
-        console.log(
-          "!@######################",
-          browser,
-          navigator.serviceWorker
-        );
-        navigator.serviceWorker
-          .register("/navigatorPush.service.js")
-          .then(function (reg) {
-            reg.pushManager
-              .subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(
-                  applicationServerKey
-                ),
-              })
-              .then(function (sub) {
-                const endpointParts = sub.endpoint.split("/");
-                const registration_id = endpointParts[endpointParts.length - 1];
-                const data = {
-                  browser: browser.name.toUpperCase(),
-                  p256dh: btoa(
-                    String.fromCharCode.apply(
-                      null,
-                      new Uint8Array(sub.getKey("p256dh"))
-                    )
-                  ),
-                  auth: btoa(
-                    String.fromCharCode.apply(
-                      null,
-                      new Uint8Array(sub.getKey("auth"))
-                    )
-                  ),
-                  name: "XXXXX",
-                  registration_id: registration_id,
-                };
-                console.log("--------requestPOSTToServer", data);
-                // requestPOSTToServer(data);
-              });
-          })
-          .catch(function (err) {
-            console.log(":^(", err);
-          });
-      }
     }
 
     return () =>
       window && window.removeEventListener("resize", throttledSetViewPortWidth);
   }, [dispatch, throttledSetViewPortWidth]);
-
 
   return (
     <ConfigProvider direction="rtl">
