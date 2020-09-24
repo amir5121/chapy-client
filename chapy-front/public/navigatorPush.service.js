@@ -13,11 +13,11 @@ const  getNotificationOptions = function (message, message_tag) {
   };
 };
 
-window.addEventListener("install", function (event) {
+window && window.addEventListener("install", function (event) {
   window.skipWaiting();
 });
 
-window.addEventListener("push", function (event) {
+window && window.addEventListener("push", function (event) {
   let title = "";
   let message = event.data.text();
   let message_tag = "";
@@ -49,7 +49,7 @@ window.addEventListener("push", function (event) {
 });
 
 // Optional: Added to that the browser opens when you click on the notification push web.
-window.addEventListener("notificationclick", function (event) {
+window && window.addEventListener("notificationclick", function (event) {
   // Android doesn't close the notification when you click it
   // See http://crbug.com/463146
   event.notification.close();
