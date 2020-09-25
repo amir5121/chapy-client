@@ -9,6 +9,7 @@ const Message = (props) => {
     text,
     created,
     is_mine,
+    is_date,
     cost,
     need_payment,
     acceptCharge,
@@ -16,8 +17,13 @@ const Message = (props) => {
     id,
   } = props;
   return (
-    <Row className="chat-row" justify={is_mine ? "start" : "end"}>
-      <div className="speech-bubble">
+    <Row
+      className="chat-row"
+      justify={is_mine ? "start" : is_date ? "center" : "end"}
+    >
+      <div
+        className={is_mine ? "speech-bubble-mine" : "speech-bubble-not-mine"}
+      >
         {need_payment ? (
           <div>
             <p>{`accept the ${cost} charge?`}</p>
@@ -35,12 +41,12 @@ const Message = (props) => {
         ) : (
           <p className="chat-content">{text}</p>
         )}
-
-        <p className="chat-date">
-          <span>{toPersian(created)}</span>
-          {!need_payment && cost && <span>&nbsp;${cost}</span>}
-        </p>
-        <p>{id}</p>
+        {!is_date && (
+          <p className="chat-date">
+            <span>{toPersian(created, "TIME")}</span>
+            {!need_payment && cost && <span>&nbsp;${cost}</span>}
+          </p>
+        )}
       </div>
     </Row>
   );

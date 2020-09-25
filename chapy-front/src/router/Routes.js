@@ -40,7 +40,7 @@ const Routes = () => {
   }, [dispatch, throttledSetViewPortWidth]);
 
   return (
-    <ConfigProvider direction="rtl">
+    <ConfigProvider direction="ltr">
       <Router>
         <Layout>
           <Header />

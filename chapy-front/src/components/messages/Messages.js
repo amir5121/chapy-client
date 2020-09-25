@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Messages.less";
 import Message from "../message/Message";
 import usePrevious from "../../utils/UsePrevious";
+import { addDateToMessages } from "../../utils/DateConvertor";
 
 export default function Messages(props) {
   const { conversationMessages, acceptCharge, loadMore, loading } = props;
@@ -24,11 +25,11 @@ export default function Messages(props) {
     setViewHeight(chatScrollView.current.scrollHeight);
   }, [prevHeight]);
 
-  const messages = conversationMessages?.messages || [];
+  const messages = addDateToMessages(conversationMessages?.messages) || [];
   function scrolled(element) {
     const { scrollHeight, scrollTop, clientHeight } = element.target;
 
-    if (scrollTop < 200) {
+    if (scrollTop < 1000) {
       // console.log(
       //   `%c @#!@#!@#!@#!@#!@#!@#!@#!, ${scrollHeight}  ${scrollTop} ${clientHeight}`,
       //   "color: pink; font-weight: bold; background-color: black"

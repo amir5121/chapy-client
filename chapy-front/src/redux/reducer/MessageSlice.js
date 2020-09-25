@@ -141,10 +141,10 @@ export const messageSlice = createSlice({
       const conversationIdentifier = action.payload.conversationIdentifier;
 
       const messages = state.ids.includes(conversationIdentifier)
-        ? action.payload.data.results.concat(
+        ? action.payload.data.results.reverse().concat(
             state.entities[conversationIdentifier].messages
           )
-        : action.payload.data.results;
+        : action.payload.data.results.reverse();
       messagesAdapter.upsertOne(state, {
         conversationIdentifier,
         messages,

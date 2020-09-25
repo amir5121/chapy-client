@@ -21,7 +21,6 @@ import { sendMessageViaSocket } from "../LocalSetting";
 import { PENDING } from "../utils/Constatns";
 import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
-import { Card } from "antd";
 import StartConversation from "../components/startConversation/StartConversation";
 
 export default function Chat() {
@@ -84,7 +83,7 @@ export default function Chat() {
   }
 
   return (
-    <Card>
+    <div style={{ backgroundColor: "white" }}>
       {conversationMessages ? (
         <>
           <ChatHeader socketState={socketState} userProfile={userProfile} />
@@ -102,6 +101,6 @@ export default function Chat() {
           startConversation={startConversation}
         />
       )}
-    </Card>
+    </div>
   );
 }
