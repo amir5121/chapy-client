@@ -1,4 +1,3 @@
-import { applicationServerKey } from "../LocalSetting";
 import { objectValues } from "./JavascriptHelpers";
 import firebase from "firebase/app";
 import "firebase/messaging";
