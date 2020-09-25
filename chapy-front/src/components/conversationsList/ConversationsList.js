@@ -14,7 +14,7 @@ const ConversationsList = (props) => {
           <List
             itemLayout="horizontal"
             dataSource={conversations}
-            header={<span>Conversations</span>}
+            // header={<span>Conversations</span>}
             renderItem={(item) => (
               <List.Item>
                 <Link

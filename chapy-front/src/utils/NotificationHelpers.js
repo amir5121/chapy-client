@@ -36,10 +36,7 @@ export function registerForNotification(dispatch, registerBrowser) {
 
   const messaging = firebase.messaging();
   messaging
-    .getToken(
-      applicationServerKey,
-      navigator.serviceWorker.register("/firebase-messaging-sw.js")
-    )
+    .getToken()
     .then((registration_id) => {
       const browser = loadVersionBrowser(navigator.userAgent);
       console.log("WEWEWEWEWEW", registration_id);
@@ -61,10 +58,8 @@ export function registerForNotification(dispatch, registerBrowser) {
         cloud_message_type: "FCM",
         registration_id: registration_id,
       };
-      console.log("--------requestPOSTToServer", data);
       dispatch(registerBrowser(data));
-
-      new Notification("pspspspspspspspsp");
+      console.log("--------requestPOSTToServer", data);
     })
     .catch((err) => {
       console.log("service worker failed", err);
