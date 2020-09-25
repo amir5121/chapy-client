@@ -2,6 +2,7 @@ import { objectValues } from "./JavascriptHelpers";
 import firebase from "firebase/app";
 import "firebase/messaging";
 import { FIREBASE_CONFIG } from "./Constatns";
+import { applicationServerKey } from "../LocalSetting";
 
 export function loadVersionBrowser(userAgent) {
   let ua = userAgent,
@@ -35,7 +36,7 @@ export function registerForNotification(dispatch, registerBrowser) {
 
   const messaging = firebase.messaging();
   messaging
-    .getToken()
+    .getToken({ vapidKey: applicationServerKey })
     .then((registration_id) => {
       const browser = loadVersionBrowser(navigator.userAgent);
       console.log("WEWEWEWEWEW", registration_id);

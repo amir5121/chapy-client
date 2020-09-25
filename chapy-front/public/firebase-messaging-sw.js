@@ -14,22 +14,32 @@ firebase.initializeApp({
   measurementId: "G-Z9WF6HLW08",
 });
 
-const messaging = firebase.messaging();
+firebase.messaging();
 
-messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
-  // Customize notification here
-  const notificationTitle = "Background Message Title";
-  const notificationOptions = {
-    body: "Background Message body.",
-    icon: "/firebase-logo.png",
-  };
-
-  return self.registration.showNotification(
-    notificationTitle,
-    notificationOptions
-  );
-});
+// messaging.onBackgroundMessage(
+//   function (payload) {
+//     console.log(
+//       "[firebase-messaging-sw.js] Received background message ",
+//       payload
+//     );
+//     // Customize notification here
+//     const notificationTitle = "Background Message Title";
+//     const notificationOptions = {
+//       body: "Background Message body.",
+//       icon: "/firebase-logo.png",
+//     };
+//
+//     return self.registration.showNotification(
+//       notificationTitle,
+//       notificationOptions
+//     );
+//   },
+//   (error) => {
+//     console.log("Firebase EROROROROROROROROR");
+//     return false;
+//   },
+//   (completed) => {
+//     console.log("Completedddddd", completed);
+//     return true;
+//   }
+// );
