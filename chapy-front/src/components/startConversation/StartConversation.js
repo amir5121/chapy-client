@@ -6,7 +6,7 @@ import { Button, Image } from "antd";
 import Col from "antd/es/grid/col";
 
 export default function StartConversation(props) {
-  const { startConversation, isMobile, userProfile } = props;
+  const { startConversation, userProfile } = props;
 
   return (
     <div className="start-conversation-center">

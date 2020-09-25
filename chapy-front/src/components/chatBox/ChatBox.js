@@ -11,13 +11,13 @@ import {
 const { TextArea } = Input;
 
 export default function ChatBox(props) {
-  const { sendMessage, onFinishFailed, isMobile } = props;
+  const { sendMessage, onFinishFailed } = props;
   const [messageForm] = Form.useForm();
   const [hasMessage, setHasMessage] = useState(null);
 
   return (
     <Row justify="center">
-      <Col span={isMobile ? 24 : 14}>
+      <Col xs={24} sm={18} md={12}>
         <Form
           layout={"inline"}
           name="basic"

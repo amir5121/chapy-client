@@ -24,7 +24,6 @@ export const initialConversationMessage = createAsyncThunk(
       thunkAPI.getState(),
       conversationIdentifier
     );
-    console.log("ASDASDASD", messages);
 
     const res = await chapios.get(
       messages && messages.next
@@ -140,7 +139,7 @@ export const messageSlice = createSlice({
     [initialConversationMessage.fulfilled]: (state, action) => {
       state.status = IDLE;
       const conversationIdentifier = action.payload.conversationIdentifier;
-      console.log("pp2pp2p2p2p", state.ids);
+
       const messages = state.ids.includes(conversationIdentifier)
         ? action.payload.data.results.concat(
             state.entities[conversationIdentifier].messages

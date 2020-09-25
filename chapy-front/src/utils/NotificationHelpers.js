@@ -42,7 +42,7 @@ export function registerForNotification(dispatch, registerBrowser) {
     )
     .then((registration_id) => {
       const browser = loadVersionBrowser(navigator.userAgent);
-      console.log("WEWEWEWEWEW", registration_id)
+      console.log("WEWEWEWEWEW", registration_id);
       const data = {
         browser: browser.name.toUpperCase(),
         // p256dh: btoa(
@@ -63,9 +63,14 @@ export function registerForNotification(dispatch, registerBrowser) {
       };
       console.log("--------requestPOSTToServer", data);
       dispatch(registerBrowser(data));
+
       new Notification("pspspspspspspspsp");
-      messaging.onMessage((payload) => {
-        console.log("ASDASDASDASD", payload);
-      });
+    })
+    .catch((err) => {
+      console.log("service worker failed", err);
     });
+
+  messaging.onMessage((payload) => {
+    console.log("ASDASDASDASD------------", payload);
+  });
 }

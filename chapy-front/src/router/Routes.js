@@ -14,6 +14,9 @@ import Header from "../modules/Header";
 import Profile from "../modules/Profile";
 import { viewportUpdated } from "../redux/reducer/ConfigSlice";
 import { getMe } from "../redux/reducer/MeSlice";
+import { isLoggedIn } from "../utils/Authenticate";
+import { registerForNotification } from "../utils/NotificationHelpers";
+import { registerBrowser } from "../redux/reducer/NotificationSlice";
 
 const { Content } = Layout;
 
@@ -30,6 +33,7 @@ const Routes = () => {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
     }
+    isLoggedIn() && registerForNotification(dispatch, registerBrowser);
 
     return () =>
       window && window.removeEventListener("resize", throttledSetViewPortWidth);

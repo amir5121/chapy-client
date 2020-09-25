@@ -8,8 +8,6 @@ import {
 import ConversationsList from "../components/conversationsList/ConversationsList";
 import { getConfigs, initialConfig } from "../redux/reducer/ConfigSlice";
 import SuggestedUsers from "../components/suggestedUsers/SuggestedUsers";
-import { registerForNotification } from "../utils/NotificationHelpers";
-import { registerBrowser } from "../redux/reducer/NotificationSlice";
 
 export default function Conversations() {
   const conversations = useSelector(selectAllConversations);
@@ -20,8 +18,6 @@ export default function Conversations() {
   useEffect(() => {
     dispatch(initialConfig());
     dispatch(getConversations());
-
-    registerForNotification(dispatch, registerBrowser)
   }, [dispatch]);
 
   return conversations.length > 0 ? (

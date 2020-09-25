@@ -17,7 +17,6 @@ import {
 } from "../redux/reducer/ConversationsSlice";
 import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
-import { isMobileSelector } from "../redux/reducer/ConfigSlice";
 import { sendMessageViaSocket } from "../LocalSetting";
 import { PENDING } from "../utils/Constatns";
 import ChatBox from "../components/chatBox/ChatBox";
@@ -28,7 +27,6 @@ import StartConversation from "../components/startConversation/StartConversation
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
-  const isMobile = useSelector(isMobileSelector);
 
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
@@ -45,13 +43,6 @@ export default function Chat() {
     selectProfileById(state, username)
   );
   function loadMore() {
-    conversationIdentifier &&
-      !isLoading &&
-      console.log(
-        "LOAAAAAAAAAAAAAAAMOOOOOOREEEEEEEEEEEE",
-        conversationIdentifier,
-        !isLoading
-      );
     conversationIdentifier &&
       !isLoading &&
       dispatch(initialConversationMessage(conversationIdentifier));
@@ -93,25 +84,20 @@ export default function Chat() {
   }
 
   return (
-    <Card loading={isLoading}>
+    <Card>
       {conversationMessages ? (
         <>
           <ChatHeader socketState={socketState} userProfile={userProfile} />
           <Messages
             conversationMessages={conversationMessages}
             acceptCharge={acceptCharge}
-            isMobile={isMobile}
             loadMore={loadMore}
+            loading={isLoading}
           />
-          <ChatBox
-            sendMessage={onFinish}
-            onFinishFailed={onFinishFailed}
-            isMobile={isMobile}
-          />
+          <ChatBox sendMessage={onFinish} onFinishFailed={onFinishFailed} />
         </>
       ) : (
         <StartConversation
-          isMobile={isMobile}
           userProfile={userProfile}
           startConversation={startConversation}
         />

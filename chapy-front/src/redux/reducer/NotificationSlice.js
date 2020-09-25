@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   DENIED,
   FULFILLED,
-  GRANTED,
   IDLE,
   PENDING,
   REJECTED,
@@ -34,7 +33,8 @@ export const configSlice = createSlice({
     },
   },
 });
-export const notificationPermissionSelector = (state) => state.notification.isMobile;
+export const notificationPermissionSelector = (state) =>
+  state.notification.isMobile;
 export const getConfigs = (state) => state.notification.configurations;
 
 export default configSlice.reducer;
