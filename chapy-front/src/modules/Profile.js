@@ -11,6 +11,8 @@ import {
   selectAllTransactions,
 } from "../redux/reducer/TransactionSlice";
 import { useHistory, useParams } from "react-router-dom";
+import { loginUser } from "../redux/reducer/LoginSlice";
+import { message } from "antd/es";
 
 export default function Profile() {
   const { selectedTab } = useParams();
@@ -21,7 +23,13 @@ export default function Profile() {
   const [selectedItem, setSelectedItem] = useState(selectedTab || "profile");
 
   const onFinish = (values) => {
-    dispatch(updateMe(values));
+    dispatch(updateMe(values)).then((result) => {
+      result.type === updateMe.rejected().type &&
+        message.error("Something went wrong", 8);
+      if (result.type === updateMe.fulfilled().type) {
+        message.success("Profile updated", 1);
+      }
+    });
   };
 
   useEffect(() => {

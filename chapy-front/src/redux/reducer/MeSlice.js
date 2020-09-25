@@ -55,7 +55,6 @@ export const meSlice = createSlice({
       state.me_update_status = PENDING;
     },
     [updateMe.fulfilled]: (state, action) => {
-      state.data = action.payload;
       state.me_update_status = FULFILLED;
     },
     [updateMe.rejected]: (state, action) => {

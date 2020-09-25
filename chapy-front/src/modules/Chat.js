@@ -87,13 +87,21 @@ export default function Chat() {
       {conversationMessages ? (
         <>
           <ChatHeader socketState={socketState} userProfile={userProfile} />
-          <Messages
-            conversationMessages={conversationMessages}
-            acceptCharge={acceptCharge}
-            loadMore={loadMore}
-            loading={isLoading}
-          />
-          <ChatBox sendMessage={onFinish} onFinishFailed={onFinishFailed} />
+          <div
+            style={{
+              backgroundImage:
+                "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url('/img/tic-tac-toe.svg')",
+              backgroundColor: "rgba(223, 219, 229, 0.3)",
+            }}
+          >
+            <Messages
+              conversationMessages={conversationMessages}
+              acceptCharge={acceptCharge}
+              loadMore={loadMore}
+              loading={isLoading}
+            />
+            <ChatBox sendMessage={onFinish} onFinishFailed={onFinishFailed} />
+          </div>
         </>
       ) : (
         <StartConversation
