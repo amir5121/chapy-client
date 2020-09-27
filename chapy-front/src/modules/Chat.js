@@ -60,7 +60,7 @@ export default function Chat() {
   const onFinish = (values) => {
     if (sendMessageViaSocket) {
       dispatch(sendMessageSock({ message: values.message, user_id: username }));
-      setTimeout(() => messagesRef.current.scrollToBottom(), 100);
+      setTimeout(() => messagesRef.current.scrollToBottom(), 1000);
     } else {
       dispatch(
         sendMessageHttp({ text: values.message, conversationIdentifier })
