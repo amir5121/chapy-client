@@ -11,10 +11,10 @@ export default function Messages(props) {
   const prevHeight = usePrevious(viewHeight);
   const chatScrollView = useRef(null);
 
-  console.log(
-    "chatScrollView.current.scrollHeight - prevHeight > 400",
-    prevHeight
-  );
+  // console.log(
+  //   "chatScrollView.current.scrollHeight - prevHeight > 400",
+  //   prevHeight
+  // );
 
   useEffect(() => {
     typeof prevHeight === "undefined"

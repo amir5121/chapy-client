@@ -2,9 +2,7 @@ import React from "react";
 import "./Banner.less";
 import Fade from "react-reveal/Fade";
 
-export default function Banner(props) {
-  const { isMobile } = props;
-
+export default function Banner() {
   return (
     <div className="main-banner">
       <Fade bottom>

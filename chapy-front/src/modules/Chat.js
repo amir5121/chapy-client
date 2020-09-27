@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Skeleton from "antd/es/skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   acceptMessageCharge,
   initialConversationMessage,
-  initialConversationSelector,
   selectMessagesByConversationIdentifier,
   sendMessageHttp,
   sendMessageSock,
@@ -18,7 +18,6 @@ import {
 import Messages from "../components/messages/Messages";
 import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
 import { sendMessageViaSocket } from "../LocalSetting";
-import { PENDING } from "../utils/Constatns";
 import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
 import StartConversation from "../components/startConversation/StartConversation";
@@ -26,6 +25,7 @@ import StartConversation from "../components/startConversation/StartConversation
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
@@ -36,8 +36,6 @@ export default function Chat() {
   );
 
   const socketState = useSelector(socketStatus);
-  const isLoading = useSelector(initialConversationSelector) === PENDING;
-
   const userProfile = useSelector((state) =>
     selectProfileById(state, username)
   );
@@ -49,12 +47,13 @@ export default function Chat() {
   useEffect(() => {
     dispatch(connect());
     conversationIdentifier
-      ? dispatch(initialConversationMessage(conversationIdentifier))
+      ? dispatch(initialConversationMessage(conversationIdentifier)).then(() =>
+          setIsLoading(false)
+        )
       : dispatch(getConversations(username));
   }, [dispatch, conversationIdentifier, username]);
 
   useEffect(() => {
-    console.log("!@#!@#!@#!@#!@#####");
     dispatch(getProfile(username));
   }, [dispatch, username]);
 
@@ -82,7 +81,11 @@ export default function Chat() {
     });
   }
 
-  return (
+  return isLoading ? (
+    [...Array(10)].map((value, index) => (
+      <Skeleton key={index} loading paragraph={{ rows: 1 }} />
+    ))
+  ) : (
     <div style={{ backgroundColor: "white" }}>
       {conversationMessages ? (
         <>

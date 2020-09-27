@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import chapios from "../../utils/Chapios";
 import { isLoggedIn } from "../../utils/Authenticate";
-import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import { IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 
 const profileAdapter = createEntityAdapter({
   selectId: (instance) => instance.email,
@@ -22,9 +22,13 @@ export const getProfile = createAsyncThunk(
     return chapios.get(`/api/users/profile/${username}`)(null, thunkAPI);
   },
   {
-    condition: (_, { getState, extra }) => {
+    condition: (username, { getState, extra }) => {
       const { profiles } = getState();
-      if (!isLoggedIn() || [FULFILLED, PENDING].includes(profiles.status)) {
+      if (
+        !isLoggedIn() ||
+        profiles.status === PENDING ||
+        profiles.ids.includes(username)
+      ) {
         return false;
       }
     },
@@ -37,7 +41,7 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getProfile.fulfilled]: (state, action) => {
-      state.status = FULFILLED;
+      state.status = IDLE;
       profileAdapter.upsertOne(state, action.payload.data);
     },
     [getProfile.pending]: (state, action) => {

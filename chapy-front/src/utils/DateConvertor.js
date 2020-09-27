@@ -39,6 +39,7 @@ export function addDateToMessages(messages) {
       result.push({
         text: toPersian(message.created, "DATE"),
         is_date: true,
+        id: Number(message.id) * 10,
       });
     }
     previousMessage = message;

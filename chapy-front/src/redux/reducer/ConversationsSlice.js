@@ -6,7 +6,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import { IDLE, PENDING, REJECTED } from "../../utils/Constatns";
 import { isLoggedIn } from "../../utils/Authenticate";
 
 const conversationAdapter = createEntityAdapter({
@@ -34,7 +34,7 @@ export const getConversations = createAsyncThunk(
   {
     condition: (_, { getState, extra }) => {
       const { conversations } = getState();
-      if (!isLoggedIn() || [FULFILLED, PENDING].includes(conversations.status)) {
+      if (!isLoggedIn() || conversations.status === PENDING) {
         return false;
       }
     },
@@ -47,8 +47,7 @@ export const conversationsSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getConversations.fulfilled]: (state, action) => {
-      console.log("#!@#!@#------------", action.payload.data);
-      state.status = FULFILLED;
+      state.status = IDLE;
       action.meta.arg
         ? conversationAdapter.upsertOne(state, action.payload.data)
         : conversationAdapter.upsertMany(state, action.payload.data.results);
@@ -89,5 +88,7 @@ export const selectConversationIdentifier = (username) =>
       ? selectedConversation[0].identifier
       : null;
   });
+export const getConversationsStateSelector = (state) =>
+  state.conversations.status;
 
 export default conversationsSlice.reducer;

@@ -44,7 +44,6 @@ export default function ChapyHeader() {
           onClick={() =>
             isLoggedIn
               ? dispatch(logoutUser()).then((result) => {
-                console.log("!@#!@#!@#!@#!@#!@#((((@#@)@)#$@#$@#$", result)
                   logout("/");
                 })
               : history.push("/login")
