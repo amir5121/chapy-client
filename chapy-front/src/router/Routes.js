@@ -15,8 +15,12 @@ import Profile from "../modules/Profile";
 import { viewportUpdated } from "../redux/reducer/ConfigSlice";
 import { getMe } from "../redux/reducer/MeSlice";
 import { isLoggedIn } from "../utils/Authenticate";
-import { registerForNotification } from "../utils/NotificationHelpers";
-import { registerBrowser } from "../redux/reducer/NotificationSlice";
+import { loadVersionBrowser } from "../utils/NotificationHelpers";
+import {
+  getRegistrationId,
+  registerBrowser,
+} from "../redux/reducer/NotificationSlice";
+import { objectValues } from "../utils/JavascriptHelpers";
 
 const { Content } = Layout;
 
@@ -33,7 +37,18 @@ const Routes = () => {
       window.addEventListener("resize", throttledSetViewPortWidth);
       dispatch(viewportUpdated(window.innerWidth));
     }
-    isLoggedIn() && registerForNotification(dispatch, registerBrowser);
+    isLoggedIn() &&
+      dispatch(getRegistrationId()).then((action) => {
+        const browser = loadVersionBrowser(navigator.userAgent);
+        dispatch(
+          registerBrowser({
+            browser: browser.name.toUpperCase(),
+            name: objectValues(browser).join(" "),
+            cloud_message_type: "FCM",
+            registration_id: action.payload,
+          })
+        );
+      });
 
     return () =>
       window && window.removeEventListener("resize", throttledSetViewPortWidth);

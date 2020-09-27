@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "../components/loginForm/LoginForm";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { loginUser } from "../redux/reducer/LoginSlice";
+import { loginUser } from "../redux/reducer/AuthSlice";
 import { isLoggedIn } from "../utils/Authenticate";
 import { message } from "antd/es";
 
@@ -12,7 +12,6 @@ export default function Login() {
 
   const onFinish = (values) => {
     dispatch(loginUser(values)).then((result) => {
-      console.log("@!#!@#!23oooo", { result });
       result.type === loginUser.rejected().type &&
         message.error("Wrong Username or password", 8);
       if (result.type === loginUser.fulfilled().type) {

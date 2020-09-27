@@ -31,21 +31,21 @@ axios.interceptors.response.use(
 
 
 export default class chapios {
-  static post = (url) => (obj, thunkApi) =>
+  static post = (url) => (data, thunkApi) =>
     axios
-      .post(url, obj)
+      .post(url, data)
       .then((response) => response.data)
       .catch((error) => thunkApi.rejectWithValue(error));
 
-  static get = (url) => (obj, thunkApi) =>
+  static get = (url) => (data, thunkApi) =>
     axios
-      .get(url, obj)
+      .get(url, data)
       .then((response) => response.data)
       .catch((error) => thunkApi.rejectWithValue(error));
 
-  static patch = (url) => (obj, thunkApi) =>
+  static patch = (url) => (data, thunkApi) =>
     axios
-      .patch(url, obj)
+      .patch(url, data)
       .then((response) => response.data)
       .catch((error) => thunkApi.rejectWithValue(error));
 }

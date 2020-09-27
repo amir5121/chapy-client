@@ -1,7 +1,6 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import conversationsReducer from "./reducer/ConversationsSlice";
-import registerReducer from "./reducer/RegisterSlice";
-import loginReducer from "./reducer/LoginSlice";
+import authReducer from "./reducer/AuthSlice";
 import meReducer from "./reducer/MeSlice";
 import transactionReducer from "./reducer/TransactionSlice";
 import messageReducer from "./reducer/MessageSlice";
@@ -15,8 +14,7 @@ import socketMiddleware from "./SocketMiddleware";
 const middleware = [...getDefaultMiddleware(), socketMiddleware];
 const reducer = {
   conversations: conversationsReducer,
-  register: registerReducer,
-  auth: loginReducer,
+  auth: authReducer,
   me: meReducer,
   messages: messageReducer,
   socket: socketReducer,

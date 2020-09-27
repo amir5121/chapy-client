@@ -18,8 +18,8 @@ import {
 } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import { logout } from "../../utils/Authenticate";
-import { useSelector } from "react-redux";
-import { authStateSelector } from "../../redux/reducer/LoginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { authStateSelector, logoutUser } from "../../redux/reducer/AuthSlice";
 import { FULFILLED } from "../../utils/Constatns";
 
 const { Header } = Layout;
@@ -27,6 +27,7 @@ const { Title } = Typography;
 const { Search } = Input;
 
 export default function ChapyHeader() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const isLoggedIn = useSelector(authStateSelector) === FULFILLED;
 
@@ -40,7 +41,14 @@ export default function ChapyHeader() {
       </Menu.Item>
       <Menu.Item danger={isLoggedIn}>
         <Button
-          onClick={() => (isLoggedIn ? logout("/") : history.push("/login"))}
+          onClick={() =>
+            isLoggedIn
+              ? dispatch(logoutUser()).then((result) => {
+                console.log("!@#!@#!@#!@#!@#!@#((((@#@)@)#$@#$@#$", result)
+                  logout("/");
+                })
+              : history.push("/login")
+          }
         >
           {isLoggedIn ? "LogOut!" : "RegisterForm! Or Register"}
         </Button>

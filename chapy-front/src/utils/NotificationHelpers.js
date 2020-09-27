@@ -1,9 +1,3 @@
-import { objectValues } from "./JavascriptHelpers";
-import firebase from "firebase/app";
-import "firebase/messaging";
-import { FIREBASE_CONFIG } from "./Constatns";
-import { applicationServerKey } from "../LocalSetting";
-
 export function loadVersionBrowser(userAgent) {
   let ua = userAgent,
     tem,
@@ -29,43 +23,4 @@ export function loadVersionBrowser(userAgent) {
     name: M[0],
     version: M[1],
   };
-}
-
-export function registerForNotification(dispatch, registerBrowser) {
-  firebase.initializeApp(FIREBASE_CONFIG);
-
-  const messaging = firebase.messaging();
-  messaging
-    .getToken({ vapidKey: applicationServerKey })
-    .then((registration_id) => {
-      const browser = loadVersionBrowser(navigator.userAgent);
-      console.log("WEWEWEWEWEW", registration_id);
-      const data = {
-        browser: browser.name.toUpperCase(),
-        // p256dh: btoa(
-        //   String.fromCharCode.apply(
-        //     null,
-        //     new Uint8Array(sub.getKey("p256dh"))
-        //   )
-        // ),
-        // auth: btoa(
-        //   String.fromCharCode.apply(
-        //     null,
-        //     new Uint8Array(sub.getKey("auth"))
-        //   )
-        // ),
-        name: objectValues(browser).join(" "),
-        cloud_message_type: "FCM",
-        registration_id: registration_id,
-      };
-      dispatch(registerBrowser(data));
-      console.log("--------requestPOSTToServer", data);
-    })
-    .catch((err) => {
-      console.log("service worker failed", err);
-    });
-
-  messaging.onMessage((payload) => {
-    console.log("ASDASDASDASD------------", payload);
-  });
 }

@@ -14,7 +14,6 @@ const Message = (props) => {
     need_payment,
     acceptCharge,
     identifier,
-    id,
   } = props;
   return (
     <Row

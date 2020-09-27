@@ -11,7 +11,7 @@ import {
   selectAllTransactions,
 } from "../redux/reducer/TransactionSlice";
 import { useHistory, useParams } from "react-router-dom";
-import { loginUser } from "../redux/reducer/LoginSlice";
+import { loginUser } from "../redux/reducer/AuthSlice";
 import { message } from "antd/es";
 
 export default function Profile() {

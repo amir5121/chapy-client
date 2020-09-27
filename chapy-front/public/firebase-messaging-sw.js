@@ -16,6 +16,9 @@ firebase.initializeApp({
 
 firebase.messaging();
 
+// const messaging = firebase.messaging();
+// messaging.setBackgroundMessageHandler((payload) => null);
+//
 // messaging.onBackgroundMessage(
 //   function (payload) {
 //     console.log(
@@ -28,11 +31,6 @@ firebase.messaging();
 //       body: "Background Message body.",
 //       icon: "/firebase-logo.png",
 //     };
-//
-//     return self.registration.showNotification(
-//       notificationTitle,
-//       notificationOptions
-//     );
 //   },
 //   (error) => {
 //     console.log("Firebase EROROROROROROROROR");

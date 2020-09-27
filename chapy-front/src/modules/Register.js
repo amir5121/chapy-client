@@ -1,10 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {
-  registerUser,
-  selectRegisterState,
-} from "../redux/reducer/RegisterSlice";
+import { registerUser, selectRegisterState } from "../redux/reducer/AuthSlice";
 import { isLoggedIn } from "../utils/Authenticate";
 import RegisterForm from "../components/registerForm/RegisterForm";
 import { message } from "antd/es";

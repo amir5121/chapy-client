@@ -27,9 +27,9 @@ export default function Messages(props) {
 
   const messages = addDateToMessages(conversationMessages?.messages) || [];
   function scrolled(element) {
-    const { scrollHeight, scrollTop, clientHeight } = element.target;
+    // const { scrollHeight, scrollTop, clientHeight } = element.target;
 
-    if (scrollTop < 1000) {
+    if (element.target.scrollTop < 1000) {
       // console.log(
       //   `%c @#!@#!@#!@#!@#!@#!@#!@#!, ${scrollHeight}  ${scrollTop} ${clientHeight}`,
       //   "color: pink; font-weight: bold; background-color: black"
