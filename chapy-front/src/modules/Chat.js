@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Skeleton from "antd/es/skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-
+  const messagesRef = useRef(null);
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
   );
@@ -60,6 +60,7 @@ export default function Chat() {
   const onFinish = (values) => {
     if (sendMessageViaSocket) {
       dispatch(sendMessageSock({ message: values.message, user_id: username }));
+      setTimeout(() => messagesRef.current.scrollToBottom(), 100);
     } else {
       dispatch(
         sendMessageHttp({ text: values.message, conversationIdentifier })
@@ -98,6 +99,7 @@ export default function Chat() {
             }}
           >
             <Messages
+              ref={messagesRef}
               conversationMessages={conversationMessages}
               acceptCharge={acceptCharge}
               loadMore={loadMore}

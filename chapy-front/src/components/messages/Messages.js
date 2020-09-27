@@ -1,20 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 import "./Messages.less";
 import Message from "../message/Message";
 import usePrevious from "../../utils/UsePrevious";
 import { addDateToMessages } from "../../utils/DateConvertor";
 
-export default function Messages(props) {
+const Messages = forwardRef((props, ref) => {
   const { conversationMessages, acceptCharge, loadMore, loading } = props;
   const [viewHeight, setViewHeight] = useState(0);
   const prevHeight = usePrevious(viewHeight);
   const chatScrollView = useRef(null);
+  const bottomRef = useRef(null);
 
-  // console.log(
-  //   "chatScrollView.current.scrollHeight - prevHeight > 400",
-  //   prevHeight
-  // );
+  useImperativeHandle(ref, () => ({
+    scrollToBottom() {
+      bottomRef &&
+        bottomRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start",
+        });
+    },
+  }));
 
   useEffect(() => {
     typeof prevHeight === "undefined"
@@ -54,7 +67,10 @@ export default function Messages(props) {
             acceptCharge={() => acceptCharge(it.id)}
           />
         ))}
+        <span ref={bottomRef} />
       </div>
     </div>
   );
-}
+});
+
+export default Messages;
