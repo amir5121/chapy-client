@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { loginUser } from "../redux/reducer/AuthSlice";
 import { isLoggedIn } from "../utils/Authenticate";
 import { message } from "antd/es";
+import { getMe } from "../redux/reducer/MeSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -15,18 +16,10 @@ export default function Login() {
       result.type === loginUser.rejected().type &&
         message.error("Wrong Username or password", 8);
       if (result.type === loginUser.fulfilled().type) {
+        dispatch(getMe());
         history.push("/chat/");
       }
     });
-    // .then(unwrapResult)
-    // .then((originalPromiseResult) => {
-    //   console.log("originalPromiseResult", originalPromiseResult);
-    //   isLoggedIn() && history.push("/chat/");
-    //   dispatch(getMe());
-    // })
-    // .catch((serializedError) => {
-    //   console.log("serializedError", serializedError);
-    // });
   };
 
   isLoggedIn() && history.push("/chat/");

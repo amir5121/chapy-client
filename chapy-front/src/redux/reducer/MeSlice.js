@@ -15,6 +15,23 @@ export const getMe = createAsyncThunk("me/get", chapios.get("/api/users/me/"), {
     }
   },
 });
+export const syncInstagram = createAsyncThunk(
+  "me/syncInstagram`",
+  chapios.get("/api/instagram/authenticate/"),
+  {
+    condition: (_, { getState, extra }) => {
+      const { me } = getState();
+      if (!isLoggedIn() || [FULFILLED, PENDING].includes(me.sync_status)) {
+        return false;
+      }
+    },
+  }
+);
+
+export const submitInstagram = createAsyncThunk(
+  "me/syncInstagram`",
+  chapios.post("/api/instagram/authorize/")
+);
 
 export const updateMe = createAsyncThunk(
   "me/update",
@@ -34,6 +51,7 @@ export const meSlice = createSlice({
   initialState: {
     status: IDLE,
     me_update_status: IDLE,
+    sync_status: IDLE,
     error: null,
     data: {},
   },
@@ -59,6 +77,16 @@ export const meSlice = createSlice({
     },
     [updateMe.rejected]: (state, action) => {
       state.me_update_status = REJECTED;
+      state.error = action.error.message;
+    },
+    [syncInstagram().pending]: (state, action) => {
+      state.sync_status = PENDING;
+    },
+    [syncInstagram.fulfilled]: (state, action) => {
+      state.sync_status = IDLE;
+    },
+    [syncInstagram.rejected]: (state, action) => {
+      state.sync_status = REJECTED;
       state.error = action.error.message;
     },
   },

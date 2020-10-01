@@ -21,6 +21,7 @@ import {
   registerBrowser,
 } from "../redux/reducer/NotificationSlice";
 import { objectValues } from "../utils/JavascriptHelpers";
+import InstagramAuthorize from "../modules/InstagramAuthorize";
 
 const { Content } = Layout;
 
@@ -67,6 +68,10 @@ const Routes = () => {
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
+                  <PrivateRoute
+                    path="/authorize-instagram"
+                    component={InstagramAuthorize}
+                  />
                   <PrivateRoute
                     path="/profile/:selectedTab?"
                     component={Profile}

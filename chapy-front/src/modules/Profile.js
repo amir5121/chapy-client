@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileForm from "../components/profileForm/ProfileForm";
-import { selectMe, updateMe } from "../redux/reducer/MeSlice";
+import { selectMe, syncInstagram, updateMe } from "../redux/reducer/MeSlice";
 import SideMenu from "../components/sideMenu/SideMenu";
 import Row from "antd/es/grid/row";
 import Col from "antd/es/grid/col";
@@ -30,6 +30,16 @@ export default function Profile() {
       }
     });
   };
+  const instagramSyncRequest = () => {
+    dispatch(syncInstagram()).then((result) => {
+      window.open(
+        result.payload.data.redirect_url,
+        "sharer",
+        "toolbar=0,status=0,width=448,height=548"
+      );
+      console.log(result.payload.data.redirect_url);
+    });
+  };
 
   useEffect(() => {
     selectedItem === "transactions" && dispatch(listTransactions());
@@ -43,7 +53,11 @@ export default function Profile() {
       </Col>
       <Col xs={16} sm={12} md={16} lg={18}>
         {selectedItem === "profile" && (
-          <ProfileForm onFinish={onFinish} me={me} />
+          <ProfileForm
+            onFinish={onFinish}
+            me={me}
+            requestSyncInstagram={instagramSyncRequest}
+          />
         )}
         {selectedItem === "transactions" && (
           <Transactions transactions={transactions} me={me} />
