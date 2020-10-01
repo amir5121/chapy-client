@@ -14,13 +14,15 @@ export default function InstagramAuthorize() {
         code: window.location.search.replace("?code=", "").replace("#_", ""),
       })
     ).then((result) => {
-      console.log("ClOse!!!", result);
+      console.log(result);
       result.type === submitInstagram.fulfilled().type && window.close();
+      result.type === submitInstagram.rejected().type &&
+        console.log("failed could not closeClOse!!!", result);
     });
   }, [dispatch]);
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", margin: "10rem 0" }}>
       <Spin size="large" />
     </div>
   );

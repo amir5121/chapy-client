@@ -14,7 +14,11 @@ const { Footer } = Layout;
 
 export default function ChapyFooter() {
   const location = useLocation();
-  const visible = !location.pathname.match(/\/chat\/.+/g);
+  const visible = !(
+    location.pathname.match(/\/chat\/.+/g) ||
+    location.pathname.includes("authorize-instagram")
+  );
+  console.log(location.pathname, visible);
 
   return (
     visible && (
