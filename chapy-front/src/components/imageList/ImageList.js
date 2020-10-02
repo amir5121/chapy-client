@@ -3,7 +3,6 @@ import "./ImageList.less";
 import Card from "antd/es/card";
 import Row from "antd/es/grid/row";
 import Col from "antd/es/grid/col";
-import { Link } from "react-router-dom";
 import Fade from "react-reveal/Fade";
 
 const { Meta } = Card;

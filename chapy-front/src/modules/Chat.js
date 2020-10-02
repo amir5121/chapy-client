@@ -50,7 +50,10 @@ export default function Chat() {
       ? dispatch(initialConversationMessage(conversationIdentifier)).then(() =>
           setIsLoading(false)
         )
-      : dispatch(getConversations(username));
+      : dispatch(getConversations(username)).then((result) => {
+          result.type === getConversations.rejected().type &&
+            setIsLoading(false);
+        });
   }, [dispatch, conversationIdentifier, username]);
 
   useEffect(() => {
