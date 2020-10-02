@@ -7,13 +7,13 @@ import { Menu } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 
 const SideMenu = (props) => {
-  const { menuSelect } = props;
+  const { menuSelect, selectedItem } = props;
   // const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div>
+    <>
       <Menu
-        defaultSelectedKeys={["profile"]}
+        defaultSelectedKeys={[selectedItem]}
         mode="inline"
         onSelect={(e) => menuSelect(e.key)}
         // inlineCollapsed={collapsed}
@@ -29,7 +29,7 @@ const SideMenu = (props) => {
       {/*<Button onClick={() => setCollapsed(!collapsed)}>*/}
       {/*  {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}*/}
       {/*</Button>*/}
-    </div>
+    </>
   );
 };
 

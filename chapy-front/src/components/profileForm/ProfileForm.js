@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 
 import "./ProfileForm.less";
 
-import { Button, Card, Col, Form, Input, InputNumber, Row } from "antd";
+import { Button, Form, Input, InputNumber } from "antd";
 import Image from "antd/lib/image";
 import Text from "antd/lib/typography/Text";
-import Space from "antd/es/space";
 import { InstagramFilled } from "@ant-design/icons";
+import Title from "antd/es/typography/Title";
+import ImageList from "../imageList/ImageList";
 
 const layout = {
   labelCol: { span: 12 },
@@ -38,80 +39,87 @@ const ProfileForm = (props) => {
     });
   }, [form, me]);
 
+  const list =
+    Boolean(me.instagram) &&
+    me.instagram.medias.map((el) => {
+      return {
+        link: el.permalink,
+        image: el.media_url,
+      };
+    });
   return (
-    <Row
-      type="flex"
-      justify="center"
-      align="middle"
-      className="profile-form-root"
-    >
-      <Col justify="center" xs={24} sm={24} md={24} lg={12}>
-        <Card>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              paddingBottom: "1rem",
-            }}
-          >
-            <span>Sync with Instagram?</span>
-            <InstagramFilled
-              onClick={() => requestSyncInstagram()}
-              size={10}
-              style={{
-                fontSize: "3em",
-                color: "#ffd800",
-              }}
-            />
-            <Image
-              width="100%"
-              style={{ padding: "0 1rem 1rem 1rem" }}
-              src={me.avatar}
-            />
-            <Space>
-              <Text>{me.email}</Text>
-              <Text strong>Balance: {me.balance}</Text>
-            </Space>
-          </div>
+    <>
+      <div className="profile-form-user-info">
+        <Title
+          level={1}
+          style={{ paddingBottom: "2rem", width: "100%", textAlign: "center" }}
+        >
+          {me.full_name}
+        </Title>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingBottom: "1rem",
+          }}
+        >
+          <Image
+            width="100%"
+            style={{ padding: "0 1rem 1rem 1rem" }}
+            src={me.avatar}
+          />
+          <Text>{me.email}</Text>
+          <Text strong>Balance: {me.balance}</Text>
 
-          <Form
-            {...layout}
-            form={form}
-            name="nest-messages"
-            onFinish={onFinish}
-            validateMessages={validateMessages}
+          <span>Sync with Instagram?</span>
+          <InstagramFilled
+            onClick={() => requestSyncInstagram()}
+            size={10}
+            style={{
+              fontSize: "3em",
+              color: "#ffd800",
+            }}
+          />
+        </div>
+
+        <Form
+          {...layout}
+          form={form}
+          name="nest-messages"
+          onFinish={onFinish}
+          validateMessages={validateMessages}
+        >
+          <Form.Item
+            name={"first_name"}
+            label="First Name"
+            rules={[{ required: true }]}
           >
-            <Form.Item
-              name={"first_name"}
-              label="First Name"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={"last_name"}
-              label="Last Name"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={"auto_accept_blow"}
-              label="Accept messages below"
-              rules={[{ type: "number", min: 0, max: 1000000 }]}
-            >
-              <InputNumber />
-            </Form.Item>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={"last_name"}
+            label="Last Name"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={"auto_accept_blow"}
+            label="Accept messages below"
+            rules={[{ type: "number", min: 0, max: 1000000 }]}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+      {list && <ImageList items={list} />}
+    </>
   );
 };
 

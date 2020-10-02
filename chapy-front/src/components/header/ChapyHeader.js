@@ -55,7 +55,7 @@ export default function ChapyHeader() {
     </Menu>
   );
   return (
-    <Header>
+    <Header style={{ borderBottom: "1px solid #ECEFF1" }} >
       <Row align="middle" style={{ height: "100%" }}>
         <Col xs={9} sm={9}>
           <Link to={"/"}>

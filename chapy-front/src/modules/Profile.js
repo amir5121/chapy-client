@@ -48,10 +48,10 @@ export default function Profile() {
 
   return (
     <Row>
-      <Col xs={8} sm={12} md={8} lg={6}>
-        <SideMenu menuSelect={setSelectedItem} />
+      <Col xs={8} lg={6}>
+        <SideMenu menuSelect={setSelectedItem} selectedItem={selectedItem}/>
       </Col>
-      <Col xs={16} sm={12} md={16} lg={18}>
+      <Col xs={16} lg={18}>
         {selectedItem === "profile" && (
           <ProfileForm
             onFinish={onFinish}

@@ -18,7 +18,6 @@ export default function ChapyFooter() {
     location.pathname.match(/\/chat\/.+/g) ||
     location.pathname.includes("authorize-instagram")
   );
-  console.log(location.pathname, visible);
 
   return (
     visible && (
