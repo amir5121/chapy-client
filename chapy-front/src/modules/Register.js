@@ -14,9 +14,13 @@ export default function Register() {
 
   const onFinish = (values) => {
     dispatch(registerUser(values)).then((result) => {
+      console.log("registerrrrr", result);
       result.type === registerUser.rejected().type &&
         message.error(result.payload.message, 10);
-      result.type === registerUser.fulfilled().type && history.push("/login/");
+      if (result.type === registerUser.fulfilled().type) {
+        message.success("Register success. Now you can login", 8);
+        history.push("/login/");
+      }
     });
   };
 

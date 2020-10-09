@@ -5,9 +5,13 @@ import "./ProfileForm.less";
 import { Button, Form, Input, InputNumber } from "antd";
 import Image from "antd/lib/image";
 import Text from "antd/lib/typography/Text";
-import { InstagramFilled } from "@ant-design/icons";
+import { InstagramFilled, SyncOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import ImageList from "../imageList/ImageList";
+import { Link } from "react-router-dom";
+import Divider from "antd/es/divider";
+import Space from "antd/es/space";
+import Row from "antd/es/grid/row";
 
 const layout = {
   labelCol: { span: 12 },
@@ -71,52 +75,74 @@ const ProfileForm = (props) => {
           />
           <Text>{me.email}</Text>
           <Text strong>Balance: {me.balance}</Text>
-
-          <span>Sync with Instagram?</span>
-          <InstagramFilled
-            onClick={() => requestSyncInstagram()}
-            size={10}
-            style={{
-              fontSize: "3em",
-              color: "#ffd800",
-            }}
-          />
         </div>
-
         <Form
-          {...layout}
           form={form}
-          name="nest-messages"
+          style={{ margin: "auto" }}
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
           <Form.Item
-            name={"first_name"}
+            name="first_name"
             label="First Name"
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name={"last_name"}
+            name="last_name"
             label="Last Name"
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name={"auto_accept_blow"}
+            name="auto_accept_blow"
             label="Accept messages below"
             rules={[{ type: "number", min: 0, max: 1000000 }]}
           >
             <InputNumber />
           </Form.Item>
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
-            <Button type="primary" htmlType="submit">
+          <Form.Item>
+            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
               Submit
             </Button>
           </Form.Item>
         </Form>
+        {me.instagram ? (
+          <>
+            <Divider>
+              {me.instagram.username}
+              <SyncOutlined
+                style={{ padding: "0 0.5em" }}
+                onClick={() => requestSyncInstagram()}
+              />
+            </Divider>
+            {/*<div*/}
+            {/*  style={{*/}
+            {/*    width: "100%",*/}
+            {/*    display: "flex",*/}
+            {/*    justifyContent: "space-evenly",*/}
+            {/*    flexWrap: "wrap",*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  <Button*/}
+            {/*    onClick={() => requestSyncInstagram()}*/}
+            {/*    icon={<SyncOutlined style={{ fontSize: "1em" }} />}*/}
+            {/*  />*/}
+            {/*  /!*<Text> Media count: {me.instagram.media_count}</Text>*!/*/}
+            {/*  /!*<Text> Follower count: {me.instagram.media_count}</Text>*!/*/}
+            {/*  /!*<Text> Following count: {me.instagram.media_count}</Text>*!/*/}
+            {/*</div>*/}
+          </>
+        ) : (
+          <Button
+            icon={<InstagramFilled />}
+            onClick={() => requestSyncInstagram()}
+          >
+            Sync with Instagram
+          </Button>
+        )}
       </div>
       {list && <ImageList items={list} />}
     </>

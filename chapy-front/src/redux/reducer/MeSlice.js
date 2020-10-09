@@ -63,7 +63,7 @@ export const meSlice = createSlice({
     },
     [getMe.fulfilled]: (state, action) => {
       state.data = action.payload.data;
-      state.status = FULFILLED;
+      state.status = IDLE;
     },
     [getMe.rejected]: (state, action) => {
       state.status = REJECTED;
@@ -73,7 +73,7 @@ export const meSlice = createSlice({
       state.me_update_status = PENDING;
     },
     [updateMe.fulfilled]: (state, action) => {
-      state.me_update_status = FULFILLED;
+      state.me_update_status = IDLE;
     },
     [updateMe.rejected]: (state, action) => {
       state.me_update_status = REJECTED;

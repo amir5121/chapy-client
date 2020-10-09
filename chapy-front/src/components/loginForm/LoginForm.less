@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.less";
+
 .login-form-forgot {
   float: start;
 }
@@ -8,4 +10,30 @@
 
 .login-form-button {
   width: 100%;
+}
+.login-form-sides-container {
+  > div {
+    height: 70vh;
+    //background: white;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
+.register-in-login {
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: white !important;
+  }
+  background-size: cover;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(245, 246, 252, 0.2),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("https://ci.phncdn.com/pics/albums/033/101/651/415779011/(m=e-yaaGqaa)(mh=22M0CQB-mans_Syb)original_415779011.jpg");
+  background-color: @primary-color;
 }

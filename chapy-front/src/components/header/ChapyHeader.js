@@ -1,26 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ChapyHeader.less";
+import { Col, Input, Layout, Row, Typography } from "antd";
 import {
-  Button,
-  Col,
-  Dropdown,
-  Input,
-  Layout,
-  Menu,
-  Row,
-  Typography,
-} from "antd";
-import {
-  HomeOutlined,
   PoweroffOutlined,
   RedEnvelopeOutlined,
-  SettingFilled,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
-import { Link, useHistory } from "react-router-dom";
-import { logout } from "../../utils/Authenticate";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { authStateSelector, logoutUser } from "../../redux/reducer/AuthSlice";
+import {authStateSelector, logoutUser} from "../../redux/reducer/AuthSlice";
 import { FULFILLED } from "../../utils/Constatns";
+import SideMenu from "../sideMenu/SideMenu";
+import { logout } from "../../utils/Authenticate";
+import { selectMe } from "../../redux/reducer/MeSlice";
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -28,61 +20,62 @@ const { Search } = Input;
 
 export default function ChapyHeader() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const isLoggedIn = useSelector(authStateSelector) === FULFILLED;
+  const me = useSelector(selectMe);
 
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <Link to="/profile/profile/">Profile</Link>
-      </Menu.Item>
-      <Menu.Item>
-        <Link to="/profile/transactions/">Transactions</Link>
-      </Menu.Item>
-      <Menu.Item danger={isLoggedIn}>
-        <Button
-          onClick={() =>
-            isLoggedIn
-              ? dispatch(logoutUser()).then((result) => {
-                  logout("/");
-                })
-              : history.push("/login")
-          }
-        >
-          {isLoggedIn ? "LogOut!" : "RegisterForm! Or Register"}
-        </Button>
-      </Menu.Item>
-    </Menu>
-  );
+  function handleLogout() {
+    dispatch(logoutUser()).then((result) => {
+      logout("/");
+    });
+  }
   return (
-    <Header style={{ borderBottom: "1px solid #ECEFF1" }} >
+    <Header style={{ borderBottom: "1px solid #ECEFF1" }}>
+      {isLoggedIn && (
+        <SideMenu
+          isOpen={drawerOpen}
+          isLoggedIn={isLoggedIn}
+          logout={handleLogout}
+          me={me}
+          close={() => setDrawerOpen(false)}
+        />
+      )}
       <Row align="middle" style={{ height: "100%" }}>
-        <Col xs={9} sm={9}>
+        <Col xs={20} sm={9}>
+          {isLoggedIn && (
+            <UnorderedListOutlined
+              onClick={() => setDrawerOpen(!drawerOpen)}
+              style={{ padding: "8px" }}
+            />
+          )}
           <Link to={"/"}>
-            <Title level={3}>Chapy</Title>
+            <Title
+              level={3}
+              style={{
+                display: "inline-flex",
+                marginLeft: "16px",
+                marginRight: "16px",
+              }}
+            >
+              Chapy
+            </Title>
           </Link>
         </Col>
-        <Col sm={6} className={"hidden-sm"}>
+        <Col sm={6} className={"hidden-sm-down"}>
           <Search
             placeholder="input search text"
             onSearch={(value) => console.log(value)}
             style={{ width: "100%" }}
           />
         </Col>
-        <Col xs={15} sm={9} className="header-icons">
-          <Link to={"/"}>
-            <HomeOutlined />
-          </Link>
-          <Link to={"/chat/"}>
-            <RedEnvelopeOutlined />
-          </Link>
-          {isLoggedIn ? (
-            <Dropdown overlay={menu}>
-              <SettingFilled />
-            </Dropdown>
-          ) : (
+        <Col xs={4} sm={9} className="header-icons">
+          {!isLoggedIn ? (
             <Link to={"/login/"}>
               <PoweroffOutlined />
+            </Link>
+          ) : (
+            <Link to={"/chat/"}>
+              <RedEnvelopeOutlined />
             </Link>
           )}
         </Col>

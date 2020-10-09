@@ -6,13 +6,15 @@ import Space from "antd/es/space";
 import Table from "antd/es/table";
 
 import { DownCircleTwoTone, UpCircleTwoTone } from "@ant-design/icons";
+import Col from "antd/es/grid/col";
+import Row from "antd/es/grid/row";
 
 const Transactions = (props) => {
   const { transactions } = props;
-  let sortedInfo = null;
-  let filteredInfo = null;
-  sortedInfo = sortedInfo || {};
-  filteredInfo = filteredInfo || {};
+  // let sortedInfo = null;
+  // let filteredInfo = null;
+  // sortedInfo = sortedInfo || {};
+  // filteredInfo = filteredInfo || {};
   const columns = [
     {
       title: "Name",
@@ -22,7 +24,7 @@ const Transactions = (props) => {
         { text: "London", value: "London" },
         { text: "New York", value: "New York" },
       ],
-      filteredValue: filteredInfo.address || null,
+      // filteredValue: filteredInfo.address || null,
       onFilter: (value, record) => record.address.includes(value),
       render: (user) => (
         <Space>
@@ -60,11 +62,15 @@ const Transactions = (props) => {
     },
   ];
   return (
-    <Table
-      columns={columns}
-      dataSource={transactions}
-      onChange={(e) => console.log("chasnnngeeddd", e)}
-    />
+    <Row justify="center">
+      <Col xs={24} md={18}>
+        <Table
+          columns={columns}
+          dataSource={transactions}
+          onChange={(e) => console.log("chasnnngeeddd", e)}
+        />
+      </Col>
+    </Row>
   );
 };
 

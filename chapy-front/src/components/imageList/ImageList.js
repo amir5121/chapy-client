@@ -1,32 +1,29 @@
 import React from "react";
 import "./ImageList.less";
-import Card from "antd/es/card";
 import Row from "antd/es/grid/row";
 import Col from "antd/es/grid/col";
-import Fade from "react-reveal/Fade";
+import Title from "antd/es/typography/Title";
 
-const { Meta } = Card;
-export default function ImageList(props) {
+export default function ImageList(props, backgroundColor = "white") {
   const { items } = props;
   return (
-    <Fade bottom>
-      <Row>
-        {items.map((el, index) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={index}>
-            <a href={`${el.link}`}>
-              <Card
-                hoverable
-                className="home-people-card"
-                cover={<img alt={el.title} src={el.image} />}
-              >
-                {el.title && (
-                  <Meta title={el.title} description={el.description} />
-                )}
-              </Card>
-            </a>
-          </Col>
-        ))}
-      </Row>
-    </Fade>
+    <Row style={{ backgroundColor: "white"}}>
+      {items.map((el, index) => (
+        <Col xs={24} sm={12} md={8} lg={6} key={index}>
+          <a href={`${el.link}`}>
+            <div
+              className="home-people-card"
+              style={{ backgroundImage: `url('${el.image}')` }}
+            />
+            {el.title && (
+              <div style={{ padding: "1vh" }}>
+                <Title level={5}>{el.title}</Title>
+                <p>{el.description}</p>
+              </div>
+            )}
+          </a>
+        </Col>
+      ))}
+    </Row>
   );
 }

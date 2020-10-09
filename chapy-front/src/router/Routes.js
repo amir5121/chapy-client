@@ -22,6 +22,8 @@ import {
 } from "../redux/reducer/NotificationSlice";
 import { objectValues } from "../utils/JavascriptHelpers";
 import InstagramAuthorize from "../modules/InstagramAuthorize";
+import InfluencerSwitch from "../modules/InfluencerSwitch";
+import Transaction from "../modules/Transaction";
 
 const { Content } = Layout;
 
@@ -69,13 +71,18 @@ const Routes = () => {
                   <PrivateRoute path="/chat/:username" component={Chat} />
                   <PrivateRoute path="/chat" component={Conversations} />
                   <PrivateRoute
+                    path="/to-influencer"
+                    component={InfluencerSwitch}
+                  />
+                  <PrivateRoute
                     path="/authorize-instagram"
                     component={InstagramAuthorize}
                   />
                   <PrivateRoute
-                    path="/profile/:selectedTab?"
-                    component={Profile}
+                    path="/transactions"
+                    component={Transaction}
                   />
+                  <PrivateRoute path="/profile" component={Profile} />
                   <Route path="/" component={Home} />
                 </Switch>
               </Content>

@@ -1,10 +1,13 @@
 @import "~antd/dist/antd.less";
 @media (max-width: @screen-sm-min) {
-  .hidden-sm {
+  .hidden-sm-down {
     display: none !important;
   }
 }
 @media (min-width: @screen-sm-min) {
+  .hidden-sm-up {
+    display: none !important;
+  }
   .visible-sm {
     display: block !important;
   }
@@ -132,7 +135,12 @@ p {
   margin: 0;
   padding: 0;
 }
-
+/** overrides **/
 .ant-skeleton {
   background: white;
+}
+
+.ant-form-item-label:extend(.ant-form-item-label) {
+  text-align: start !important;
+  margin-inline-end: 8px;
 }
