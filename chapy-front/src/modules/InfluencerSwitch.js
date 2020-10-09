@@ -1,8 +1,8 @@
 import React from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getMe, updateMe } from "../redux/reducer/MeSlice";
+import { getMe, selectMe, updateMe } from "../redux/reducer/MeSlice";
 import Title from "antd/es/typography/Title";
 import Card from "antd/es/card";
 import { Col } from "antd";
@@ -16,10 +16,11 @@ import { message } from "antd/es";
 export default function InfluencerSwitch() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const me = useSelector(selectMe);
 
   function switchToInfluencer() {
     dispatch(updateMe({ can_charge: true })).then((result) => {
-      console.log(result)
+      console.log(result);
       result.type === updateMe.rejected().type &&
         message.error("Something went wrong", 8);
       if (result.type === updateMe.fulfilled().type) {
@@ -50,17 +51,31 @@ export default function InfluencerSwitch() {
               internet.
             </li>
           </ul>
-          <Alert message="This process is irreversible" type="warning" />
+          <Alert message="NOTE: This process is irreversible" type="warning" />
           <br />
+
+          {!Boolean(me.instagram) && (
+            <>
+              <Alert
+                message="You need to sync with instagram first. Head to your profile first"
+                type="error"
+              />
+              <br />
+            </>
+          )}
           <Space>
             <Button
-              style={{ color: "white", backgroundColor: "#43A047" }}
               onClick={switchToInfluencer}
+              disabled={!Boolean(me.instagram)}
             >
               Yes, i'm sure
             </Button>
             <Link to="/profile/">
-              <Button danger>No take me back</Button>
+              <Button danger={Boolean(me.instagram)}>
+                {Boolean(me.instagram)
+                  ? "No take me back"
+                  : "Take me to profile"}
+              </Button>
             </Link>
           </Space>
         </Card>
