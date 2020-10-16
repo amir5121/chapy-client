@@ -1,10 +1,10 @@
 import axios from "axios";
 import { getAuthToken, isLoggedIn, logout } from "./Authenticate";
 import { get } from "lodash";
-import { baseUrl, isProduction } from "../LocalSetting";
+import { httpBaseUrl } from "../Setting";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = `${isProduction ? "https" : "http"}://${baseUrl}`;
+axios.defaults.baseURL = httpBaseUrl;
 axios.interceptors.request.use(
   (config) => {
     isLoggedIn() &&
@@ -29,7 +29,6 @@ axios.interceptors.response.use(
   }
 );
 
-
 export default class chapios {
   static post = (url) => (data, thunkApi) =>
     axios
@@ -46,6 +45,19 @@ export default class chapios {
   static patch = (url) => (data, thunkApi) =>
     axios
       .patch(url, data)
+      .then((response) => response.data)
+      .catch((error) => thunkApi.rejectWithValue(error));
+
+  static upload = (url) => (data, thunkApi) =>
+    axios
+      .post(url, data, {
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
+        onUploadProgress: (progressEvent) => {
+          console.log("progressEvent:::::", progressEvent);
+        },
+      })
       .then((response) => response.data)
       .catch((error) => thunkApi.rejectWithValue(error));
 }

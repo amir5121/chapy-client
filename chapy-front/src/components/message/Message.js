@@ -1,8 +1,9 @@
 import React from "react";
 import "./Message.less";
-import { Row } from "antd";
+import { Image, Row } from "antd";
 import { toPersian } from "../../utils/DateConvertor";
 import { CheckCircleFilled } from "@ant-design/icons";
+import { httpBaseUrl } from "../../Setting";
 
 const Message = (props) => {
   const {
@@ -14,6 +15,7 @@ const Message = (props) => {
     need_payment,
     acceptCharge,
     identifier,
+    file,
   } = props;
   return (
     <Row
@@ -41,10 +43,13 @@ const Message = (props) => {
           <p className="chat-content">{text}</p>
         )}
         {!is_date && (
-          <p className="chat-date">
-            <span>{toPersian(created, "TIME")}</span>
-            {!need_payment && cost && <span>&nbsp;${cost}</span>}
-          </p>
+          <>
+            {file && <Image src={httpBaseUrl + file} />}
+            <p className="chat-date">
+              <span>{toPersian(created, "TIME")}</span>
+              {!need_payment && cost && <span>&nbsp;${cost}</span>}
+            </p>
+          </>
         )}
       </div>
     </Row>

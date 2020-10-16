@@ -7,6 +7,7 @@ import messageReducer from "./reducer/MessageSlice";
 import socketReducer from "./reducer/SocketSlice";
 import profileReducer from "./reducer/ProfileSlice";
 import configReducer from "./reducer/ConfigSlice";
+import fileReducer from "./reducer/FileSlice";
 import notificationReducer from "./reducer/NotificationSlice";
 import socketMiddleware from "./SocketMiddleware";
 
@@ -22,6 +23,7 @@ const reducer = {
   transaction: transactionReducer,
   config: configReducer,
   notification: notificationReducer,
+  file: fileReducer,
 };
 
 const store = configureStore({ reducer, middleware });

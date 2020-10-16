@@ -21,11 +21,19 @@ import { sendMessageViaSocket } from "../LocalSetting";
 import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
 import StartConversation from "../components/startConversation/StartConversation";
+import { filePut } from "../redux/reducer/FileSlice";
+import Modal from "antd/es/modal";
+import { Image } from "antd";
+import { httpBaseUrl } from "../Setting";
 
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  const [modalContent, setModalContent] = useState({
+    visible: false,
+    file: null,
+  });
   const messagesRef = useRef(null);
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
@@ -39,18 +47,20 @@ export default function Chat() {
   const userProfile = useSelector((state) =>
     selectProfileById(state, username)
   );
+
   function loadMore() {
     conversationIdentifier &&
       !isLoading &&
       dispatch(initialConversationMessage(conversationIdentifier));
   }
+
   useEffect(() => {
-    dispatch(connect());
     conversationIdentifier
       ? dispatch(initialConversationMessage(conversationIdentifier)).then(() =>
           setIsLoading(false)
         )
       : dispatch(getConversations(username)).then((result) => {
+          dispatch(connect());
           result.type === getConversations.rejected().type &&
             setIsLoading(false);
         });
@@ -60,9 +70,15 @@ export default function Chat() {
     dispatch(getProfile(username));
   }, [dispatch, username]);
 
-  const onFinish = (values) => {
+  const sendMessage = (values) => {
     if (sendMessageViaSocket) {
-      dispatch(sendMessageSock({ message: values.message, user_id: username }));
+      dispatch(
+        sendMessageSock({
+          message: values.message,
+          user_id: username,
+          file: values.file,
+        })
+      );
       setTimeout(() => messagesRef.current.scrollToBottom(), 600);
     } else {
       dispatch(
@@ -85,6 +101,31 @@ export default function Chat() {
     });
   }
 
+  function modalOk(file) {
+    console.log("!@!@!@#####@@@", {file, modalContent});
+    sendMessage({
+      file: modalContent.file,
+      user_id: username,
+    });
+    setModalContent({ ...modalContent, visible: false });
+  }
+
+  function modalClose(file) {
+    setModalContent({ ...modalContent, visible: false });
+  }
+
+  function uploadFile(file) {
+    dispatch(filePut(file)).then((result) => {
+      console.log("upload complete", result, file);
+      setModalContent({
+        ...modalContent,
+        visible: true,
+        file: result.payload.data.file_path,
+      });
+    });
+    console.log("evvent", file);
+  }
+
   return isLoading ? (
     [...Array(10)].map((value, index) => (
       <Skeleton key={index} loading paragraph={{ rows: 1 }} />
@@ -101,6 +142,16 @@ export default function Chat() {
               backgroundColor: "rgba(223, 219, 229, 0.3)",
             }}
           >
+            <Modal
+              visible={modalContent.visible}
+              onOk={modalOk}
+              onCancel={modalClose}
+              title="Send file?"
+              okText="Send"
+              cancelText="Cancel"
+            >
+              <Image src={httpBaseUrl + modalContent.file} />
+            </Modal>
             <Messages
               ref={messagesRef}
               conversationMessages={conversationMessages}
@@ -108,7 +159,11 @@ export default function Chat() {
               loadMore={loadMore}
               loading={isLoading}
             />
-            <ChatBox sendMessage={onFinish} onFinishFailed={onFinishFailed} />
+            <ChatBox
+              sendMessage={sendMessage}
+              onFinishFailed={onFinishFailed}
+              uploadFile={uploadFile}
+            />
           </div>
         </>
       ) : (

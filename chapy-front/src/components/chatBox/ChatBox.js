@@ -2,16 +2,13 @@ import React, { useState } from "react";
 
 import "./ChatBox.less";
 import { Col, Form, Input, Row, Space } from "antd";
-import {
-  RedEnvelopeOutlined,
-  SendOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import { FileOutlined, SendOutlined, SmileOutlined } from "@ant-design/icons";
+import Uploader from "../Uploader/Uploader";
 
 const { TextArea } = Input;
 
 export default function ChatBox(props) {
-  const { sendMessage, onFinishFailed } = props;
+  const { sendMessage, onFinishFailed, uploadFile } = props;
   const [messageForm] = Form.useForm();
   const [hasMessage, setHasMessage] = useState(null);
 
@@ -53,7 +50,9 @@ export default function ChatBox(props) {
               />
             ) : (
               <Space className="message-action">
-                <RedEnvelopeOutlined />
+                <Uploader uploadFile={uploadFile}>
+                  <FileOutlined />
+                </Uploader>
                 <SmileOutlined />
               </Space>
             )}

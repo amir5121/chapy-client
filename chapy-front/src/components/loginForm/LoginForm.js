@@ -2,11 +2,10 @@ import React from "react";
 
 import "./LoginForm.less";
 
-import { Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Space } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Title from "antd/es/typography/Title";
-import Text from "antd/es/typography/Text";
 
 const LoginForm = (props) => {
   const { onFinish } = props;

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  CheckOutlined,
-  InstagramFilled,
-  RiseOutlined,
-} from "@ant-design/icons";
+import { InstagramFilled, RiseOutlined } from "@ant-design/icons";
 
 import "./StartConversation.less";
 import { Button, Image } from "antd";

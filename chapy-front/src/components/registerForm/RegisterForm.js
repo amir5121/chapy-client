@@ -6,7 +6,6 @@ import { Button, Col, Form, Input, Row, Space } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Title from "antd/es/typography/Title";
-import Text from "antd/es/typography/Text";
 
 const RegisterForm = (props) => {
   const { onFinish, errors, isLoading } = props;

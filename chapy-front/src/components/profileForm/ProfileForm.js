@@ -8,15 +8,7 @@ import Text from "antd/lib/typography/Text";
 import { InstagramFilled, SyncOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import ImageList from "../imageList/ImageList";
-import { Link } from "react-router-dom";
 import Divider from "antd/es/divider";
-import Space from "antd/es/space";
-import Row from "antd/es/grid/row";
-
-const layout = {
-  labelCol: { span: 12 },
-  wrapperCol: { span: 12 },
-};
 
 const validateMessages = {
   // eslint-disable-next-line no-template-curly-in-string

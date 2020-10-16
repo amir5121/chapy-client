@@ -8,9 +8,9 @@ import {
 
 import { updateUserMessages } from "./reducer/MessageSlice";
 import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
-import { baseUrl, isProduction } from "../LocalSetting";
+import { sockBaseUrl } from "../Setting";
 
-const ENDPOINT = `${isProduction ? "wss" : "ws"}://${baseUrl}/ws/chat/`;
+const ENDPOINT = sockBaseUrl;
 
 const socketMiddleware = () => {
   let socket = null;
