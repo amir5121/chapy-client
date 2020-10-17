@@ -23,13 +23,14 @@ import ChatHeader from "../components/chatHeader/ChatHeader";
 import StartConversation from "../components/startConversation/StartConversation";
 import { filePut } from "../redux/reducer/FileSlice";
 import Modal from "antd/es/modal";
-import { Image } from "antd";
+import { Image, Input } from "antd";
 import { httpBaseUrl } from "../Setting";
 
 export default function Chat() {
   const { username } = useParams();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  const [cost, setCost] = useState(null);
   const [modalContent, setModalContent] = useState({
     visible: false,
     file: null,
@@ -77,6 +78,7 @@ export default function Chat() {
           message: values.message,
           user_id: username,
           file: values.file,
+          cost: values.cost,
         })
       );
       setTimeout(() => messagesRef.current.scrollToBottom(), 600);
@@ -102,9 +104,10 @@ export default function Chat() {
   }
 
   function modalOk(file) {
-    console.log("!@!@!@#####@@@", {file, modalContent});
+    console.log("!@!@!@#####@@@", { file, modalContent });
     sendMessage({
       file: modalContent.file,
+      cost: Number(cost),
       user_id: username,
     });
     setModalContent({ ...modalContent, visible: false });
@@ -150,7 +153,15 @@ export default function Chat() {
               okText="Send"
               cancelText="Cancel"
             >
-              <Image src={httpBaseUrl + modalContent.file} />
+              <Image
+                src={httpBaseUrl + modalContent.file}
+                style={{ margin: "1em" }}
+              />
+              <Input
+                placeholder="Cost"
+                type="number"
+                onChange={(e) => setCost(e.target.value)}
+              />
             </Modal>
             <Messages
               ref={messagesRef}
@@ -160,7 +171,9 @@ export default function Chat() {
               loading={isLoading}
             />
             <ChatBox
-              sendMessage={sendMessage}
+              sendMessage={(values) => {
+                values.message && sendMessage(values);
+              }}
               onFinishFailed={onFinishFailed}
               uploadFile={uploadFile}
             />
