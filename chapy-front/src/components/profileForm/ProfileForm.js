@@ -88,13 +88,23 @@ const ProfileForm = (props) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="auto_accept_blow"
-            label="Accept messages below"
-            rules={[{ type: "number", min: 0, max: 1000000 }]}
-          >
-            <InputNumber />
-          </Form.Item>
+          {me.can_charge ? (
+            <Form.Item
+              name="cost_per_character"
+              label="Cost per character"
+              rules={[{ type: "number", min: 0, max: 100 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+          ) : (
+            <Form.Item
+              name="auto_accept_blow"
+              label="Accept messages below"
+              rules={[{ type: "number", min: 0, max: 1000000 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+          )}
           <Form.Item>
             <Button style={{ width: "100%" }} type="primary" htmlType="submit">
               Submit
@@ -129,6 +139,7 @@ const ProfileForm = (props) => {
           </>
         ) : (
           <Button
+            style={{ width: "100%" }}
             icon={<InstagramFilled />}
             onClick={() => requestSyncInstagram()}
           >

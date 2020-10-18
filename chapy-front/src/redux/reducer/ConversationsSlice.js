@@ -34,7 +34,7 @@ export const getConversations = createAsyncThunk(
   {
     condition: (_, { getState, extra }) => {
       const { conversations } = getState();
-      if (!isLoggedIn() || conversations.status === PENDING) {
+      if (!isLoggedIn() || conversations.status === PENDING || conversations.ids.length > 1) {
         return false;
       }
     },
@@ -71,7 +71,6 @@ export const conversationsSlice = createSlice({
   },
 });
 
-// export const {  } = conversationsSlice.actions;
 export const {
   selectAll: selectAllConversations,
   selectById: selectConversationById,

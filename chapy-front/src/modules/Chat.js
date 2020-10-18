@@ -20,13 +20,14 @@ import { getProfile, selectProfileById } from "../redux/reducer/ProfileSlice";
 import { sendMessageViaSocket } from "../LocalSetting";
 import ChatBox from "../components/chatBox/ChatBox";
 import ChatHeader from "../components/chatHeader/ChatHeader";
-import StartConversation from "../components/startConversation/StartConversation";
+import UserPage from "../components/startConversation/UserPage";
 import { filePut } from "../redux/reducer/FileSlice";
 import Modal from "antd/es/modal";
 import { Image, Input } from "antd";
 import { httpBaseUrl } from "../Setting";
 
-export default function Chat() {
+export default function Chat(props) {
+  const { justUserPage } = props;
   const { username } = useParams();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +62,8 @@ export default function Chat() {
           setIsLoading(false)
         )
       : dispatch(getConversations(username)).then((result) => {
-          dispatch(connect());
+          result.type === getConversations.fulfilled().type &&
+            dispatch(connect());
           result.type === getConversations.rejected().type &&
             setIsLoading(false);
         });
@@ -135,7 +137,7 @@ export default function Chat() {
     ))
   ) : (
     <div style={{ backgroundColor: "white" }}>
-      {conversationMessages ? (
+      {conversationMessages && !justUserPage ? (
         <>
           <ChatHeader socketState={socketState} userProfile={userProfile} />
           <div
@@ -180,7 +182,7 @@ export default function Chat() {
           </div>
         </>
       ) : (
-        <StartConversation
+        <UserPage
           userProfile={userProfile}
           startConversation={startConversation}
         />

@@ -6,7 +6,19 @@ import { Link } from "react-router-dom";
 
 const ConversationsList = (props) => {
   const { conversations } = props;
-
+  function get_message(conversation) {
+    let lastMessage = conversation.last_message;
+    if (!Boolean(lastMessage)) {
+      return "No message yet";
+    } else if (lastMessage.text) {
+      return lastMessage.text.length > 50
+        ? lastMessage.text.substr(0, 50) + "..."
+        : lastMessage.text;
+    } else if (lastMessage.file) {
+      return "File";
+    }
+    return "Ops unhandled";
+  }
   return (
     <Row
       type="flex"
@@ -37,13 +49,7 @@ const ConversationsList = (props) => {
                         <span>{item.user.full_name || item.user.username}</span>
                         <span>{item.modified}</span>
                       </p>
-                      <span className="description">
-                        {item.last_message.text
-                          ? item.last_message.text.length > 50
-                            ? item.last_message.text.substr(0, 50) + "..."
-                            : item.last_message.text
-                          : "No message yet"}
-                      </span>
+                      <span className="description">{get_message(item)}</span>
                     </div>
                   </Row>
                 </Link>

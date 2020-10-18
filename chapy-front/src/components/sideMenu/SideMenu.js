@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 import "./SideMenu.less";
 
-import { Avatar, Menu } from "antd";
+import { Menu } from "antd";
 
 import {
   DesktopOutlined,
@@ -10,7 +10,6 @@ import {
   RedEnvelopeOutlined,
   UserSwitchOutlined,
 } from "@ant-design/icons";
-import SubMenu from "antd/es/menu/SubMenu";
 import Button from "antd/es/button";
 import { useHistory } from "react-router-dom";
 import Text from "antd/lib/typography/Text";

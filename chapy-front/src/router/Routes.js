@@ -24,6 +24,7 @@ import { objectValues } from "../utils/JavascriptHelpers";
 import InstagramAuthorize from "../modules/InstagramAuthorize";
 import InfluencerSwitch from "../modules/InfluencerSwitch";
 import Transaction from "../modules/Transaction";
+import User from "../modules/User";
 
 const { Content } = Layout;
 
@@ -69,6 +70,7 @@ const Routes = () => {
                   <Route path="/login" component={Login} />
                   <Route path="/register" component={Register} />
                   <PrivateRoute path="/chat/:username" component={Chat} />
+                  <PrivateRoute path="/user/:username" component={User} />
                   <PrivateRoute path="/chat" component={Conversations} />
                   <PrivateRoute
                     path="/to-influencer"
@@ -78,10 +80,7 @@ const Routes = () => {
                     path="/authorize-instagram"
                     component={InstagramAuthorize}
                   />
-                  <PrivateRoute
-                    path="/transactions"
-                    component={Transaction}
-                  />
+                  <PrivateRoute path="/transactions" component={Transaction} />
                   <PrivateRoute path="/profile" component={Profile} />
                   <Route path="/" component={Home} />
                 </Switch>
