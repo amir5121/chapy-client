@@ -38,9 +38,11 @@ const ConversationsList = (props) => {
                         <span>{item.modified}</span>
                       </p>
                       <span className="description">
-                        {item.last_message.text.length > 50
-                          ? item.last_message.text.substr(0, 50) + "..."
-                          : item.last_message.text || "No message yet"}
+                        {item.last_message.text
+                          ? item.last_message.text.length > 50
+                            ? item.last_message.text.substr(0, 50) + "..."
+                            : item.last_message.text
+                          : "No message yet"}
                       </span>
                     </div>
                   </Row>
