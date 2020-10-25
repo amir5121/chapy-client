@@ -9,6 +9,7 @@ import { InstagramFilled, SyncOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import ImageList from "../imageList/ImageList";
 import Divider from "antd/es/divider";
+import { useTranslation } from "react-i18next";
 
 const validateMessages = {
   // eslint-disable-next-line no-template-curly-in-string
@@ -28,6 +29,7 @@ const validateMessages = {
 const ProfileForm = (props) => {
   const { onFinish, me, requestSyncInstagram } = props;
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   useEffect(() => {
     form.setFieldsValue({
@@ -66,7 +68,9 @@ const ProfileForm = (props) => {
             src={me.avatar}
           />
           <Text>{me.email}</Text>
-          <Text strong>Balance: {me.balance}</Text>
+          <Text strong>
+            {t("balance")}: {me.balance}
+          </Text>
         </div>
         <Form
           form={form}
@@ -76,14 +80,14 @@ const ProfileForm = (props) => {
         >
           <Form.Item
             name="first_name"
-            label="First Name"
+            label={t("firstName")}
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="last_name"
-            label="Last Name"
+            label={t("lastName")}
             rules={[{ required: true }]}
           >
             <Input />
@@ -91,7 +95,7 @@ const ProfileForm = (props) => {
           {me.can_charge ? (
             <Form.Item
               name="cost_per_character"
-              label="Cost per character"
+              label={t("costPerCharacter")}
               rules={[{ type: "number", min: 0, max: 100 }]}
             >
               <InputNumber />
@@ -99,7 +103,7 @@ const ProfileForm = (props) => {
           ) : (
             <Form.Item
               name="auto_accept_blow"
-              label="Accept messages below"
+              label={t("acceptBelow")}
               rules={[{ type: "number", min: 0, max: 1000000 }]}
             >
               <InputNumber />
@@ -107,7 +111,7 @@ const ProfileForm = (props) => {
           )}
           <Form.Item>
             <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-              Submit
+              {t("submit")}
             </Button>
           </Form.Item>
         </Form>
@@ -143,7 +147,7 @@ const ProfileForm = (props) => {
             icon={<InstagramFilled />}
             onClick={() => requestSyncInstagram()}
           >
-            Sync with Instagram
+            {t('instagramSync')}
           </Button>
         )}
       </div>

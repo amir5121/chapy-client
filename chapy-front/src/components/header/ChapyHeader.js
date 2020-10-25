@@ -8,11 +8,12 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {authStateSelector, logoutUser} from "../../redux/reducer/AuthSlice";
+import { authStateSelector, logoutUser } from "../../redux/reducer/AuthSlice";
 import { FULFILLED } from "../../utils/Constatns";
 import SideMenu from "../sideMenu/SideMenu";
 import { logout } from "../../utils/Authenticate";
 import { selectMe } from "../../redux/reducer/MeSlice";
+import { useTranslation } from "react-i18next";
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -23,6 +24,7 @@ export default function ChapyHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isLoggedIn = useSelector(authStateSelector) === FULFILLED;
   const me = useSelector(selectMe);
+  const { t } = useTranslation();
 
   function handleLogout() {
     dispatch(logoutUser()).then((result) => {
@@ -57,7 +59,7 @@ export default function ChapyHeader() {
                 marginRight: "16px",
               }}
             >
-              Chapy
+              {t("label")}
             </Title>
           </Link>
         </Col>

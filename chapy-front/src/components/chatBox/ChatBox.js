@@ -22,6 +22,7 @@ export default function ChatBox(props) {
         messageForm.submit();
         setTimeout(() => {
           messageForm.resetFields();
+          setMessage("");
         }, 100);
       }
     };
@@ -76,14 +77,13 @@ export default function ChatBox(props) {
           <Form.Item>
             {message.length > 0 ? (
               <>
-                <Text>
-                  {message.length * costPerCharacter}
-                </Text>{" "}
+                <Text>{message.length * costPerCharacter}</Text>{" "}
                 <SendOutlined
                   onClick={() => {
                     messageForm.submit();
                     setTimeout(() => {
                       messageForm.resetFields();
+                      setMessage("");
                     }, 100);
                   }}
                 />

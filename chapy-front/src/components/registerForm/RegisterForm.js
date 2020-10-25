@@ -6,11 +6,13 @@ import { Button, Col, Form, Input, Row, Space } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Title from "antd/es/typography/Title";
+import {useTranslation} from "react-i18next";
 
 const RegisterForm = (props) => {
   const { onFinish, errors, isLoading } = props;
   const [reTypeIsValid, setReTypeIsValid] = useState(null);
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   function validateAndFinish(values) {
     const passwordIsValid = values.password === values.password_retype;
@@ -55,13 +57,13 @@ const RegisterForm = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your Email!",
+                message: t("emailRequired"),
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Email"
+              placeholder={t("email")}
               autoComplete="username"
             />
           </Form.Item>
@@ -71,13 +73,13 @@ const RegisterForm = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your First name!",
+                message: t("firstNameRequired"),
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="First name"
+              placeholder={t("firstName")}
               autoComplete="first_name"
             />
           </Form.Item>
@@ -87,13 +89,13 @@ const RegisterForm = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your Last name!",
+                message: t("lastNameRequired"),
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Last name"
+              placeholder={t("lastName")}
               autoComplete="last_name"
             />
           </Form.Item>
@@ -102,7 +104,7 @@ const RegisterForm = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: t("passwordRequired"),
               },
             ]}
           >
@@ -110,7 +112,7 @@ const RegisterForm = (props) => {
               allowClear
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder={t("password")}
               autoComplete="new-password"
             />
           </Form.Item>
@@ -120,13 +122,13 @@ const RegisterForm = (props) => {
             help={
               reTypeIsValid === null || reTypeIsValid
                 ? null
-                : "Password do not match"
+                : t("passwordDoNotMatch")
             }
             name="password_retype"
             rules={[
               {
                 required: true,
-                message: "Please input your Password again!",
+                message: t("passwordAgainRequired"),
               },
             ]}
           >
@@ -134,7 +136,7 @@ const RegisterForm = (props) => {
               allowClear
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password_retype"
-              placeholder="Password retype"
+              placeholder={t("passwordAgain")}
               autoComplete="new-password"
             />
           </Form.Item>

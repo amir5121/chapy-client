@@ -15,10 +15,12 @@ import { useHistory } from "react-router-dom";
 import Text from "antd/lib/typography/Text";
 import OutsideClickListener from "../../utils/OutsideClickListener";
 import Title from "antd/es/typography/Title";
+import { useTranslation } from "react-i18next";
 
 const SideMenu = (props) => {
   const { isOpen, isLoggedIn, logout, close, me } = props;
   const menuRef = useRef(null);
+  const { t } = useTranslation();
   const location = useHistory();
   function switchTab(newLocation) {
     location.push(newLocation);
@@ -33,57 +35,37 @@ const SideMenu = (props) => {
       style={{ display: isOpen ? "block" : "none" }}
     >
       <div className="chapy-hamburger" ref={menuRef}>
-        <img
-          alt="profile"
-          src={me.avatar}
-          style={{ maxWidth: "256px" }}
-        />
+        <img alt="profile" src={me.avatar} style={{ maxWidth: "256px" }} />
         <div style={{ padding: "1em", textAlign: "center" }}>
           <Title level={3}>{me.full_name}</Title>
-          <Text strong>Balance: {me.balance}</Text>
+          <Text strong>
+            {t("balance")}: {me.balance}
+          </Text>
         </div>
         <Menu
           style={{ width: "100%", height: "150%" }}
-          // onClick={this.handleClick}
-          // onSelect={(e) => menuSelect(e.key)}
-
-          // defaultSelectedKeys={[selectedItem]}
-          // defaultOpenKeys={["sub1"]}
           mode="inline"
         >
-          {/*<SubMenu*/}
-          {/*  key="sub1"*/}
-          {/*  title={*/}
-          {/*    <span>*/}
-          {/*      <DesktopOutlined />*/}
-          {/*      <span>User</span>*/}
-          {/*    </span>*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*  <Menu.ItemGroup key="g1">*/}
-          {/*  </Menu.ItemGroup>*/}
-          {/*</SubMenu>*/}
-
           <Menu.Item
             key="profile"
             icon={<DesktopOutlined />}
             onClick={() => switchTab("/profile")}
           >
-            Profile
+            {t("profile")}
           </Menu.Item>
           <Menu.Item
             key="transactions"
             icon={<PieChartOutlined />}
             onClick={() => switchTab("/transactions")}
           >
-            Transactions
+            {t("transactions")}
           </Menu.Item>
           <Menu.Item
             key="conversations"
             icon={<RedEnvelopeOutlined />}
             onClick={() => switchTab("/chat")}
           >
-            Conversations
+            {t("conversations")}
           </Menu.Item>
           {!me.can_charge && (
             <Menu.Item
@@ -91,7 +73,7 @@ const SideMenu = (props) => {
               icon={<UserSwitchOutlined style={{ color: "#FFD600" }} />}
               onClick={() => switchTab("/to-influencer")}
             >
-              Switch to influencer
+              {t("switchToInfluencer")}
             </Menu.Item>
           )}
           {isLoggedIn && (
@@ -101,7 +83,7 @@ const SideMenu = (props) => {
                 style={{ width: "100%" }}
                 onClick={() => logout()}
               >
-                LogOut!
+                {t("logout")}
               </Button>
             </Menu.Item>
           )}
