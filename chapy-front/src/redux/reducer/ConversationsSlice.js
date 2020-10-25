@@ -13,7 +13,7 @@ const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
   selectId: (instance) => instance.identifier,
   sortComparer: (a, b) => {
-    return a.last_message.created > b.last_message.created
+    return a.last_message.created > b.last_message.created;
   },
 });
 
@@ -66,15 +66,10 @@ export const conversationsSlice = createSlice({
       state.status = REJECTED;
     },
     [createConversation.fulfilled]: (state, action) => {
-      console.log("fulfilled #!@#!@#------------", action.payload);
       // conversationAdapter.upsertOne(state, action.payload.data)
     },
-    [createConversation.pending]: (state, action) => {
-      console.log("pending #!@#!@#------------", action.payload);
-    },
-    [createConversation.rejected]: (state, action) => {
-      console.log("rejected #!@#!@#------------", action.payload);
-    },
+    [createConversation.pending]: (state, action) => {},
+    [createConversation.rejected]: (state, action) => {},
   },
 });
 

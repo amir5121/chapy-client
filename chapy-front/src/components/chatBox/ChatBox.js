@@ -31,7 +31,6 @@ export default function ChatBox(props) {
       document.removeEventListener("keydown", listener);
     };
   }, [messageForm]);
-  console.log("pppspapapapapa", costPerCharacter);
   // useEffect(() => {
   //   textareaRef.onKeyDown = function (e) {
   //     console.log("aaeaeeeeee", e);

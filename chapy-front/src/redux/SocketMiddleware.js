@@ -16,7 +16,6 @@ const socketMiddleware = () => {
   let socket = null;
   let pingIntervalId = null;
   let retries = 0;
-  console.log(connect);
   const onOpen = (store) => (event) => {
     console.log("websocket open", event.target.url);
     sendMessage(socket, {}, true, "AUTHENTICATE")

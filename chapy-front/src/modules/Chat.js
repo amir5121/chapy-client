@@ -25,7 +25,7 @@ import { filePut } from "../redux/reducer/FileSlice";
 import Modal from "antd/es/modal";
 import { Image, Input } from "antd";
 import { httpBaseUrl } from "../Setting";
-import {selectMe} from "../redux/reducer/MeSlice";
+import { selectMe } from "../redux/reducer/MeSlice";
 
 export default function Chat(props) {
   const { justUserPage } = props;
@@ -60,8 +60,11 @@ export default function Chat(props) {
 
   useEffect(() => {
     conversationIdentifier
-      ? dispatch(initialConversationMessage(conversationIdentifier)).then(() =>
-          setIsLoading(false)
+      ? dispatch(initialConversationMessage(conversationIdentifier)).then(
+          () => {
+            setIsLoading(false);
+            dispatch(connect());
+          }
         )
       : dispatch(getConversations(username)).then((result) => {
           result.type === getConversations.fulfilled().type &&
