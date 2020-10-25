@@ -1,7 +1,16 @@
 .message-header {
-  padding: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 0.25em;
+  align-items: center;
+  & > * {
+    padding: 0 0.5em;
+  }
   @media only screen and (min-width: 768px) {
     border: 1px solid rgb(235, 237, 240);
-    padding: 0 1em 1em 1em;
+    padding: 1em;
+    & > * {
+      padding: 0 1em;
+    }
   }
 }

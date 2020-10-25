@@ -34,11 +34,11 @@ const SideMenu = (props) => {
     >
       <div className="chapy-hamburger" ref={menuRef}>
         <img
-          alt="profile picture"
+          alt="profile"
           src={me.avatar}
           style={{ maxWidth: "256px" }}
         />
-        <div style={{ padding: "1em 0", textAlign: "center" }}>
+        <div style={{ padding: "1em", textAlign: "center" }}>
           <Title level={3}>{me.full_name}</Title>
           <Text strong>Balance: {me.balance}</Text>
         </div>

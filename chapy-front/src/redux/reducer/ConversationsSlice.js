@@ -12,6 +12,9 @@ import { isLoggedIn } from "../../utils/Authenticate";
 const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
   selectId: (instance) => instance.identifier,
+  sortComparer: (a, b) => {
+    return a.last_message.created > b.last_message.created
+  },
 });
 
 const initialState = conversationAdapter.getInitialState({
@@ -34,7 +37,11 @@ export const getConversations = createAsyncThunk(
   {
     condition: (_, { getState, extra }) => {
       const { conversations } = getState();
-      if (!isLoggedIn() || conversations.status === PENDING || conversations.ids.length > 1) {
+      if (
+        !isLoggedIn() ||
+        conversations.status === PENDING ||
+        conversations.ids.length > 1
+      ) {
         return false;
       }
     },

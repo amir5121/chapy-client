@@ -25,6 +25,7 @@ import { filePut } from "../redux/reducer/FileSlice";
 import Modal from "antd/es/modal";
 import { Image, Input } from "antd";
 import { httpBaseUrl } from "../Setting";
+import {selectMe} from "../redux/reducer/MeSlice";
 
 export default function Chat(props) {
   const { justUserPage } = props;
@@ -40,6 +41,7 @@ export default function Chat(props) {
   const conversationIdentifier = useSelector(
     selectConversationIdentifier(username)
   );
+  const me = useSelector(selectMe);
 
   const conversationMessages = useSelector((state) =>
     selectMessagesByConversationIdentifier(state, conversationIdentifier)
@@ -178,6 +180,7 @@ export default function Chat(props) {
               }}
               onFinishFailed={onFinishFailed}
               uploadFile={uploadFile}
+              costPerCharacter={me.cost_per_character}
             />
           </div>
         </>

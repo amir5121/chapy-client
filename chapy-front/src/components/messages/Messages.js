@@ -41,7 +41,6 @@ const Messages = forwardRef((props, ref) => {
   const messages = addDateToMessages(conversationMessages?.messages) || [];
   function scrolled(element) {
     // const { scrollHeight, scrollTop, clientHeight } = element.target;
-
     if (element.target.scrollTop < 1000) {
       // console.log(
       //   `%c @#!@#!@#!@#!@#!@#!@#!@#!, ${scrollHeight}  ${scrollTop} ${clientHeight}`,

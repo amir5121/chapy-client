@@ -3,6 +3,7 @@ import React from "react";
 import "./ConversationsList.less";
 import { Avatar, Card, Col, List, Row } from "antd";
 import { Link } from "react-router-dom";
+import { toPersian } from "../../utils/DateConvertor";
 
 const ConversationsList = (props) => {
   const { conversations } = props;
@@ -30,7 +31,7 @@ const ConversationsList = (props) => {
         backgroundColor: "rgba(223, 219, 229, 0.3)",
       }}
     >
-      <Col md={24} lg={20}>
+      <Col xs={24} md={20} lg={18}>
         <Card>
           <List
             itemLayout="horizontal"
@@ -47,7 +48,7 @@ const ConversationsList = (props) => {
                     <div className="conversation-content">
                       <p className="title">
                         <span>{item.user.full_name || item.user.username}</span>
-                        <span>{item.modified}</span>
+                        <span>{toPersian(item.last_message.created)}</span>
                       </p>
                       <span className="description">{get_message(item)}</span>
                     </div>

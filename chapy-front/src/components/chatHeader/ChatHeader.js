@@ -1,30 +1,30 @@
 import React from "react";
 
 import "./ChatHeader.less";
-import { Button, PageHeader } from "antd";
+import { Avatar } from "antd";
 import { CONNECTED } from "../../utils/Constatns";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import Text from "antd/es/typography/Text";
+
+import { ArrowLeftOutlined, LoadingOutlined } from "@ant-design/icons";
 
 export default function ChatHeader(props) {
   const { socketState, userProfile } = props;
   const history = useHistory();
 
   return (
-    <PageHeader
-      className="message-header"
-      onBack={() => history.push("/chat/")}
-      title={userProfile?.full_name}
-      subTitle={userProfile?.email}
-      avatar={
-        userProfile && {
-          src: userProfile.avatar,
-        }
-      }
-      extra={[
-        socketState !== CONNECTED && (
-          <Button key="loading" type="primary" size="small" loading />
-        ),
-      ]}
-    />
+    <div className="message-header">
+      <ArrowLeftOutlined onClick={() => history.push("/chat/")} />
+      <Link to={`/user/${userProfile?.username}`}>
+        <Avatar size="large" src={userProfile?.avatar} />
+      </Link>
+      <Link to={`/user/${userProfile?.username}`}>
+        <Text style={{ fontSize: "1.5em" }} strong>
+          {userProfile?.full_name}
+        </Text>{" "}
+        <Text type="secondary">{userProfile?.email}</Text>
+      </Link>
+      {socketState !== CONNECTED && <LoadingOutlined />}
+    </div>
   );
 }

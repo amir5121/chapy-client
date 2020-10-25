@@ -19,7 +19,7 @@ export default function Conversations() {
     dispatch(initialConfig());
     dispatch(getConversations());
   }, [dispatch]);
-
+  console.log("aoaoaoasdpokasd", {conversations})
   return conversations.length > 0 ? (
     <ConversationsList conversations={conversations} />
   ) : (

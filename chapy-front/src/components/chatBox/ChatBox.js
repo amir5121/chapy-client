@@ -4,13 +4,14 @@ import "./ChatBox.less";
 import { Col, Form, Input, Row, Space } from "antd";
 import { FileOutlined, SendOutlined, SmileOutlined } from "@ant-design/icons";
 import Uploader from "../Uploader/Uploader";
+import Text from "antd/es/typography/Text";
 
 const { TextArea } = Input;
 
 export default function ChatBox(props) {
-  const { sendMessage, onFinishFailed, uploadFile } = props;
+  const { sendMessage, onFinishFailed, uploadFile, costPerCharacter } = props;
   const [messageForm] = Form.useForm();
-  const [hasMessage, setHasMessage] = useState(null);
+  const [message, setMessage] = useState("");
   const textareaRef = useRef(null);
   useEffect(() => {
     const listener = (event) => {
@@ -21,7 +22,6 @@ export default function ChatBox(props) {
         messageForm.submit();
         setTimeout(() => {
           messageForm.resetFields();
-          setHasMessage(false);
         }, 100);
       }
     };
@@ -30,6 +30,7 @@ export default function ChatBox(props) {
       document.removeEventListener("keydown", listener);
     };
   }, [messageForm]);
+  console.log("pppspapapapapa", costPerCharacter);
   // useEffect(() => {
   //   textareaRef.onKeyDown = function (e) {
   //     console.log("aaeaeeeeee", e);
@@ -68,21 +69,25 @@ export default function ChatBox(props) {
                   e.preventDefault();
                 }
               }}
-              onChange={(event) => setHasMessage(event.target.value.length > 0)}
+              onChange={(event) => setMessage(event.target.value)}
             />
           </Form.Item>
 
           <Form.Item>
-            {hasMessage ? (
-              <SendOutlined
-                onClick={() => {
-                  messageForm.submit();
-                  setTimeout(() => {
-                    messageForm.resetFields();
-                    setHasMessage(false);
-                  }, 100);
-                }}
-              />
+            {message.length > 0 ? (
+              <>
+                <Text>
+                  {message.length * costPerCharacter}
+                </Text>{" "}
+                <SendOutlined
+                  onClick={() => {
+                    messageForm.submit();
+                    setTimeout(() => {
+                      messageForm.resetFields();
+                    }, 100);
+                  }}
+                />
+              </>
             ) : (
               <Space className="message-action">
                 <Uploader uploadFile={uploadFile}>

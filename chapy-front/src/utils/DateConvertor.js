@@ -9,16 +9,20 @@ const p2e = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d
 // const p2a = s => s.replace(/[۰-۹]/g, d => '٠١٢٣٤٥٦٧٨٩'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)])
 // const a2p = s => s.replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
 
-export function toPersian(date, dateType = "DATETIME") {
-  let result = new Date(date).toLocaleDateString("fa-IR", options);
+export function toPersian(date, dateType = "PICK") {
+  date = new Date(date);
+  let result = date.toLocaleString("fa-IR", options);
 
   if (dateType === "TIME") {
-    result = new Date(date).toLocaleTimeString("fa-IR", options);
-  }
-  if (dateType === "DATE") {
-    result = new Date(date).toLocaleDateString("fa-IR", options);
-  }
-  if (dateType === "DATETIME") {
+    result = date.toLocaleTimeString("fa-IR", options);
+  } else if (dateType === "DATE") {
+    result = date.toLocaleDateString("fa-IR", options);
+  } else if (dateType === "DATETIME") {
+  } else if (dateType === "PICK") {
+    let today = new Date();
+    return date.getDate() === today.getDate()
+      ? toPersian(date, "TIME")
+      : toPersian(date, "DATE");
   }
   return p2e(result.replace("،‏", "-"));
 }

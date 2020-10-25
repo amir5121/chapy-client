@@ -39,6 +39,11 @@ export const initialConversationMessage = createAsyncThunk(
   {
     condition: (conversationIdentifier, { getState, extra }) => {
       const state = getState();
+      if (
+        [FULFILLED, PENDING].includes(state.messages.status)
+      ) {
+        return false;
+      }
 
       const messages = selectMessagesByConversationIdentifier(
         state,
@@ -141,9 +146,9 @@ export const messageSlice = createSlice({
       const conversationIdentifier = action.payload.conversationIdentifier;
 
       const messages = state.ids.includes(conversationIdentifier)
-        ? action.payload.data.results.reverse().concat(
-            state.entities[conversationIdentifier].messages
-          )
+        ? action.payload.data.results
+            .reverse()
+            .concat(state.entities[conversationIdentifier].messages)
         : action.payload.data.results.reverse();
       messagesAdapter.upsertOne(state, {
         conversationIdentifier,
