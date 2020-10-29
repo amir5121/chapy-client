@@ -39,9 +39,7 @@ export const initialConversationMessage = createAsyncThunk(
   {
     condition: (conversationIdentifier, { getState, extra }) => {
       const state = getState();
-      if (
-        [FULFILLED, PENDING].includes(state.messages.status)
-      ) {
+      if ([FULFILLED, PENDING].includes(state.messages.status)) {
         return false;
       }
 
@@ -103,7 +101,24 @@ export const sendMessageHttp = createAsyncThunk(
     // },
   }
 );
+function updateSingleMessage(conversationIdentifier, message, state) {
+  console.log('updateSingleMessage', state, conversationIdentifier)
+  const conversationMessages = messagesAdapter
+    .getSelectors()
+    .selectById(state, conversationIdentifier);
 
+  chain(conversationMessages.messages)
+    .find({ id: message.id })
+    .merge(message)
+    .value();
+
+  messagesAdapter.updateOne(state, {
+    id: conversationIdentifier,
+    changes: {
+      messages: conversationMessages.messages,
+    },
+  });
+}
 function insertMessage(state, action) {
   const conversationIdentifier = action.payload.conversation;
   const message = action.payload.message;
@@ -136,7 +151,25 @@ export const messageSlice = createSlice({
         };
       },
     },
+    updateMessage: {
+      reducer(state, action) {
+        console.log("updupaupdpudmassa", action);
+        updateSingleMessage(
+          action.payload.conversation,
+          action.payload.message,
+          state
+        );
+      },
+      prepare(conversationIdentifier, message) {
+        return {
+          payload: { conversation: conversationIdentifier, message },
+        };
+      },
+    },
     sendMessageSock: (state, action) => {
+      // handled by middleware
+    },
+    readMessageSock: (state, action) => {
       // handled by middleware
     },
   },
@@ -170,23 +203,11 @@ export const messageSlice = createSlice({
     [acceptMessageCharge.fulfilled]: (state, action) => {
       state.acceptChargeStatus = IDLE;
 
-      const conversationIdentifier = action.payload.conversationIdentifier;
-      const message = action.payload.data;
-      const conversationMessages = messagesAdapter
-        .getSelectors()
-        .selectById(state, conversationIdentifier);
-
-      chain(conversationMessages.messages)
-        .find({ id: message.id })
-        .merge(message)
-        .value();
-
-      messagesAdapter.updateOne(state, {
-        id: conversationIdentifier,
-        changes: {
-          messages: conversationMessages.messages,
-        },
-      });
+      updateSingleMessage(
+        action.payload.conversationIdentifier,
+        action.payload.data,
+        state
+      );
     },
     [acceptMessageCharge.pending]: (state, action) => {
       state.acceptChargeStatus = PENDING;
@@ -199,7 +220,12 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { updateUserMessages, sendMessageSock } = messageSlice.actions;
+export const {
+  updateUserMessages,
+  updateMessage,
+  sendMessageSock,
+  readMessageSock,
+} = messageSlice.actions;
 export const {
   selectAll: selectAllConversationMessages,
   selectById: selectMessagesByConversationIdentifier,

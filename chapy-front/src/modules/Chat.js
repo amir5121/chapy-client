@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   acceptMessageCharge,
-  initialConversationMessage,
+  initialConversationMessage, readMessageSock,
   selectMessagesByConversationIdentifier,
   sendMessageHttp,
   sendMessageSock,
@@ -51,6 +51,10 @@ export default function Chat(props) {
   const userProfile = useSelector((state) =>
     selectProfileById(state, username)
   );
+
+  // useEffect(() => {
+  //   setTimeout(() => messagesRef.current?.scrollToBottom(), 100);
+  // }, [conversationMessages]);
 
   function loadMore() {
     conversationIdentifier &&
@@ -102,6 +106,10 @@ export default function Chat(props) {
 
   function acceptCharge(messageId) {
     dispatch(acceptMessageCharge({ messageId, conversationIdentifier }));
+  }
+
+  function markAsRead(messageId) {
+    dispatch(readMessageSock({ messageId, conversationIdentifier }));
   }
 
   function startConversation() {
@@ -174,6 +182,7 @@ export default function Chat(props) {
               ref={messagesRef}
               conversationMessages={conversationMessages}
               acceptCharge={acceptCharge}
+              markAsRead={markAsRead}
               loadMore={loadMore}
               loading={isLoading}
             />

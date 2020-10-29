@@ -2,8 +2,9 @@ import React from "react";
 import "./Message.less";
 import { Image, Row } from "antd";
 import { toPersian } from "../../utils/DateConvertor";
-import { CheckCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, CheckOutlined } from "@ant-design/icons";
 import { httpBaseUrl } from "../../Setting";
+import VisibilitySensor from "react-visibility-sensor";
 
 const Message = (props) => {
   const {
@@ -14,8 +15,9 @@ const Message = (props) => {
     cost,
     need_payment,
     acceptCharge,
-    identifier,
     file,
+    markAsRead,
+    is_read,
   } = props;
   return (
     <Row
@@ -36,18 +38,27 @@ const Message = (props) => {
                 marginBottom: "0.5em",
               }}
               twoToneColor="#52c41a"
-              onClick={() => acceptCharge(identifier)}
+              onClick={() => acceptCharge()}
             />
           </div>
         ) : (
-          <p className="chat-content">{text}</p>
+          <VisibilitySensor
+            onChange={(isVisible) =>
+              !is_read && !is_date && isVisible && !is_mine && markAsRead()
+            }
+          >
+            <>
+              {file && <Image src={httpBaseUrl + file} />}
+              <p className="chat-content">{text}</p>
+            </>
+          </VisibilitySensor>
         )}
         {!is_date && (
           <>
-            {file && <Image src={httpBaseUrl + file} />}
             <p className="chat-date">
               <span>{toPersian(created, "TIME")}</span>
               {!need_payment && cost && <span>&nbsp;${cost}</span>}
+              {is_read && is_mine && <CheckOutlined />}
             </p>
           </>
         )}

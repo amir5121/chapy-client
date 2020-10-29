@@ -6,7 +6,7 @@ import {
   disconnected,
 } from "./reducer/SocketSlice";
 
-import { updateUserMessages } from "./reducer/MessageSlice";
+import { updateMessage, updateUserMessages } from "./reducer/MessageSlice";
 import { getAuthToken, isLoggedIn } from "../utils/Authenticate";
 import { sockBaseUrl } from "../Setting";
 
@@ -18,7 +18,7 @@ const socketMiddleware = () => {
   let retries = 0;
   const onOpen = (store) => (event) => {
     console.log("websocket open", event.target.url);
-    sendMessage(socket, {}, true, "AUTHENTICATE")
+    sendMessage({}, true, "AUTHENTICATE")
       .then(() => {
         store.dispatch(connected(event.target.url));
         pingIntervalId = setInterval(ping, 15000);
@@ -52,6 +52,14 @@ const socketMiddleware = () => {
           )
         );
         break;
+      case "UPDATE_MESSAGE":
+        store.dispatch(
+          updateMessage(
+            payload.message.conversation_identifier,
+            payload.message.message
+          )
+        );
+        break;
       case "PONG":
         console.log("@!#!@#!@#!@# POOOONNNGGGG");
         break;
@@ -60,7 +68,6 @@ const socketMiddleware = () => {
     }
   };
   const sendMessage = async (
-    socket,
     data,
     authenticate = false,
     command = "NEW_MESSAGE"
@@ -75,7 +82,7 @@ const socketMiddleware = () => {
     );
   };
   const ping = () => {
-    sendMessage(socket, {}, false, "PING");
+    sendMessage({}, false, "PING");
   };
 
   // the middleware part of this function
@@ -106,7 +113,10 @@ const socketMiddleware = () => {
         break;
       case "messages/sendMessageSock":
         console.log("sending a message", action.payload);
-        sendMessage(socket, action.payload);
+        sendMessage(action.payload);
+        break;
+      case "messages/readMessageSock":
+        sendMessage(action.payload, false, "MARK_AS_READ");
         break;
       default:
         // console.log("the next action:", action);

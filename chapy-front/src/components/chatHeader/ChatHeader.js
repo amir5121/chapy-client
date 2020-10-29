@@ -18,12 +18,10 @@ export default function ChatHeader(props) {
       <Link to={`/user/${userProfile?.username}`}>
         <Avatar size="large" src={userProfile?.avatar} />
       </Link>
-      <Link to={`/user/${userProfile?.username}`}>
-        <Text style={{ fontSize: "1.5em" }} strong>
-          {userProfile?.full_name}
-        </Text>{" "}
-        <Text type="secondary">{userProfile?.email}</Text>
-      </Link>
+      <Text style={{ fontSize: "1.5em" }} strong>
+        {userProfile?.full_name}
+      </Text>
+      <Text type="secondary">{userProfile?.email}</Text>
       {socketState !== CONNECTED && <LoadingOutlined />}
     </div>
   );

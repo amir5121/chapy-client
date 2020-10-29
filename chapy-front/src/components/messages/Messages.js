@@ -12,7 +12,13 @@ import usePrevious from "../../utils/UsePrevious";
 import { addDateToMessages } from "../../utils/DateConvertor";
 
 const Messages = forwardRef((props, ref) => {
-  const { conversationMessages, acceptCharge, loadMore, loading } = props;
+  const {
+    conversationMessages,
+    acceptCharge,
+    loadMore,
+    loading,
+    markAsRead,
+  } = props;
   const [viewHeight, setViewHeight] = useState(0);
   const prevHeight = usePrevious(viewHeight);
   const chatScrollView = useRef(null);
@@ -64,6 +70,7 @@ const Messages = forwardRef((props, ref) => {
             key={it.id}
             {...it}
             acceptCharge={() => acceptCharge(it.id)}
+            markAsRead={() => markAsRead(it.id)}
           />
         ))}
         <span ref={bottomRef} />
