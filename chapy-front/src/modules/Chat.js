@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   acceptMessageCharge,
-  initialConversationMessage, readMessageSock,
+  initialConversationMessage,
+  readMessageSock,
   selectMessagesByConversationIdentifier,
   sendMessageHttp,
   sendMessageSock,
@@ -26,6 +27,8 @@ import Modal from "antd/es/modal";
 import { Image, Input } from "antd";
 import { httpBaseUrl } from "../Setting";
 import { selectMe } from "../redux/reducer/MeSlice";
+import { getConfigurations } from "../redux/reducer/ConfigSlice";
+import Conversations from "./Conversations";
 
 export default function Chat(props) {
   const { justUserPage } = props;
@@ -33,6 +36,10 @@ export default function Chat(props) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [cost, setCost] = useState(null);
+  const configs = useSelector(getConfigurations);
+
+  const showConversations = configs.viewportWidth > configs.viewportHeight;
+
   const [modalContent, setModalContent] = useState({
     visible: false,
     file: null,
@@ -51,10 +58,6 @@ export default function Chat(props) {
   const userProfile = useSelector((state) =>
     selectProfileById(state, username)
   );
-
-  // useEffect(() => {
-  //   setTimeout(() => messagesRef.current?.scrollToBottom(), 100);
-  // }, [conversationMessages]);
 
   function loadMore() {
     conversationIdentifier &&
@@ -151,51 +154,60 @@ export default function Chat(props) {
   ) : (
     <div style={{ backgroundColor: "white" }}>
       {conversationMessages && !justUserPage ? (
-        <>
-          <ChatHeader socketState={socketState} userProfile={userProfile} />
-          <div
-            style={{
-              backgroundImage:
-                "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url('/img/tic-tac-toe.svg')",
-              backgroundColor: "rgba(223, 219, 229, 0.3)",
-            }}
-          >
-            <Modal
-              visible={modalContent.visible}
-              onOk={modalOk}
-              onCancel={modalClose}
-              title="Send file?"
-              okText="Send"
-              cancelText="Cancel"
-            >
-              <Image
-                src={httpBaseUrl + modalContent.file}
-                style={{ margin: "1em" }}
-              />
-              <Input
-                placeholder="Cost"
-                type="number"
-                onChange={(e) => setCost(e.target.value)}
-              />
-            </Modal>
-            <Messages
-              ref={messagesRef}
-              conversationMessages={conversationMessages}
-              acceptCharge={acceptCharge}
-              markAsRead={markAsRead}
-              loadMore={loadMore}
-              loading={isLoading}
-            />
-            <ChatBox
-              sendMessage={(values) => {
-                values.message && sendMessage(values);
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          {showConversations && (
+            <Conversations isInChatMode />
+          )}
+          <div style={{ flexGrow: 1 }}>
+            <ChatHeader socketState={socketState} userProfile={userProfile} />
+            <div
+              style={{
+                backgroundImage:
+                  "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url('/img/tic-tac-toe.svg')",
+                backgroundColor: "rgba(223, 219, 229, 0.3)",
               }}
-              onFinishFailed={onFinishFailed}
-              uploadFile={uploadFile}
-              costPerCharacter={me.cost_per_character}
-            />
+            >
+              <Modal
+                visible={modalContent.visible}
+                onOk={modalOk}
+                onCancel={modalClose}
+                title="Send file?"
+                okText="Send"
+                cancelText="Cancel"
+              >
+                <Image
+                  src={httpBaseUrl + modalContent.file}
+                  style={{ margin: "1em" }}
+                />
+                <Input
+                  placeholder="Cost"
+                  type="number"
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </Modal>
+              <Messages
+                ref={messagesRef}
+                conversationMessages={conversationMessages}
+                acceptCharge={acceptCharge}
+                markAsRead={markAsRead}
+                loadMore={loadMore}
+                loading={isLoading}
+              />
+              <ChatBox
+                sendMessage={(values) => {
+                  values.message && sendMessage(values);
+                }}
+                onFinishFailed={onFinishFailed}
+                uploadFile={uploadFile}
+                costPerCharacter={me.cost_per_character}
+              />
+            </div>
           </div>
-        </>
+        </div>
       ) : (
         <UserPage
           userProfile={userProfile}

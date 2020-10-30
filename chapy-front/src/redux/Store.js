@@ -10,9 +10,14 @@ import configReducer from "./reducer/ConfigSlice";
 import fileReducer from "./reducer/FileSlice";
 import notificationReducer from "./reducer/NotificationSlice";
 import socketMiddleware from "./SocketMiddleware";
+import asyncDispatchMiddleware from "./AsyncDispatchMiddleware";
 
 //https://dev.to/aduranil/how-to-use-websockets-with-redux-a-step-by-step-guide-to-writing-understanding-connecting-socket-middleware-to-your-project-km3
-const middleware = [...getDefaultMiddleware(), socketMiddleware];
+const middleware = [
+  ...getDefaultMiddleware(),
+  socketMiddleware,
+  asyncDispatchMiddleware,
+];
 const reducer = {
   conversations: conversationsReducer,
   auth: authReducer,

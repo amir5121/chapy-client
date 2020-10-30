@@ -6,27 +6,55 @@ import {
   selectAllConversations,
 } from "../redux/reducer/ConversationsSlice";
 import ConversationsList from "../components/conversationsList/ConversationsList";
-import { getConfigs, initialConfig } from "../redux/reducer/ConfigSlice";
+import {
+  getWebConfigurations,
+  initialConfig,
+} from "../redux/reducer/ConfigSlice";
 import SuggestedUsers from "../components/suggestedUsers/SuggestedUsers";
+import { useTranslation } from "react-i18next";
+import { Card, Col, Row } from "antd";
 
-export default function Conversations() {
+export default function Conversations(props) {
+  const { isInChatMode } = props;
   const conversations = useSelector(selectAllConversations);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const configs = useSelector(getConfigs);
+  const configs = useSelector(getWebConfigurations);
 
   useEffect(() => {
     dispatch(initialConfig());
     dispatch(getConversations());
   }, [dispatch]);
+
+  function renderConversationList(conversationsList) {
+    return isInChatMode ? (
+      <div style={{ flexGrow: 1 }}>{conversationsList}</div>
+    ) : (
+      <Row
+        type="flex"
+        justify="center"
+        style={{
+          minHeight: "100vh",
+          backgroundImage:
+            "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url('/img/tic-tac-toe.svg')",
+          backgroundColor: "rgba(223, 219, 229, 0.3)",
+        }}
+      >
+        <Col xs={24} md={20} lg={18}>
+          <Card>{conversationsList} </Card>
+        </Col>
+      </Row>
+    );
+  }
   return conversations.length > 0 ? (
-    <ConversationsList conversations={conversations} />
+    renderConversationList(<ConversationsList conversations={conversations} />)
   ) : (
     <div style={{ textAlign: "center" }}>
       <h2 style={{ paddingTop: "1rem" }}>
         No conversations yet! start a new one
       </h2>
-      <p>Here is some suggestion</p>
+      <p>{t("userSuggestion")}</p>
       {configs && <SuggestedUsers users={configs.top_users} />}
     </div>
   );

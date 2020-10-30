@@ -25,11 +25,13 @@ export const configSlice = createSlice({
     configurations: null,
     isMobile: true,
     viewportWidth: null,
+    viewportHeight: null,
   },
   reducers: {
     viewportUpdated: (state) => {
       if (window) {
         state.viewportWidth = window.innerWidth;
+        state.viewportHeight = window.innerHeight;
         state.isMobile = window.innerWidth < 576;
       }
     },
@@ -49,6 +51,7 @@ export const configSlice = createSlice({
 });
 export const { viewportUpdated } = configSlice.actions;
 export const isMobileSelector = (state) => state.config.isMobile;
-export const getConfigs = (state) => state.config.configurations;
+export const getWebConfigurations = (state) => state.config.configurations;
+export const getConfigurations = (state) => state.config;
 
 export default configSlice.reducer;

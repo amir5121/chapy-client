@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./ConversationsList.less";
-import { Avatar, Card, Col, List, Row } from "antd";
+import { Avatar, List, Row } from "antd";
 import { Link } from "react-router-dom";
 import { toPersian } from "../../utils/DateConvertor";
 
@@ -12,8 +12,8 @@ const ConversationsList = (props) => {
     if (!Boolean(lastMessage)) {
       return "No message yet";
     } else if (lastMessage.text) {
-      return lastMessage.text.length > 50
-        ? lastMessage.text.substr(0, 50) + "..."
+      return lastMessage.text.length > 30
+        ? lastMessage.text.substr(0, 30) + "..."
         : lastMessage.text;
     } else if (lastMessage.file) {
       return "File";
@@ -21,45 +21,27 @@ const ConversationsList = (props) => {
     return "Ops unhandled";
   }
   return (
-    <Row
-      type="flex"
-      justify="center"
-      style={{
-        minHeight: "100vh",
-        backgroundImage:
-          "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url('/img/tic-tac-toe.svg')",
-        backgroundColor: "rgba(223, 219, 229, 0.3)",
-      }}
-    >
-      <Col xs={24} md={20} lg={18}>
-        <Card>
-          <List
-            itemLayout="horizontal"
-            dataSource={conversations}
-            // header={<span>Conversations</span>}
-            renderItem={(item) => (
-              <List.Item>
-                <Link
-                  style={{ width: "100%" }}
-                  to={`/chat/${item.user.username}`}
-                >
-                  <Row align="middle" className="chat-action-row">
-                    <Avatar size="large" src={item.user.avatar} />
-                    <div className="conversation-content">
-                      <p className="title">
-                        <span>{item.user.full_name || item.user.username}</span>
-                        <span>{toPersian(item.last_message.created)}</span>
-                      </p>
-                      <span className="description">{get_message(item)}</span>
-                    </div>
-                  </Row>
-                </Link>
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Col>
-    </Row>
+    <List
+      itemLayout="horizontal"
+      dataSource={conversations}
+      // header={<span>Conversations</span>}
+      renderItem={(item) => (
+        <List.Item>
+          <Link style={{ width: "100%" }} to={`/chat/${item.user.username}`}>
+            <Row align="middle" className="chat-action-row">
+              <Avatar size="large" src={item.user.avatar} />
+              <div className="conversation-content">
+                <p className="title">
+                  <span>{item.user.full_name || item.user.username}</span>
+                  <span>{toPersian(item.last_message.created)}</span>
+                </p>
+                <span className="description">{get_message(item)}</span>
+              </div>
+            </Row>
+          </Link>
+        </List.Item>
+      )}
+    />
   );
 };
 

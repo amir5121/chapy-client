@@ -13,6 +13,8 @@ const conversationAdapter = createEntityAdapter({
   // sortComparer: (a, b) => b.date.localeCompare(a.date),
   selectId: (instance) => instance.identifier,
   sortComparer: (a, b) => {
+    // console.log(a.last_message.text, b.last_message.text)
+    // console.log(a.last_message.created, b.last_message.created, a.last_message.created > b.last_message.created)
     return a.last_message.created > b.last_message.created;
   },
 });
@@ -51,7 +53,22 @@ export const getConversations = createAsyncThunk(
 export const conversationsSlice = createSlice({
   name: "conversations",
   initialState,
-  reducers: {},
+  reducers: {
+    updateLastMessage: {
+      reducer(state, action) {
+        const conversation = conversationAdapter
+          .getSelectors()
+          .selectById(state, action.payload.conversation);
+        conversation.last_message = action.payload.message;
+
+      },
+      prepare(conversationIdentifier, message) {
+        return {
+          payload: { conversation: conversationIdentifier, message },
+        };
+      },
+    },
+  },
   extraReducers: {
     [getConversations.fulfilled]: (state, action) => {
       state.status = IDLE;
@@ -92,4 +109,5 @@ export const selectConversationIdentifier = (username) =>
 export const getConversationsStateSelector = (state) =>
   state.conversations.status;
 
+export const { updateLastMessage } = conversationsSlice.actions;
 export default conversationsSlice.reducer;

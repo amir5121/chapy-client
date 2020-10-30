@@ -6,6 +6,7 @@ import {
 import { chain } from "lodash";
 import chapios from "../../utils/Chapios";
 import { FULFILLED, IDLE, PENDING, REJECTED } from "../../utils/Constatns";
+import { updateLastMessage } from "./ConversationsSlice";
 
 const messagesAdapter = createEntityAdapter({
   selectId: (instance) => instance.conversationIdentifier,
@@ -102,7 +103,7 @@ export const sendMessageHttp = createAsyncThunk(
   }
 );
 function updateSingleMessage(conversationIdentifier, message, state) {
-  console.log('updateSingleMessage', state, conversationIdentifier)
+  console.log("updateSingleMessage", state, conversationIdentifier);
   const conversationMessages = messagesAdapter
     .getSelectors()
     .selectById(state, conversationIdentifier);
@@ -125,17 +126,20 @@ function insertMessage(state, action) {
   const conversationMessages = messagesAdapter
     .getSelectors()
     .selectById(state, conversationIdentifier);
-  conversationMessages
-    ? messagesAdapter.updateOne(state, {
-        id: conversationIdentifier,
-        changes: {
-          messages: conversationMessages.messages.concat(message),
-        },
-      })
-    : messagesAdapter.addOne(state, {
-        conversationIdentifier,
-        messages: [message],
-      });
+  if (conversationMessages) {
+    messagesAdapter.updateOne(state, {
+      id: conversationIdentifier,
+      changes: {
+        messages: conversationMessages.messages.concat(message),
+      },
+    });
+    action.asyncDispatch(updateLastMessage(conversationIdentifier, message));
+  } else {
+    messagesAdapter.addOne(state, {
+      conversationIdentifier,
+      messages: [message],
+    });
+  }
 }
 export const messageSlice = createSlice({
   name: "messages",
