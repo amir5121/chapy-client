@@ -4,6 +4,7 @@ import "./ConversationsList.less";
 import { Avatar, List, Row } from "antd";
 import { Link } from "react-router-dom";
 import { toPersian } from "../../utils/DateConvertor";
+import Text from "antd/es/typography/Text";
 
 const ConversationsList = (props) => {
   const { conversations } = props;
@@ -35,7 +36,14 @@ const ConversationsList = (props) => {
                   <span>{item.user.full_name || item.user.username}</span>
                   <span>{toPersian(item.last_message.created)}</span>
                 </p>
-                <span className="description">{get_message(item)}</span>
+                <Text
+                  type="secondary"
+                  strong={
+                    !item.last_message.is_read && !item.last_message.is_mine
+                  }
+                >
+                  {get_message(item)}
+                </Text>
               </div>
             </Row>
           </Link>

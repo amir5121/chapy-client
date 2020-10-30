@@ -54,13 +54,11 @@ const Message = (props) => {
           </VisibilitySensor>
         )}
         {!is_date && (
-          <>
-            <p className="chat-date">
-              <span>{toPersian(created, "TIME")}</span>
-              {!need_payment && cost && <span>&nbsp;${cost}</span>}
-              {is_read && is_mine && <CheckOutlined />}
-            </p>
-          </>
+          <p className="chat-date">
+            <span>{toPersian(created, "TIME")}</span>
+            {!need_payment && cost && <span>&nbsp;${cost}</span>}
+            {is_read && is_mine && <CheckOutlined />}
+          </p>
         )}
       </div>
     </Row>

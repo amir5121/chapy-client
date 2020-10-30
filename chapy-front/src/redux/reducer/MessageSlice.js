@@ -126,6 +126,7 @@ function insertMessage(state, action) {
   const conversationMessages = messagesAdapter
     .getSelectors()
     .selectById(state, conversationIdentifier);
+
   if (conversationMessages) {
     messagesAdapter.updateOne(state, {
       id: conversationIdentifier,
@@ -139,6 +140,11 @@ function insertMessage(state, action) {
       conversationIdentifier,
       messages: [message],
     });
+    // action
+    //   .asyncDispatch(getConversations(username))
+    //   .then(() =>
+    //     action.asyncDispatch(updateLastMessage(conversationIdentifier, message))
+    //   );
   }
 }
 export const messageSlice = createSlice({
